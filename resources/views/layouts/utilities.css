@@ -1,0 +1,44 @@
+/* Global Utility Classes */
+.hover-shadow {
+    transition: box-shadow 0.3s ease;
+}
+.hover-shadow:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+.group-hover-parent {
+    cursor: pointer;
+}
+.group-hover-parent:hover .group-hover-visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+}
+
+/* Specific utilities for grayscale images */
+.grayscale-hover-color img {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+}
+.grayscale-hover-color:hover img {
+    filter: grayscale(0%);
+}
+
+.letter-spacing-1 { letter-spacing: 1px; }
+.letter-spacing-2 { letter-spacing: 2px; }
+.letter-spacing-3 { letter-spacing: 3px; }
+.letter-spacing-4 { letter-spacing: 4px; }
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+.group-hover-visible {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
