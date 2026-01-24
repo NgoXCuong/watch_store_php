@@ -432,7 +432,7 @@ document.querySelector('form').addEventListener('submit', function(e) {
 
     // Initialize Specs Builder
     initSpecs();
-});
+
 </script>
 
 <style>
