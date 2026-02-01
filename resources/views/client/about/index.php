@@ -78,7 +78,7 @@
             <div class="col-lg-6">
                 <div class="bg-light p-5 h-100 d-flex flex-column justify-content-center">
                     <h4 class="text-uppercase letter-spacing-1 mb-4">Showroom Chính</h4>
-                    <p class="mb-2"><i class="fas fa-map-marker-alt me-3 text-warning"></i>123 Đồng Khởi, Quận 1, TP. HCM</p>
+                    <p class="mb-2"><i class="fas fa-map-marker-alt me-3 text-warning"></i>Đường Phan Tây Nhạc, phường Nam Từ Liêm, TP. Hà Nội</p>
                     <p class="mb-2"><i class="fas fa-phone me-3 text-warning"></i>0987 654 321</p>
                     <p class="mb-4"><i class="fas fa-envelope me-3 text-warning"></i>contact@watchstore.vn</p>
                     

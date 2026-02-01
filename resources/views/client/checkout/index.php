@@ -113,6 +113,15 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="vnpay" value="vnpay"
+                                               <?php echo ($data['old_input']['payment_method'] ?? '') === 'vnpay' ? 'checked' : ''; ?> required>
+                                        <label class="form-check-label" for="vnpay">
+                                            <i class="fas fa-qrcode me-2"></i>VNPAY-QR
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <?php if (isset($data['errors']['payment_method'])): ?>
                                 <div class="text-danger"><?php echo $data['errors']['payment_method']; ?></div>

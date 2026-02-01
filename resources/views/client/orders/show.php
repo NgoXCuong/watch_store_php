@@ -108,6 +108,12 @@
                                                        class="text-decoration-none text-dark fw-bold">
                                                         <?php echo htmlspecialchars($item['product_name']); ?>
                                                     </a>
+                                                    <?php if ($data['order']['status'] === 'delivered' || $data['order']['payment_status'] === 'paid'): ?>
+                                                        <a href="<?php echo BASE_URL; ?>/reviews/create/<?php echo $item['product_id']; ?>" 
+                                                           class="d-block mt-1 text-warning small text-decoration-none">
+                                                            <i class="far fa-star me-1"></i>Viết đánh giá
+                                                        </a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </td>
@@ -175,8 +181,8 @@
                         <a href="<?php echo BASE_URL; ?>/products" class="btn btn-primary w-100 mb-2">
                             <i class="fas fa-redo me-2"></i>Mua lại
                         </a>
-                        <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-outline-warning w-100">
-                            <i class="fas fa-star me-2"></i>Đánh giá sản phẩm
+                        <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-list me-2"></i>Xem đánh giá của tôi
                         </a>
                     <?php endif; ?>
                 </div>

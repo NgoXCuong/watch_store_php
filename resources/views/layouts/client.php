@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $data['title'] ?? 'Watch Store - Đồng hồ chính hãng'; ?></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?php echo BASE_URL; ?>/assets/img/logo.svg">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,7 +14,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
     <style>
@@ -31,8 +35,8 @@
             --light-color: #f8f9fa;
             --border-color: #e5e5e5;
             
-            --font-heading: 'Cinzel', serif;
-            --font-body: 'Montserrat', sans-serif;
+            --font-heading: 'Inter', sans-serif;
+            --font-body: 'Inter', sans-serif;
             
             --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.1);
         }
@@ -69,7 +73,7 @@
         }
 
         .header-content {
-            max-width: 1400px;
+            max-width: 100%;
             margin: 0 auto;
             padding: 0.5rem 2rem;
             display: flex;
@@ -197,6 +201,48 @@
         .btn-outline-custom:hover {
             background: var(--primary-color);
             color: white;
+        }
+
+        /* Search Form */
+        .search-form {
+            position: relative;
+            margin-right: 0.5rem;
+        }
+
+        .search-input {
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            background: transparent;
+            border-radius: 0;
+            padding: 0.5rem 2rem 0.5rem 0.5rem;
+            width: 200px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            width: 250px;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .search-btn:hover {
+            color: var(--secondary-color);
         }
 
         /* Hero Section - Luxury Style */
@@ -429,6 +475,11 @@
 
             <!-- User Actions -->
             <div class="nav">
+                <!-- Search Bar -->
+                <form action="<?php echo BASE_URL; ?>/products" method="GET" class="search-form d-none border  d-lg-block">
+                    <input type="text" name="search" class="search-input" placeholder="Tìm kiếm..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                    <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                </form>
                 <a href="<?php echo BASE_URL; ?>/cart" class="cart-link" title="Giỏ hàng">
                     <i class="fas fa-shopping-bag" style="font-size: 1.2rem;"></i>
                     <span class="cart-count" id="cart-count" style="display: none;">0</span>
@@ -529,7 +580,7 @@
             <div class="footer-bottom">
                 <div class="row align-items-center">
                     <div class="col-md-6 text-md-start">
-                        &copy; 2024 Watch Store Luxury. All rights reserved.
+                        &copy; 2025     Watch Store.
                     </div>
                     <div class="col-md-6 text-md-end mt-3 mt-md-0">
                         <i class="fab fa-cc-visa fa-2x me-2 text-secondary"></i>

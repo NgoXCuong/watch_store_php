@@ -86,7 +86,7 @@
                                 }
                             }
                             ?>
-                            <select name="sort" class="form-select form-select-sm border-0 bg-transparent text-end fw-bold" 
+                            <select name="sort" class="form-select form-select-sm border-0 bg-transparent text-start fw-bold" 
                                     style="box-shadow: none; cursor: pointer;"
                                     onchange="this.form.submit()">
                                 <option value="default" <?php echo $data['selectedSort'] === 'default' ? 'selected' : ''; ?>>Mặc định</option>
@@ -112,7 +112,7 @@
                     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
                         <?php foreach ($data['products'] as $product): ?>
                             <div class="col">
-                                <div class="product-card h-100">
+                                <div class="product-card border h-100">
                                     <div class="product-image-wrapper">
                                         <?php if ($product['old_price'] && $product['old_price'] > $product['price']): ?>
                                             <div class="position-absolute top-0 start-0 m-3 badge bg-dark rounded-0 fw-normal small z-2">
@@ -159,14 +159,14 @@
                                             </a>
                                         </h3>
                                         <div class="product-price">
+                                            <span class="fw-bold fs-5">
+                                                <?php echo number_format($product['price'], 0, ',', '.'); ?>đ
+                                            </span>
                                             <?php if ($product['old_price'] && $product['old_price'] > $product['price']): ?>
                                                 <span class="text-decoration-line-through text-muted small me-2">
                                                     <?php echo number_format($product['old_price'], 0, ',', '.'); ?>đ
                                                 </span>
                                             <?php endif; ?>
-                                            <span class="fw-bold fs-5">
-                                                <?php echo number_format($product['price'], 0, ',', '.'); ?>đ
-                                            </span>
                                         </div>
                                     </div>
                                 </div>

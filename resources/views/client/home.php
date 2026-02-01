@@ -4,12 +4,28 @@
 ?>
 
 <!-- Hero Section -->
+<!-- Hero Section -->
 <section class="hero-section position-relative d-flex align-items-center justify-content-center overflow-hidden" style="min-height: 85vh;">
-    <!-- Background with Overlay -->
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: radial-gradient(circle at center, #2c2c2c 0%, #000000 100%); z-index: -2;"></div>
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=2574&auto=format&fit=crop') no-repeat center center/cover; opacity: 0.3; z-index: -1;"></div>
+    <!-- Background Carousel -->
+    <div id="heroCarousel" class="carousel slide carousel-fade position-absolute top-0 start-0 w-100 h-100" data-bs-ride="carousel">
+        <div class="carousel-inner h-100">
+            <div class="carousel-item active h-100">
+                <img src="<?php echo BASE_URL; ?>/assets/img/banner-1.jpg" class="d-block w-100 h-100 object-fit-cover" alt="Banner 1">
+            </div>
+            <div class="carousel-item h-100">
+                <img src="<?php echo BASE_URL; ?>/assets/img/banner-2.jpg" class="d-block w-100 h-100 object-fit-cover" alt="Banner 2">
+            </div>
+            <div class="carousel-item h-100">
+                <img src="<?php echo BASE_URL; ?>/assets/img/banner.avif" class="d-block w-100 h-100 object-fit-cover" alt="Banner 3">
+            </div>
+        </div>
+    </div>
+
+    <!-- Dark Overlay for Readability -->
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: radial-gradient(circle at center, rgba(44,44,44,0.4) 0%, rgba(0,0,0,0.8) 100%); z-index: 1;"></div>
     
-    <div class="container text-center position-relative z-index-1">
+    <!-- Content -->
+    <div class="container text-center position-relative" style="z-index: 2;">
         <div class="animate-fade-up">
             <span class="d-inline-block text-uppercase letter-spacing-4 text-warning mb-3 small fw-bold">
                 <i class="fas fa-crown me-2"></i>Vẻ đẹp vượt thời gian
@@ -35,7 +51,7 @@
     </div>
 
     <!-- Scroll Indicator -->
-    <div class="position-absolute bottom-0 start-50 translate-middle-x mb-5 animate-bounce">
+    <div class="position-absolute bottom-0 start-50 translate-middle-x mb-5 animate-bounce" style="z-index: 2;">
         <a href="#featured" class="text-white opacity-50 text-decoration-none d-flex flex-column align-items-center text-uppercase x-small letter-spacing-2">
             <span>Scroll</span>
             <i class="fas fa-chevron-down mt-2"></i>
@@ -90,9 +106,9 @@
         </div>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-            <?php foreach ($data['featuredProducts'] as $product): ?>
+            <?php foreach (array_slice($data['featuredProducts'], 0, 4) as $product): ?>
                 <div class="col">
-                    <div class="product-card h-100 bg-white group-hover-parent">
+                    <div class="product-card h-100 border bg-white group-hover-parent">
                         <div class="position-relative overflow-hidden mb-3">
                             <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>">
                                 <?php if ($product['image_url']): ?>
@@ -108,7 +124,7 @@
                             </a>
                             
                             <?php if ($product['old_price'] && $product['old_price'] > $product['price']): ?>
-                                <div class="position-absolute top-0 start-0 m-3 badge bg-dark text-white rounded-0 fw-normal small">
+                                <div class="position-absolute top-0 start-0 m-3 badge bg-danger text-white rounded-0 fw-normal small">
                                     -<?php echo round((1 - $product['price'] / $product['old_price']) * 100); ?>%
                                 </div>
                             <?php endif; ?>
@@ -163,7 +179,7 @@
 <!-- Categories Parallax -->
 <?php if (!empty($data['categories'])): ?>
 <section class="py-5 bg-dark position-relative overflow-hidden text-white">
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('https://images.unsplash.com/photo-1547996668-cb540af087a8?q=80&w=2574&auto=format&fit=crop') fixed center center/cover; opacity: 0.2;"></div>
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('<?php echo BASE_URL; ?>/assets/img/banner.avif') fixed center center/cover; opacity: 0.2;"></div>
     <div class="container py-5 position-relative z-index-1">
         <div class="text-center mb-5">
             <h2 class="display-5 text-uppercase fw-bold text-white" style="font-family: var(--font-heading);">Bộ sưu tập</h2>
@@ -176,7 +192,7 @@
                     <a href="<?php echo BASE_URL; ?>/products?category=<?php echo $category['id']; ?>" class="card bg-transparent border border-secondary h-100 text-decoration-none group-hover-parent">
                         <div class="card-body py-5 text-center">
                             <h3 class="text-white text-uppercase letter-spacing-2 mb-3"><?php echo htmlspecialchars($category['name']); ?></h3>
-                            <span class="text-warning text-uppercase small letter-spacing-1 group-hover-visible">
+                            <span class="text-white text-uppercase small letter-spacing-1 category-hover-text transition-all">
                                 Khám phá <i class="fas fa-arrow-right ms-2"></i>
                             </span>
                         </div>
@@ -203,9 +219,9 @@
         </div>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-            <?php foreach ($data['latestProducts'] as $product): ?>
+            <?php foreach (array_slice($data['latestProducts'], 0, 4) as $product): ?>
                 <div class="col">
-                    <div class="product-card h-100 bg-white group-hover-parent">
+                    <div class="product-card h-100 border bg-white group-hover-parent">
                         <div class="position-relative overflow-hidden mb-3">
                             <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>">
                                 <?php if ($product['image_url']): ?>
@@ -234,22 +250,33 @@
 
 <!-- Brands -->
 <?php if (!empty($data['brands'])): ?>
-<section class="py-5 border-top">
-    <div class="container">
-        <div class="row align-items-center justify-content-center opacity-50 grayscale-hover-color g-5">
-            <?php foreach (array_slice($data['brands'], 0, 5) as $brand): ?>
-                <div class="col-6 col-md">
-                    <div class="text-center">
-                        <?php if ($brand['logo_url']): ?>
-                            <img src="<?php echo htmlspecialchars($brand['logo_url']); ?>" alt="" style="max-height: 50px; filter: grayscale(100%); opacity: 0.7;">
-                        <?php else: ?>
-                            <h4 class="text-uppercase text-muted fw-bold mb-0" style="letter-spacing: 2px;">
-                                <?php echo htmlspecialchars($brand['name']); ?>
-                            </h4>
-                        <?php endif; ?>
+<section class="py-5 border-top overflow-hidden">
+    <div class="container-fluid">
+        <div class="position-relative">
+            <!-- Gradient Masks -->
+            <div class="position-absolute top-0 start-0 h-100 bg-white" style="width: 50px; z-index: 2; mask-image: linear-gradient(to right, black, transparent); -webkit-mask-image: linear-gradient(to right, black, transparent);"></div>
+            <div class="position-absolute top-0 end-0 h-100 bg-white" style="width: 50px; z-index: 2; mask-image: linear-gradient(to left, black, transparent); -webkit-mask-image: linear-gradient(to left, black, transparent);"></div>
+            
+            <div class="brand-track d-flex align-items-center">
+                <?php 
+                $displayBrands = array_merge($data['brands'], $data['brands'], $data['brands'], $data['brands']); 
+                foreach ($displayBrands as $brand): 
+                ?>
+                    <div class="flex-shrink-0 px-5">
+                        <div class="text-center">
+                            <a href="<?php echo BASE_URL; ?>/products?brand=<?php echo $brand['id']; ?>" class="d-block text-decoration-none">
+                                <?php if ($brand['logo_url']): ?>
+                                    <img src="<?php echo htmlspecialchars($brand['logo_url']); ?>" alt="<?php echo htmlspecialchars($brand['name']); ?>" style="height: 60px; object-fit: contain; filter: none; opacity: 1;" class="transition-transform duration-300 hover-scale">
+                                <?php else: ?>
+                                    <h4 class="text-uppercase text-muted fw-bold mb-0 text-nowrap" style="letter-spacing: 2px;">
+                                        <?php echo htmlspecialchars($brand['name']); ?>
+                                    </h4>
+                                <?php endif; ?>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 </section>
@@ -258,7 +285,7 @@
 <!-- Newsletter CTA -->
 <section class="py-5 bg-dark text-white text-center">
     <div class="container py-4">
-        <h2 class="display-6 fw-bold text-uppercase mb-3" style="font-family: var(--font-heading);">Đăng ký nhận tin</h2>
+        <h2 class="display-6 fw-bold  text-white  text-uppercase mb-3" style="font-family: var(--font-heading);">Đăng ký nhận tin</h2>
         <p class="text-white-50 mb-4">Nhận thông báo về các bộ sưu tập mới và ưu đãi độc quyền.</p>
         <form class="mx-auto" style="max-width: 500px;">
             <div class="input-group">
@@ -294,5 +321,24 @@
 }
 .transition-all {
     transition: all 0.3s ease;
+}
+.group-hover-parent:hover .category-hover-text {
+    color: var(--secondary-color) !important;
+}
+/* Marquee Animation */
+.brand-track {
+    width: fit-content;
+    animation: marquee 40s linear infinite;
+    will-change: transform;
+}
+.brand-track:hover {
+    animation-play-state: paused;
+}
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-25%); } /* Move 1/4th (one full set of brands) */
+}
+.hover-scale:hover {
+    transform: scale(1.1);
 }
 </style>

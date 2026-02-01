@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $data['title'] ?? 'Admin Dashboard'; ?> - Watch Store Luxury</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?php echo BASE_URL; ?>/assets/img/logo.svg">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,6 +49,8 @@
             transition: all 0.3s ease;
             box-shadow: 4px 0 10px rgba(0,0,0,0.05);
             border-right: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar-brand {
@@ -316,6 +320,12 @@
                 <i class="fas fa-external-link-alt"></i> Xem Website
             </a>
         </div>
+        
+        <div class="mt-auto border-top p-3">
+            <a href="<?php echo BASE_URL; ?>/auth/logout" class="nav-link text-danger">
+                <i class="fas fa-sign-out-alt text-danger"></i> Đăng xuất
+            </a>
+        </div>
     </aside>
 
     <!-- Main Content -->
@@ -329,21 +339,14 @@
                 <h1 class="page-title"><?php echo $data['title'] ?? 'Dashboard'; ?></h1>
             </div>
 
-            <div class="dropdown user-dropdown">
-                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <div class="text-end me-2 d-none d-md-block">
-                        <div class="small fw-bold text-dark"><?php echo $_SESSION['user']['full_name'] ?? 'Administrator'; ?></div>
-                        <div class="x-small text-muted" style="font-size: 0.75rem;">Admin Access</div>
-                    </div>
-                    <div class="user-avatar">
-                        <?php echo strtoupper(substr($_SESSION['user']['username'] ?? 'A', 0, 1)); ?>
-                    </div>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                    <li><a class="dropdown-item py-2" href="<?php echo BASE_URL; ?>/admin/settings"><i class="fas fa-cog me-2 text-muted"></i> Cài đặt</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item py-2 text-danger" href="<?php echo BASE_URL; ?>/auth/logout"><i class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a></li>
-                </ul>
+            <div class="d-flex align-items-center">
+                <div class="text-end me-2 d-none d-md-block">
+                    <div class="small fw-bold text-dark"><?php echo $_SESSION['user']['full_name'] ?? 'Administrator'; ?></div>
+                    <div class="x-small text-muted" style="font-size: 0.75rem;">Admin Access</div>
+                </div>
+                <div class="user-avatar">
+                    <?php echo strtoupper(substr($_SESSION['user']['username'] ?? 'A', 0, 1)); ?>
+                </div>
             </div>
         </nav>
 

@@ -35,6 +35,14 @@
                                 <label for="description" class="form-label">Mô tả</label>
                                 <textarea class="form-control" id="description" name="description" rows="4"><?php echo htmlspecialchars($old_input['description'] ?? ''); ?></textarea>
                             </div>
+                            <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+                            <script>
+                                ClassicEditor
+                                    .create(document.querySelector('#description'), {
+                                        toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+                                    })
+                                    .catch(error => { console.error(error); });
+                            </script>
 
                             <div class="mb-3">
                                 <label for="parent_id" class="form-label">Danh mục cha</label>

@@ -20,8 +20,8 @@
             <!-- Order Details -->
             <div class="card shadow mb-4">
                 <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">
-                        <i class="fas fa-receipt me-2"></i>Chi tiết đơn hàng
+                    <h5 class="mb-0 text-white">
+                        <i class="fas fa-receipt me-2 "></i>Chi tiết đơn hàng
                     </h5>
                 </div>
                 <div class="card-body">

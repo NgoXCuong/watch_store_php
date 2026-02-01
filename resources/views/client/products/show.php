@@ -11,6 +11,42 @@
     </div>
 </section>
 
+
+<!-- Custom Tab Styling -->
+<style>
+    .nav-tabs .nav-link {
+        color: #6c757d;
+        border-bottom: 2px solid transparent !important;
+        transition: all 0.3s;
+    }
+    .nav-tabs .nav-link:hover {
+        color: var(--secondary-color);
+    }
+    .nav-tabs .nav-link.active {
+        color: var(--secondary-color) !important;
+        border-bottom: 2px solid var(--secondary-color) !important;
+    }
+</style>
+
+<?php
+$gallery = [];
+// Add main image first
+if (!empty($data['product']['image_url'])) {
+    $gallery[] = $data['product']['image_url'];
+}
+
+// Add gallery images
+if (!empty($data['product']['gallery_urls'])) {
+    $decoded = json_decode($data['product']['gallery_urls'], true);
+    if (is_array($decoded)) {
+        $gallery = array_merge($gallery, $decoded);
+    }
+}
+
+// Remove duplicates just in case
+$gallery = array_unique($gallery);
+?>
+
 <!-- Product Detail -->
 <section class="product-detail-section mb-5">
     <div class="container" style="max-width: 1400px;">
@@ -22,6 +58,17 @@
                          alt="<?php echo htmlspecialchars($data['product']['name']); ?>"
                          class="img-fluid w-100 h-100 object-fit-cover" id="main-image">
                     
+                    <?php if (isset($gallery) && count($gallery) > 1): ?>
+                        <button class="btn btn-dark position-absolute top-50 start-0 translate-middle-y rounded-0 ms-2 d-flex align-items-center justify-content-center" 
+                                onclick="prevImage()" style="width: 40px; height: 40px; opacity: 0.8; z-index: 10; border: none;">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="btn btn-dark position-absolute top-50 end-0 translate-middle-y rounded-0 me-2 d-flex align-items-center justify-content-center" 
+                                onclick="nextImage()" style="width: 40px; height: 40px; opacity: 0.8; z-index: 10; border: none;">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    <?php endif; ?>
+                    
                     <?php if ($data['product']['stock'] == 0): ?>
                         <div class="position-absolute top-50 start-50 translate-middle badge bg-dark text-white fs-5 rounded-0 px-4 py-3 text-uppercase">
                             Hết hàng
@@ -31,56 +78,21 @@
 
                 <!-- Thumbnail Grid (Placeholder for multi-image logic if added later) -->
                 <!-- Gallery Thumbnails -->
-                <?php
-                $gallery = [];
-                // Add main image first
-                if (!empty($data['product']['image_url'])) {
-                    $gallery[] = $data['product']['image_url'];
-                }
-                
-                // Add gallery images
-                if (!empty($data['product']['gallery_urls'])) {
-                    $decoded = json_decode($data['product']['gallery_urls'], true);
-                    if (is_array($decoded)) {
-                        $gallery = array_merge($gallery, $decoded);
-                    }
-                }
-                
-                // Remove duplicates just in case
-                $gallery = array_unique($gallery);
-                ?>
+                <!-- Gallery Thumbnails -->
 
                 <?php if (count($gallery) > 1): ?>
                 <div class="d-flex gap-2 overflow-auto pb-2 custom-scrollbar">
                     <?php foreach ($gallery as $index => $imgUrl): ?>
                         <div class="thumbnail-item border <?php echo $index === 0 ? 'border-primary' : 'border-light'; ?> p-1" 
                              style="width: 80px; height: 80px; min-width: 80px; cursor: pointer; transition: all 0.3s;"
-                             onclick="changeMainImage(this, '<?php echo htmlspecialchars($imgUrl); ?>')">
+                             onclick="setMainImage(<?php echo $index; ?>)">
                             <img src="<?php echo htmlspecialchars($imgUrl); ?>" class="w-100 h-100 object-fit-cover">
                         </div>
                     <?php endforeach; ?>
                 </div>
                 <?php endif; ?>
 
-                <script>
-                    function changeMainImage(el, src) {
-                        // Update Main Image
-                        const mainImg = document.getElementById('main-image');
-                        mainImg.style.opacity = '0.5';
-                        setTimeout(() => {
-                            mainImg.src = src;
-                            mainImg.style.opacity = '1';
-                        }, 200);
-
-                        // Update Active State
-                        document.querySelectorAll('.thumbnail-item').forEach(item => {
-                            item.classList.remove('border-primary');
-                            item.classList.add('border-light');
-                        });
-                        el.classList.remove('border-light');
-                        el.classList.add('border-primary');
-                    }
-                </script>
+                <!-- Script moved to bottom -->
             </div>
 
             <!-- Product Info -->
@@ -90,17 +102,32 @@
                         <?php echo htmlspecialchars($data['product']['brand_name'] ?? 'Thương hiệu'); ?>
                     </div>
                     
-                    <h1 class="display-5 fw-bold mb-3" style="font-family: var(--font-heading);"><?php echo htmlspecialchars($data['product']['name']); ?></h1>
+                    <h1 class="display-7 fw-bold mb-3" style="font-family: var(--font-heading);"><?php echo htmlspecialchars($data['product']['name']); ?></h1>
 
                     <div class="d-flex align-items-center gap-3 mb-4">
+                        <?php
+                        $avgRating = 0;
+                        $totalReviews = count($data['reviews'] ?? []);
+                        if ($totalReviews > 0) {
+                            $sum = 0;
+                            foreach ($data['reviews'] as $r) $sum += $r['rating'];
+                            $avgRating = round($sum / $totalReviews, 1);
+                        }
+                        ?>
                         <div class="text-warning small">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
+                            <?php
+                            for ($i = 1; $i <= 5; $i++) {
+                                if ($i <= $avgRating) {
+                                    echo '<i class="fas fa-star"></i>';
+                                } elseif ($i - 0.5 <= $avgRating) {
+                                    echo '<i class="fas fa-star-half-alt"></i>';
+                                } else {
+                                    echo '<i class="far fa-star"></i>';
+                                }
+                            }
+                            ?>
                         </div>
-                        <span class="text-muted small border-start ps-3">120 Đánh giá</span>
+                        <span class="text-muted small border-start ps-3"><?php echo $totalReviews; ?> Đánh giá</span>
                         <span class="text-muted small border-start ps-3">Mã: #<?php echo $data['product']['id']; ?></span>
                     </div>
 
@@ -115,12 +142,7 @@
                         <?php endif; ?>
                     </div>
 
-                    <div class="mb-5 text-muted fw-light">
-                        <?php 
-                        $desc = htmlspecialchars($data['product']['description']);
-                        echo strlen($desc) > 200 ? substr($desc, 0, 200) . '...' : $desc;
-                        ?>
-                    </div>
+                    
 
                     <?php if ($data['product']['stock'] > 0): ?>
                         <form action="<?php echo BASE_URL; ?>/cart/add" method="POST" class="mb-5">
@@ -173,10 +195,10 @@
 
 <!-- Details & Reviews Tabs -->
 <section class="bg-light py-5">
-    <div class="container" style="max-width: 1000px;">
+    <div class="container" style="max-width: 1300px;">
         <ul class="nav nav-tabs border-0 justify-content-center mb-5 gap-4" id="productTabs" role="tablist">
             <li class="nav-item border-0" role="presentation">
-                <button class="nav-link active bg-transparent border-0 border-bottom border-2 border-dark text-dark text-uppercase letter-spacing-2 fw-bold rounded-0 pb-2 px-0" 
+                <button class="nav-link active bg-transparent border-0 text-uppercase letter-spacing-2 fw-bold rounded-0 pb-2 px-0" 
                         id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">
                     Mô tả chi tiết
                 </button>
@@ -200,7 +222,7 @@
             <div class="tab-pane fade show active" id="description" role="tabpanel">
                 <div class="typography-content" style="line-height: 1.8;">
                     <?php if ($data['product']['description']): ?>
-                        <?php echo nl2br(htmlspecialchars($data['product']['description'])); ?>
+                        <?php echo html_entity_decode(htmlspecialchars_decode($data['product']['description'])); ?>
                     <?php else: ?>
                         <p class="text-muted text-center fst-italic">Đang cập nhật nội dung...</p>
                     <?php endif; ?>
@@ -293,8 +315,18 @@
                     <div>
                         <h4 class="mb-1">Đánh giá khách hàng</h4>
                         <div class="text-warning">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                            <span class="text-muted ms-2 small">4.5/5 Trung bình</span>
+                            <?php
+                            for ($i = 1; $i <= 5; $i++) {
+                                if ($i <= $avgRating) {
+                                    echo '<i class="fas fa-star"></i>';
+                                } elseif ($i - 0.5 <= $avgRating) {
+                                    echo '<i class="fas fa-star-half-alt"></i>';
+                                } else {
+                                    echo '<i class="far fa-star"></i>';
+                                }
+                            }
+                            ?>
+                            <span class="text-muted ms-2 small"><?php echo $avgRating > 0 ? $avgRating . '/5' : 'Chưa có đánh giá'; ?></span>
                         </div>
                     </div>
                     <?php if (isset($_SESSION['user']) && $data['canReview']): ?>
@@ -304,7 +336,7 @@
 
                 <!-- Review Form (Hidden by default) -->
                 <div id="reviewFormContainer" class="mb-5 bg-light p-4 d-none">
-                    <form id="reviewForm">
+                    <form id="reviewForm" action="<?php echo BASE_URL; ?>/reviews/store" method="POST">
                         <input type="hidden" name="product_id" value="<?php echo $data['product']['id']; ?>">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Đánh giá của bạn:</label>
@@ -357,12 +389,12 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
             <?php foreach ($data['relatedProducts'] as $related): ?>
                 <div class="col">
-                    <div class="product-card h-100 bg-white">
+                    <div class="product-card border h-100 bg-white">
                         <div class="product-image-wrapper position-relative overflow-hidden mb-3">
                             <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $related['id']; ?>">
                                 <img src="<?php echo htmlspecialchars($related['image_url'] ?? ''); ?>" 
                                      alt="<?php echo htmlspecialchars($related['name']); ?>"
-                                     class="w-100 object-fit-cover" style="height: 300px;">
+                                     class="product-image">
                             </a>
                         </div>
                         <div class="text-center">
@@ -382,6 +414,48 @@
 <?php endif; ?>
 
 <script>
+    // Gallery Logic
+    const galleryImages = <?php echo json_encode(array_values($gallery)); ?>;
+    let currentIndex = 0;
+
+    function setMainImage(index) {
+        if (index < 0 || index >= galleryImages.length) return;
+        currentIndex = index;
+        updateGalleryDisplay();
+    }
+
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % galleryImages.length;
+        updateGalleryDisplay();
+    }
+
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+        updateGalleryDisplay();
+    }
+
+    function updateGalleryDisplay() {
+        // Update Main Image
+        const mainImg = document.getElementById('main-image');
+        mainImg.style.opacity = '0.5';
+        setTimeout(() => {
+            mainImg.src = galleryImages[currentIndex];
+            mainImg.style.opacity = '1';
+        }, 150);
+
+        // Update Thumbnails
+        document.querySelectorAll('.thumbnail-item').forEach((item, index) => {
+            if (index === currentIndex) {
+                item.classList.remove('border-light');
+                item.classList.add('border-primary');
+                item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } else {
+                item.classList.remove('border-primary');
+                item.classList.add('border-light');
+            }
+        });
+    }
+
     function changeQuantity(change) {
         const input = document.getElementById('quantity-input');
         let newValue = parseInt(input.value) + change;
@@ -390,17 +464,8 @@
         }
     }
 
-    // Simple Tab Logic for Custom Style (since we removed standard border-bottom of bootstrap nav-tabs mostly)
-    document.querySelectorAll('#productTabs .nav-link').forEach(tab => {
-        tab.addEventListener('click', function() {
-            document.querySelectorAll('#productTabs .nav-link').forEach(t => {
-                t.classList.remove('active', 'border-dark', 'text-dark');
-                t.classList.add('text-muted');
-            });
-            this.classList.add('active', 'border-dark', 'text-dark');
-            this.classList.remove('text-muted');
-        });
-    });
+    // Tab Logic is now handled generically by CSS active class, 
+    // but we can ensure standard Bootstrap tab events work fine.
 
     // Review Form Toggle
     function showReviewForm() { document.getElementById('reviewFormContainer').classList.remove('d-none'); }

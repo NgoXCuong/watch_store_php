@@ -105,8 +105,21 @@ class ProfileController extends Controller {
             'email' => trim($_POST['email'] ?? ''),
             'full_name' => trim($_POST['full_name'] ?? ''),
             'phone' => trim($_POST['phone'] ?? ''),
-            'avatar_url' => trim($_POST['avatar_url'] ?? '')
+            'phone' => trim($_POST['phone'] ?? ''),
+            'avatar_url' => trim($_POST['avatar_url'] ?? '') // Keep old url if no new file
         ];
+
+        // Handle File Upload
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+            $cloudinaryService = new \App\Services\CloudinaryService();
+            $uploaded = $cloudinaryService->uploadImage($_FILES['avatar']['tmp_name'], [
+               'folder' => 'watch_store/avatars'
+            ]);
+            
+            if ($uploaded && isset($uploaded['url'])) {
+                 $data['avatar_url'] = $uploaded['url'];
+            }
+        }
 
         $errors = [];
 
@@ -146,6 +159,9 @@ class ProfileController extends Controller {
             $_SESSION['user']['username'] = $data['username'];
             $_SESSION['user']['email'] = $data['email'];
             $_SESSION['user']['full_name'] = $data['full_name'];
+            if (!empty($data['avatar_url'])) {
+                $_SESSION['user']['avatar_url'] = $data['avatar_url'];
+            }
 
             $_SESSION['success'] = 'Cập nhật hồ sơ thành công!';
             header('Location: ' . BASE_URL . '/profile');

@@ -31,21 +31,27 @@
                         
                         <!-- Logo -->
                         <div class="mb-4 d-flex align-items-center justify-content-center" style="height: 100px; width: 100%;">
-                            <?php if ($brand['logo_url']): ?>
-                                <img src="<?php echo htmlspecialchars($brand['logo_url']); ?>" 
-                                     alt="<?php echo htmlspecialchars($brand['name']); ?>" 
-                                     class="img-fluid" style="max-height: 80px; filter: grayscale(100%); transition: all 0.3s;">
-                            <?php else: ?>
-                                <h3 class="text-uppercase text-muted fw-bold mb-0" style="letter-spacing: 2px;">
-                                    <?php echo htmlspecialchars($brand['name']); ?>
-                                </h3>
-                            <?php endif; ?>
+                            <a href="<?php echo BASE_URL; ?>/products?brand=<?php echo $brand['id']; ?>" class="d-block w-100 h-100 d-flex align-items-center justify-content-center text-decoration-none">
+                                <?php if ($brand['logo_url']): ?>
+                                    <img src="<?php echo htmlspecialchars($brand['logo_url']); ?>" 
+                                         alt="<?php echo htmlspecialchars($brand['name']); ?>" 
+                                         class="img-fluid" style="max-height: 80px; transition: all 0.3s;">
+                                <?php else: ?>
+                                    <h3 class="text-uppercase text-muted fw-bold mb-0" style="letter-spacing: 2px;">
+                                        <?php echo htmlspecialchars($brand['name']); ?>
+                                    </h3>
+                                <?php endif; ?>
+                            </a>
                         </div>
 
-                        <h3 class="h5 text-uppercase fw-bold mb-3"><?php echo htmlspecialchars($brand['name']); ?></h3>
+                        <h3 class="h5 text-uppercase fw-bold mb-3">
+                            <a href="<?php echo BASE_URL; ?>/products?brand=<?php echo $brand['id']; ?>" class="text-decoration-none text-dark">
+                                <?php echo htmlspecialchars($brand['name']); ?>
+                            </a>
+                        </h3>
                         
                         <p class="text-muted small mb-4 line-clamp-3">
-                            <?php echo $brand['description'] ? htmlspecialchars($brand['description']) : 'Thương hiệu đồng hồ nổi tiếng với thiết kế sang trọng và bộ máy chính xác.'; ?>
+                            <?php echo $brand['description'] ? html_entity_decode(htmlspecialchars_decode($brand['description'])) : 'Thương hiệu đồng hồ nổi tiếng với thiết kế sang trọng và bộ máy chính xác.'; ?>
                         </p>
 
                         <a href="<?php echo BASE_URL; ?>/products?brand=<?php echo $brand['id']; ?>" class="btn btn-outline-dark rounded-0 text-uppercase letter-spacing-1 px-4 mt-auto">
@@ -55,7 +61,6 @@
                         <!-- Hover Effect CSS in-line for specific behavior -->
                         <style>
                             .brand-card:hover img {
-                                filter: grayscale(0%);
                                 transform: scale(1.1);
                             }
                             .line-clamp-3 {
@@ -75,7 +80,7 @@
 <!-- CTA -->
 <section class="py-5 mt-5 bg-dark text-white text-center">
     <div class="container">
-        <h2 class="text-uppercase mb-3" style="font-family: var(--font-heading);">Không tìm thấy thương hiệu yêu thích?</h2>
+        <h2 class="text-uppercase mb-3 text-white " style="font-family: var(--font-heading);">Không tìm thấy thương hiệu yêu thích?</h2>
         <p class="text-white-50 mb-4">Liên hệ với chúng tôi để được tư vấn đặt hàng riêng.</p>
         <a href="<?php echo BASE_URL; ?>/about" class="btn btn-warning rounded-0 px-4 text-dark fw-bold text-uppercase">Liên hệ ngay</a>
     </div>

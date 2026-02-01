@@ -48,6 +48,14 @@
                         <textarea class="form-control" id="description" name="description" rows="3"><?php echo htmlspecialchars($old_input['description'] ?? $brand['description'] ?? ''); ?></textarea>
                         <div class="form-text">Mô tả ngắn gọn về thương hiệu (tùy chọn).</div>
                     </div>
+                    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+                    <script>
+                        ClassicEditor
+                            .create(document.querySelector('#description'), {
+                                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+                            })
+                            .catch(error => { console.error(error); });
+                    </script>
 
                     <div class="mb-3">
                         <label for="logo_file" class="form-label">Logo thương hiệu mới (tùy chọn)</label>

@@ -1,65 +1,31 @@
-<div class="container py-4">
-    <div class="row">
+<div class="container py-5" style="max-width: 1400px;">
+    <div class="row g-4">
         <!-- Sidebar -->
         <div class="col-lg-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <?php if ($data['user']['avatar_url']): ?>
-                        <img src="<?php echo htmlspecialchars($data['user']['avatar_url']); ?>"
-                             alt="Avatar" class="rounded-circle mb-3" style="width: 80px; height: 80px; object-fit: cover;">
-                    <?php else: ?>
-                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                             style="width: 80px; height: 80px; font-size: 2rem;">
-                            <i class="fas fa-user"></i>
-                        </div>
-                    <?php endif; ?>
+            <div class="card border-0 shadow-sm rounded-0 overflow-hidden h-100">
+                <div class="card-body text-center p-5 bg-light">
+                    <div class="position-relative d-inline-block mb-4">
+                        <?php if ($data['user']['avatar_url']): ?>
+                            <img src="<?php echo htmlspecialchars($data['user']['avatar_url']); ?>"
+                                 alt="Avatar" class="rounded-circle shadow-sm object-fit-cover border border-3 border-white" style="width: 120px; height: 120px;">
+                        <?php else: ?>
+                            <div class="bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm border border-3 border-white"
+                                 style="width: 120px; height: 120px; font-size: 2.5rem;">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        <?php endif; ?>
+                    </div>
 
-                    <h5><?php echo htmlspecialchars($data['user']['full_name']); ?></h5>
-                    <p class="text-muted mb-2">@<?php echo htmlspecialchars($data['user']['username']); ?></p>
-                    <p class="text-muted small"><?php echo htmlspecialchars($data['user']['email']); ?></p>
+                    <h5 class="fw-bold mb-1 text-uppercase letter-spacing-1"><?php echo htmlspecialchars($data['user']['full_name']); ?></h5>
+                    <p class="text-muted mb-4 small">@<?php echo htmlspecialchars($data['user']['username']); ?></p>
 
-                    <div class="d-grid gap-2">
-                        <a href="<?php echo BASE_URL; ?>/profile/edit" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-edit me-1"></i>Chỉnh sửa hồ sơ
+                    <div class="d-grid gap-3">
+                        <a href="<?php echo BASE_URL; ?>/profile/edit" class="btn btn-outline-dark rounded-0 text-uppercase letter-spacing-1 small fw-bold py-2">
+                            <i class="fas fa-edit me-2"></i>Chỉnh sửa hồ sơ
                         </a>
-                        <a href="<?php echo BASE_URL; ?>/profile/change-password" class="btn btn-outline-secondary btn-sm">
-                            <i class="fas fa-key me-1"></i>Đổi mật khẩu
+                        <a href="<?php echo BASE_URL; ?>/profile/change-password" class="btn btn-outline-secondary rounded-0 text-uppercase letter-spacing-1 small fw-bold py-2">
+                            <i class="fas fa-key me-2"></i>Đổi mật khẩu
                         </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Stats -->
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h6 class="mb-0">Thống kê đơn hàng</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-6">
-                            <div class="h4 mb-1 text-primary"><?php echo $data['orderStats']['total_orders']; ?></div>
-                            <small class="text-muted">Tổng đơn</small>
-                        </div>
-                        <div class="col-6">
-                            <div class="h4 mb-1 text-success"><?php echo $data['orderStats']['completed_orders']; ?></div>
-                            <small class="text-muted">Hoàn thành</small>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row text-center">
-                        <div class="col-6">
-                            <div class="h4 mb-1 text-warning"><?php echo $data['orderStats']['pending_orders']; ?></div>
-                            <small class="text-muted">Đang xử lý</small>
-                        </div>
-                        <div class="col-6">
-                            <div class="h4 mb-1 text-danger"><?php echo $data['orderStats']['cancelled_orders']; ?></div>
-                            <small class="text-muted">Đã hủy</small>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="text-center">
-                        <div class="h5 mb-1 text-info"><?php echo number_format($data['orderStats']['total_spent'], 0, ',', '.'); ?>đ</div>
-                        <small class="text-muted">Tổng chi tiêu</small>
                     </div>
                 </div>
             </div>
@@ -68,143 +34,154 @@
         <!-- Main Content -->
         <div class="col-lg-9">
             <!-- Account Information -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Thông tin tài khoản</h5>
+            <div class="card border-0 shadow-sm rounded-0 mb-5">
+                <div class="card-header bg-white border-bottom py-4">
+                    <h5 class="mb-0 fw-bold text-uppercase letter-spacing-2" style="font-family: var(--font-heading);">
+                        <i class="fas fa-info-circle me-2 text-warning"></i>Thông tin tài khoản
+                    </h5>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Họ tên:</label>
-                                <p class="mb-0"><?php echo htmlspecialchars($data['user']['full_name']); ?></p>
+                <div class="card-body p-4 p-lg-5">
+                    <div class="row g-4">
+                        <div class="col-md-6 border-end-md">
+                            <div class="mb-4">
+                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Họ tên</label>
+                                <div class="fw-bold fs-5"><?php echo htmlspecialchars($data['user']['full_name']); ?></div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Tên đăng nhập:</label>
-                                <p class="mb-0"><?php echo htmlspecialchars($data['user']['username']); ?></p>
+                            <div class="mb-4">
+                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Tên đăng nhập</label>
+                                <div class="fw-bold"><?php echo htmlspecialchars($data['user']['username']); ?></div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Email:</label>
-                                <p class="mb-0"><?php echo htmlspecialchars($data['user']['email']); ?></p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Số điện thoại:</label>
-                                <p class="mb-0"><?php echo htmlspecialchars($data['user']['phone'] ?: 'Chưa cập nhật'); ?></p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Vai trò:</label>
-                                <p class="mb-0">
-                                    <span class="badge bg-<?php echo $data['user']['role'] === 'admin' ? 'danger' : ($data['user']['role'] === 'staff' ? 'warning' : 'secondary'); ?>">
-                                        <?php echo $data['user']['role'] === 'admin' ? 'Admin' : ($data['user']['role'] === 'staff' ? 'Nhân viên' : 'Khách hàng'); ?>
-                                    </span>
-                                </p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Trạng thái:</label>
-                                <p class="mb-0">
-                                    <span class="badge bg-<?php echo $data['user']['status'] === 'active' ? 'success' : ($data['user']['status'] === 'inactive' ? 'warning' : 'danger'); ?>">
-                                        <?php echo $data['user']['status'] === 'active' ? 'Hoạt động' : ($data['user']['status'] === 'inactive' ? 'Không hoạt động' : 'Đã khóa'); ?>
-                                    </span>
-                                </p>
+                            <div>
+                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Email</label>
+                                <div class="fw-bold"><?php echo htmlspecialchars($data['user']['email']); ?></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Ngày tham gia:</label>
-                        <p class="mb-0"><?php echo date('d/m/Y \l\ú\c H:i', strtotime($data['user']['created_at'])); ?></p>
+
+                        <div class="col-md-6 ps-md-5">
+                            <div class="mb-4">
+                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Số điện thoại</label>
+                                <div class="fw-bold fs-5"><?php echo htmlspecialchars($data['user']['phone'] ?: 'Chưa cập nhật'); ?></div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Ngày tham gia</label>
+                                <div class="fw-bold"><?php echo date('d/m/Y', strtotime($data['user']['created_at'])); ?></div>
+                            </div>
+                            <div>
+                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Hạng thành viên</label>
+                                <span class="badge bg-dark rounded-0 px-3 py-2 text-uppercase letter-spacing-1">
+                                    <?php echo $data['user']['role'] === 'admin' ? 'Admin' : ($data['user']['role'] === 'staff' ? 'Nhân viên' : 'Thành viên'); ?>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-shopping-bag fa-2x text-primary mb-3"></i>
-                            <h6>Đơn hàng của tôi</h6>
-                            <p class="text-muted small">Xem lịch sử đơn hàng</p>
-                            <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-primary btn-sm">Xem đơn hàng</a>
+            <!-- Stats & Quick Actions -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm rounded-0 h-100 bg-primary text-white overflow-hidden position-relative group-hover-parent">
+                        <div class="position-absolute top-0 end-0 p-3 opacity-25">
+                            <i class="fas fa-shopping-bag fa-4x transform-scale-12"></i>
+                        </div>
+                        <div class="card-body p-4 position-relative z-index-1">
+                            <h2 class="display-4 fw-bold mb-0"><?php echo $data['orderStats']['total_orders']; ?></h2>
+                            <p class="text-white-50 text-uppercase letter-spacing-1 small mb-4">Đơn hàng</p>
+                            <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-outline-light rounded-0 text-uppercase letter-spacing-1 small w-100 stretched-link">Xem lịch sử</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-star fa-2x text-warning mb-3"></i>
-                            <h6>Đánh giá của tôi</h6>
-                            <p class="text-muted small">Xem đánh giá đã gửi</p>
-                            <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-warning btn-sm">Xem đánh giá</a>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm rounded-0 h-100 bg-dark text-white overflow-hidden position-relative group-hover-parent">
+                        <div class="position-absolute top-0 end-0 p-3 opacity-25">
+                            <i class="fas fa-star fa-4x transform-scale-12"></i>
+                        </div>
+                        <div class="card-body p-4 position-relative z-index-1">
+                            <h2 class="display-4 fw-bold mb-0 text-warning">
+                                <?php 
+                                    $reviewModel = new \App\Models\ReviewModel();
+                                    $reviews = $reviewModel->getByUserId($data['user']['id']);
+                                    echo count($reviews);
+                                ?>
+                            </h2>
+                            <p class="text-white-50 text-uppercase letter-spacing-1 small mb-4">Đánh giá</p>
+                            <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-outline-warning rounded-0 text-uppercase letter-spacing-1 small w-100 stretched-link">Quản lý</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-shopping-cart fa-2x text-success mb-3"></i>
-                            <h6>Giỏ hàng</h6>
-                            <p class="text-muted small">Xem giỏ hàng hiện tại</p>
-                            <a href="<?php echo BASE_URL; ?>/cart" class="btn btn-success btn-sm">Xem giỏ hàng</a>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm rounded-0 h-100 bg-light overflow-hidden position-relative group-hover-parent">
+                        <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                            <i class="fas fa-wallet fa-4x transform-scale-12"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-heart fa-2x text-danger mb-3"></i>
-                            <h6>Yêu thích</h6>
-                            <p class="text-muted small">Sản phẩm yêu thích</p>
-                            <a href="<?php echo BASE_URL; ?>/profile/wishlist" class="btn btn-danger btn-sm">Xem yêu thích</a>
+                        <div class="card-body p-4 position-relative z-index-1">
+                            <h3 class="fw-bold mb-0 text-truncate" title="<?php echo number_format($data['orderStats']['total_spent'], 0, ',', '.'); ?>đ">
+                                <?php echo number_format($data['orderStats']['total_spent'], 0, ',', '.'); ?>đ
+                            </h3>
+                            <p class="text-muted text-uppercase letter-spacing-1 small mb-4">Tổng chi tiêu</p>
+                            <a href="<?php echo BASE_URL; ?>/profile/wishlist" class="btn btn-outline-dark rounded-0 text-uppercase letter-spacing-1 small w-100 stretched-link">
+                                <i class="fas fa-heart me-2 text-danger"></i>Yêu thích
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Recent Orders -->
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Đơn hàng gần đây</h5>
-                    <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-sm btn-outline-primary">Xem tất cả</a>
+            <div class="card border-0 shadow-sm rounded-0">
+                <div class="card-header bg-white border-bottom py-4 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-uppercase letter-spacing-2" style="font-family: var(--font-heading);">
+                        <i class="fas fa-history me-2 text-warning"></i>Đơn hàng gần đây
+                    </h5>
+                    <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-link text-dark text-decoration-none text-uppercase letter-spacing-1 small fw-bold">
+                        Xem tất cả <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <?php if (!empty($data['recentOrders'])): ?>
                         <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light text-uppercase small text-muted letter-spacing-1">
                                     <tr>
-                                        <th>Mã đơn</th>
-                                        <th>Ngày đặt</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Trạng thái</th>
-                                        <th>Thao tác</th>
+                                        <th class="ps-4 py-3 border-0">Mã đơn</th>
+                                        <th class="py-3 border-0">Ngày đặt</th>
+                                        <th class="py-3 border-0">Tổng tiền</th>
+                                        <th class="py-3 border-0">Trạng thái</th>
+                                        <th class="text-end pe-4 py-3 border-0"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($data['recentOrders'] as $order): ?>
                                         <tr>
-                                            <td>#<?php echo $order['id']; ?></td>
-                                            <td><?php echo date('d/m/Y', strtotime($order['created_at'])); ?></td>
-                                            <td><?php echo number_format($order['total_amount'], 0, ',', '.'); ?>đ</td>
+                                            <td class="ps-4 fw-bold">#<?php echo $order['id']; ?></td>
+                                            <td class="text-muted small"><?php echo date('d/m/Y', strtotime($order['created_at'])); ?></td>
+                                            <td class="fw-bold"><?php echo number_format($order['total_amount'], 0, ',', '.'); ?>đ</td>
                                             <td>
-                                                <span class="badge bg-<?php
-                                                    echo $order['status'] === 'delivered' ? 'success' :
-                                                         ($order['status'] === 'shipping' ? 'info' :
-                                                         ($order['status'] === 'confirmed' ? 'primary' :
-                                                         ($order['status'] === 'pending' ? 'warning' : 'danger')));
-                                                ?>">
-                                                    <?php
-                                                    echo $order['status'] === 'delivered' ? 'Đã giao' :
-                                                         ($order['status'] === 'shipping' ? 'Đang giao' :
-                                                         ($order['status'] === 'confirmed' ? 'Đã xác nhận' :
-                                                         ($order['status'] === 'pending' ? 'Chờ xử lý' : 'Đã hủy')));
-                                                    ?>
+                                                <?php
+                                                    $statusClasses = [
+                                                        'pending' => 'bg-warning text-dark',
+                                                        'confirmed' => 'bg-primary text-white',
+                                                        'shipping' => 'bg-info text-white',
+                                                        'delivered' => 'bg-success text-white',
+                                                        'cancelled' => 'bg-danger text-white',
+                                                        'returned' => 'bg-secondary text-white'
+                                                    ];
+                                                    $statusLabels = [
+                                                        'pending' => 'Chờ xử lý',
+                                                        'confirmed' => 'Đã xác nhận',
+                                                        'shipping' => 'Đang giao',
+                                                        'delivered' => 'Đã giao',
+                                                        'cancelled' => 'Đã hủy',
+                                                        'returned' => 'Hoàn trả'
+                                                    ];
+                                                ?>
+                                                <span class="badge rounded-0 px-2 py-1 fw-normal text-uppercase x-small letter-spacing-1 <?php echo $statusClasses[$order['status']] ?? 'bg-secondary'; ?>">
+                                                    <?php echo $statusLabels[$order['status']] ?? $order['status']; ?>
                                                 </span>
                                             </td>
-                                            <td>
-                                                <a href="<?php echo BASE_URL; ?>/orders/show/<?php echo $order['id']; ?>" class="btn btn-sm btn-outline-primary">
-                                                    <i class="fas fa-eye"></i>
+                                            <td class="text-end pe-4">
+                                                <a href="<?php echo BASE_URL; ?>/orders/show/<?php echo $order['id']; ?>" class="btn btn-outline-dark btn-sm rounded-0">
+                                                    Chi tiết
                                                 </a>
                                             </td>
                                         </tr>
@@ -213,101 +190,34 @@
                             </table>
                         </div>
                     <?php else: ?>
-                        <div class="text-center py-4">
-                            <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+                        <div class="text-center py-5">
+                            <i class="fas fa-shopping-bag fa-3x text-muted mb-3 opacity-50"></i>
                             <p class="text-muted">Bạn chưa có đơn hàng nào</p>
-                            <a href="<?php echo BASE_URL; ?>/products" class="btn btn-primary">Mua sắm ngay</a>
+                            <a href="<?php echo BASE_URL; ?>/products" class="btn btn-dark rounded-0 px-4 text-uppercase letter-spacing-1 small">Mua sắm ngay</a>
                         </div>
                     <?php endif; ?>
-                </div>
-            </div>
-
-            <!-- Recent Reviews -->
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Đánh giá gần đây</h5>
-                    <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-sm btn-outline-warning">Xem tất cả</a>
-                </div>
-                <div class="card-body">
-                    <?php if (!empty($data['recentReviews'])): ?>
-                        <div class="row">
-                            <?php foreach ($data['recentReviews'] as $review): ?>
-                                <div class="col-md-6 mb-3">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-start">
-                                                <?php if ($review['product_image']): ?>
-                                                    <img src="<?php echo htmlspecialchars($review['product_image']); ?>"
-                                                         alt="<?php echo htmlspecialchars($review['product_name']); ?>"
-                                                         class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
-                                                <?php else: ?>
-                                                    <div class="bg-light rounded d-flex align-items-center justify-content-center me-3"
-                                                         style="width: 60px; height: 60px;">
-                                                        <i class="fas fa-image text-muted"></i>
-                                                    </div>
-                                                <?php endif; ?>
-                                                <div class="flex-grow-1">
-                                                    <h6 class="mb-1">
-                                                        <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $review['product_id']; ?>" class="text-decoration-none">
-                                                            <?php echo htmlspecialchars($review['product_name']); ?>
-                                                        </a>
-                                                    </h6>
-                                                    <div class="mb-2">
-                                                        <?php for ($i = 1; $i <= 5; $i++): ?>
-                                                            <i class="fas fa-star <?php echo $i <= $review['rating'] ? 'text-warning' : 'text-muted'; ?>"></i>
-                                                        <?php endfor; ?>
-                                                        <small class="text-muted ms-2"><?php echo date('d/m/Y', strtotime($review['created_at'])); ?></small>
-                                                    </div>
-                                                    <p class="text-muted small mb-0"><?php echo htmlspecialchars(substr($review['comment'], 0, 100)); ?><?php echo strlen($review['comment']) > 100 ? '...' : ''; ?></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php else: ?>
-                        <div class="text-center py-4">
-                            <i class="fas fa-star fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">Bạn chưa có đánh giá nào</p>
-                            <a href="<?php echo BASE_URL; ?>/products" class="btn btn-warning">Đánh giá sản phẩm</a>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-
-            <!-- Account Settings -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Cài đặt tài khoản</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="mb-3">Thông tin cá nhân</h6>
-                            <div class="d-grid gap-2">
-                                <a href="<?php echo BASE_URL; ?>/profile/edit" class="btn btn-outline-primary">
-                                    <i class="fas fa-user-edit me-2"></i>Chỉnh sửa thông tin
-                                </a>
-                                <a href="<?php echo BASE_URL; ?>/profile/change-password" class="btn btn-outline-secondary">
-                                    <i class="fas fa-key me-2"></i>Đổi mật khẩu
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="mb-3">Hoạt động</h6>
-                            <div class="d-grid gap-2">
-                                <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-outline-info">
-                                    <i class="fas fa-history me-2"></i>Lịch sử đơn hàng
-                                </a>
-                                <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-outline-warning">
-                                    <i class="fas fa-comments me-2"></i>Quản lý đánh giá
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+.border-end-md {
+    border-right: 1px solid #dee2e6;
+}
+@media (max-width: 768px) {
+    .border-end-md {
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 1.5rem;
+    }
+}
+.transform-scale-12 {
+    transform: scale(1.2);
+}
+.group-hover-parent:hover .transform-scale-12 {
+    transform: scale(1.4);
+    transition: transform 0.5s ease;
+}
+</style>

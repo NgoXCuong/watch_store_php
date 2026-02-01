@@ -5,56 +5,113 @@
         </div>
 
         <!-- Statistics Cards -->
-        <div class="row mb-4">
+        <div class="row g-4 mb-4">
+            <!-- Total Reviews -->
             <div class="col-md-3">
-                <div class="card bg-info text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
                             <div>
-                                <h5 class="card-title mb-0">Tổng đánh giá</h5>
-                                <h3 class="mb-0"><?php echo $data['statistics']['total_reviews']; ?></h3>
+                                <h6 class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">Tổng đánh giá</h6>
+                                <h2 class="display-6 fw-bold mb-0 text-dark"><?php echo $data['statistics']['total_reviews']; ?></h2>
                             </div>
-                            <i class="fas fa-star fa-2x opacity-75"></i>
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                                <i class="fas fa-comments fa-2x text-primary"></i>
+                            </div>
                         </div>
+                        <div class="d-flex align-items-center text-muted small">
+                            <i class="fas fa-database me-2"></i>
+                            <span>Tổng số lượt tương tác</span>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
             </div>
+
+            <!-- Approved Reviews -->
             <div class="col-md-3">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
                             <div>
-                                <h5 class="card-title mb-0">Đã duyệt</h5>
-                                <h3 class="mb-0"><?php echo $data['statistics']['approved_reviews']; ?></h3>
+                                <h6 class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">Đã duyệt</h6>
+                                <h2 class="display-6 fw-bold mb-0 text-success"><?php echo $data['statistics']['approved_reviews']; ?></h2>
                             </div>
-                            <i class="fas fa-check-circle fa-2x opacity-75"></i>
+                            <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+                                <i class="fas fa-check-circle fa-2x text-success"></i>
+                            </div>
                         </div>
+                        <?php 
+                        $approvedPercent = $data['statistics']['total_reviews'] > 0 
+                            ? round(($data['statistics']['approved_reviews'] / $data['statistics']['total_reviews']) * 100) 
+                            : 0;
+                        ?>
+                        <div class="d-flex align-items-center text-muted small">
+                            <span class="text-success fw-bold me-2"><i class="fas fa-arrow-up"></i> <?php echo $approvedPercent; ?>%</span>
+                            <span>so với tổng số</span>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $approvedPercent; ?>%" aria-valuenow="<?php echo $approvedPercent; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
             </div>
+
+            <!-- Pending Reviews -->
             <div class="col-md-3">
-                <div class="card bg-warning text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
                             <div>
-                                <h5 class="card-title mb-0">Chờ duyệt</h5>
-                                <h3 class="mb-0"><?php echo $data['statistics']['pending_reviews']; ?></h3>
+                                <h6 class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">Chờ duyệt</h6>
+                                <h2 class="display-6 fw-bold mb-0 text-warning"><?php echo $data['statistics']['pending_reviews']; ?></h2>
                             </div>
-                            <i class="fas fa-clock fa-2x opacity-75"></i>
+                            <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
+                                <i class="fas fa-clock fa-2x text-warning"></i>
+                            </div>
                         </div>
+                        <?php 
+                        $pendingPercent = $data['statistics']['total_reviews'] > 0 
+                            ? round(($data['statistics']['pending_reviews'] / $data['statistics']['total_reviews']) * 100) 
+                            : 0;
+                        ?>
+                        <div class="d-flex align-items-center text-muted small">
+                            <span class="text-warning fw-bold me-2"><?php echo $pendingPercent; ?>%</span>
+                            <span>cần xử lý ngay</span>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: <?php echo $pendingPercent; ?>%" aria-valuenow="<?php echo $pendingPercent; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
             </div>
+
+            <!-- Average Rating -->
             <div class="col-md-3">
-                <div class="card bg-primary text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
                             <div>
-                                <h5 class="card-title mb-0">Đánh giá TB</h5>
-                                <h3 class="mb-0"><?php echo number_format($data['statistics']['average_rating'], 1); ?>/5</h3>
+                                <h6 class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">Đánh giá TB</h6>
+                                <h2 class="display-6 fw-bold mb-0 text-info"><?php echo number_format($data['statistics']['average_rating'] ?? 0, 1); ?></h2>
                             </div>
-                            <i class="fas fa-chart-line fa-2x opacity-75"></i>
+                            <div class="bg-info bg-opacity-10 p-3 rounded-circle">
+                                <i class="fas fa-star fa-2x text-info"></i>
+                            </div>
                         </div>
+                        <?php 
+                        $avgRating = $data['statistics']['average_rating'] ?? 0;
+                        $ratingPercent = ($avgRating / 5) * 100;
+                        ?>
+                        <div class="d-flex align-items-center text-muted small">
+                            <span class="text-info fw-bold me-2"><?php echo number_format($avgRating, 1); ?>/5</span>
+                            <span>sao trung bình</span>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: <?php echo $ratingPercent; ?>%" aria-valuenow="<?php echo $ratingPercent; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
             </div>

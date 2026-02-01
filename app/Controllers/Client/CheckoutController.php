@@ -2,6 +2,7 @@
 namespace App\Controllers\Client;
 
 use Core\Controller;
+use App\Services\VNPayService;
 
 class CheckoutController extends Controller {
     private $cartModel;
@@ -173,7 +174,7 @@ class CheckoutController extends Controller {
             $errors['district'] = 'Quận/Huyện không được để trống';
         }
 
-        if (!in_array($data['payment_method'], ['cod', 'bank_transfer', 'momo'])) {
+        if (!in_array($data['payment_method'], ['cod', 'bank_transfer', 'momo', 'vnpay'])) {
             $errors['payment_method'] = 'Phương thức thanh toán không hợp lệ';
         }
 
@@ -251,6 +252,14 @@ class CheckoutController extends Controller {
             // Commit transaction
             $this->orderModel->commit();
 
+            // Nếu thanh toán qua VNPay
+            if ($data['payment_method'] === 'vnpay') {
+                $vnpayService = new VNPayService();
+                $paymentUrl = $vnpayService->createPaymentUrl($orderId, $finalTotal, "Thanh toan don hang #" . $orderId);
+                header('Location: ' . $paymentUrl);
+                exit;
+            }
+
             // Chuyển hướng đến trang thành công
             $_SESSION['success'] = 'Đặt hàng thành công!';
             header('Location: ' . BASE_URL . '/checkout/success/' . $orderId);
@@ -293,6 +302,47 @@ class CheckoutController extends Controller {
             'order' => $order,
             'layout' => 'client'
         ]);
+    }
+
+    // Xử lý thông tin trả về từ VNPay
+    public function vnpayReturn() {
+        $vnpayService = new VNPayService();
+        $inputData = $_GET;
+
+        // Kiểm tra chữ ký
+        if ($vnpayService->checkSecureHash($inputData)) {
+            $orderId = $inputData['vnp_TxnRef'];
+            $vnp_ResponseCode = $inputData['vnp_ResponseCode'];
+            
+            // Lấy thông tin đơn hàng hiện tại
+            $order = $this->orderModel->findById($orderId);
+
+            if ($order) {
+                if ($vnp_ResponseCode == '00') {
+                    // Thanh toán thành công
+                    // Cập nhật trạng thái thanh toán
+                    $this->orderModel->updatePaymentStatus($orderId, 'paid');
+                    
+                    $_SESSION['success'] = 'Thanh toán VNPay thành công!';
+                    header('Location: ' . BASE_URL . '/checkout/success/' . $orderId);
+                    exit;
+                } else {
+                    // Thanh toán thất bại hoặc bị hủy
+                    $_SESSION['errors'] = ['payment' => 'Giao dịch thanh toán thất bại hoặc bị hủy.'];
+                    header('Location: ' . BASE_URL . '/checkout');
+                    exit;
+                }
+            } else {
+                $_SESSION['errors'] = ['payment' => 'Không tìm thấy đơn hàng.'];
+                header('Location: ' . BASE_URL . '/checkout');
+                exit;
+            }
+        } else {
+            // Sai chữ ký
+            $_SESSION['errors'] = ['payment' => 'Chữ ký không hợp lệ!'];
+            header('Location: ' . BASE_URL . '/checkout');
+            exit;
+        }
     }
 
 

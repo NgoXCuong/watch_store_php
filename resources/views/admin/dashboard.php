@@ -2,9 +2,6 @@
     <div class="col-12">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h1>
-            <div>
-                <span class="badge bg-primary fs-6">Watch Store Admin</span>
-            </div>
         </div>
 
         <!-- Period Selector -->
@@ -40,10 +37,10 @@
                                 <h6 class="card-title mb-1">Doanh thu</h6>
                                 <h4 class="mb-1"><?php echo number_format($data['revenue']['total'] ?? $data['stats']['totalRevenue'], 0, ',', '.'); ?>đ</h4>
                                 <?php if (isset($data['revenue']['growth'])): ?>
-                                    <small class="<?php echo ($data['revenue']['growth'] >= 0) ? 'text-success' : 'text-warning'; ?>">
+                                    <p class="text-white <?php echo ($data['revenue']['growth'] >= 0) ? 'text-success' : 'text-warning'; ?>">
                                         <i class="fas fa-arrow-<?php echo ($data['revenue']['growth'] >= 0) ? 'up' : 'down'; ?>"></i>
                                         <?php echo abs($data['revenue']['growth']); ?>%
-                                    </small>
+                                    </p>
                                 <?php endif; ?>
                             </div>
                             <i class="fas fa-dollar-sign fa-2x opacity-75"></i>
@@ -61,8 +58,8 @@
                                 <h6 class="card-title mb-1">Đơn hàng</h6>
                                 <h4 class="mb-1"><?php echo number_format($data['orders']['total'] ?? $data['stats']['totalOrders'], 0, ',', '.'); ?></h4>
                                 <div class="d-flex justify-content-between">
-                                    <small>✓ <?php echo $data['orders']['completed'] ?? 0; ?></small>
-                                    <small>⏳ <?php echo $data['orders']['pending'] ?? $data['stats']['pendingOrders']; ?></small>
+                                    <p>✓ Hoàn thành <?php echo $data['orders']['completed'] ?? 0; ?></p>
+                                    <p>⏳Đang xử lý <?php echo $data['orders']['pending'] ?? $data['stats']['pendingOrders']; ?></p>
                                 </div>
                             </div>
                             <i class="fas fa-shopping-cart fa-2x opacity-75"></i>
@@ -80,8 +77,8 @@
                                 <h6 class="card-title mb-1">Sản phẩm</h6>
                                 <h4 class="mb-1"><?php echo number_format($data['products']['total'] ?? $data['stats']['totalProducts'], 0, ',', '.'); ?></h4>
                                 <div class="d-flex justify-content-between">
-                                    <small>✓ <?php echo $data['products']['active'] ?? 0; ?></small>
-                                    <small>⚠️ <?php echo $data['products']['low_stock'] ?? $data['stats']['lowStockProducts']; ?></small>
+                                    <p>✓ Hoạt động <?php echo $data['products']['active'] ?? 0; ?></p>
+                                    <p>⚠️Hết hàng <?php echo $data['products']['low_stock'] ?? $data['stats']['lowStockProducts']; ?></p>
                                 </div>
                             </div>
                             <i class="fas fa-box fa-2x opacity-75"></i>
@@ -99,8 +96,7 @@
                                 <h6 class="card-title mb-1">Khách hàng</h6>
                                 <h4 class="mb-1"><?php echo number_format($data['customers']['total'] ?? $data['stats']['totalUsers'], 0, ',', '.'); ?></h4>
                                 <div class="d-flex justify-content-between">
-                                    <small>🆕 <?php echo $data['customers']['new'] ?? 0; ?></small>
-                                    <small>👥 <?php echo $data['customers']['active'] ?? 0; ?></small>
+                                    <p>🆕 Khách hàng mới <?php echo $data['customers']['new'] ?? 0; ?></p>
                                 </div>
                             </div>
                             <i class="fas fa-users fa-2x opacity-75"></i>

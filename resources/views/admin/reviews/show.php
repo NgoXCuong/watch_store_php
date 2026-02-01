@@ -20,7 +20,7 @@
                         <!-- Product Info -->
                         <div class="row mb-4">
                             <div class="col-md-3">
-                                <?php if ($data['review']['image_url']): ?>
+                                <?php if (!empty($data['review']['image_url'])): ?>
                                     <img src="<?php echo htmlspecialchars($data['review']['image_url']); ?>"
                                          alt="<?php echo htmlspecialchars($data['review']['product_name']); ?>"
                                          class="img-fluid rounded">

@@ -42,7 +42,7 @@ class App {
         
         // Kiểm tra xem Class có tồn tại không (Tránh lỗi Fatal Error)
         if (!class_exists($controllerClass)) {
-            echo "Lỗi: Không tìm thấy Controller <b>$controllerClass</b>";
+            $this->show404();
             return;
         }
 
@@ -61,6 +61,13 @@ class App {
 
         // 6. Chạy hàm
         call_user_func_array([$this->controller, $this->action], $this->params);
+    }
+    
+    private function show404() {
+        require_once __DIR__ . '/../app/Controllers/Client/ErrorController.php';
+        $controller = new \App\Controllers\Client\ErrorController();
+        call_user_func_array([$controller, 'notFound'], []);
+        exit;
     }
 
     // Kiểm tra quyền truy cập admin

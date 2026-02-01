@@ -31,6 +31,14 @@
                                     <div class="invalid-feedback"><?php echo $data['errors']['description']; ?></div>
                                 <?php endif; ?>
                             </div>
+                            <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+                            <script>
+                                ClassicEditor
+                                    .create(document.querySelector('#description'), {
+                                        toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+                                    })
+                                    .catch(error => { console.error(error); });
+                            </script>
 
                             <div class="mb-3">
                                 <label for="discount_type" class="form-label">Loại giảm giá <span class="text-danger">*</span></label>
