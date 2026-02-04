@@ -16,7 +16,7 @@ class ProductModel {
     // Lấy tất cả sản phẩm với phân trang
     public function getAll($page = 1, $limit = 10, $search = '', $categoryId = null, $brandId = null, $sort = 'default') {
         $offset = ($page - 1) * $limit;
-        $where = "1=1";
+        $where = "p.status = 'active'"; // Thêm điều kiện active mặc định
         $params = [];
 
         if (!empty($search)) {
@@ -24,8 +24,9 @@ class ProductModel {
             $params[':search'] = '%' . $search . '%';
         }
 
+        // Lọc theo danh mục (Sử dụng bảng trung gian)
         if ($categoryId) {
-            $where .= " AND p.category_id = :category_id";
+            $where .= " AND EXISTS (SELECT 1 FROM product_categories pc WHERE pc.product_id = p.id AND pc.category_id = :category_id)";
             $params[':category_id'] = $categoryId;
         }
 
@@ -53,9 +54,9 @@ class ProductModel {
                 $orderBy = "p.created_at DESC";
         }
 
-        $query = "SELECT p.*, c.name as category_name, b.name as brand_name
+        // Query cập nhật: Group concat category names (optional)
+        $query = "SELECT p.*, b.name as brand_name
                   FROM " . $this->table . " p
-                  LEFT JOIN categories c ON p.category_id = c.id
                   LEFT JOIN brands b ON p.brand_id = b.id
                   WHERE $where
                   ORDER BY $orderBy
@@ -70,30 +71,39 @@ class ProductModel {
         }
 
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fetch categories for each product (để hiển thị frontend nếu cần)
+        foreach ($products as &$product) {
+            $product['categories'] = $this->getCategoriesByProductId($product['id']);
+            // Fallback for old code using category_name
+            $product['category_name'] = !empty($product['categories']) ? $product['categories'][0]['name'] : ''; 
+        }
+
+        return $products;
     }
 
     // Đếm tổng số sản phẩm
     public function countAll($search = '', $categoryId = null, $brandId = null) {
-        $where = "1=1";
+        $where = "p.status = 'active'";
         $params = [];
 
         if (!empty($search)) {
-            $where .= " AND (name LIKE :search OR description LIKE :search)";
+            $where .= " AND (p.name LIKE :search OR p.description LIKE :search)";
             $params[':search'] = '%' . $search . '%';
         }
 
         if ($categoryId) {
-            $where .= " AND category_id = :category_id";
+            $where .= " AND EXISTS (SELECT 1 FROM product_categories pc WHERE pc.product_id = p.id AND pc.category_id = :category_id)";
             $params[':category_id'] = $categoryId;
         }
 
         if ($brandId) {
-            $where .= " AND brand_id = :brand_id";
+            $where .= " AND p.brand_id = :brand_id";
             $params[':brand_id'] = $brandId;
         }
 
-        $query = "SELECT COUNT(*) as total FROM " . $this->table . " WHERE $where";
+        $query = "SELECT COUNT(*) as total FROM " . $this->table . " p WHERE $where";
         $stmt = $this->conn->prepare($query);
 
         foreach ($params as $key => $value) {
@@ -107,62 +117,139 @@ class ProductModel {
 
     // Tìm sản phẩm theo ID
     public function findById($id) {
-        $query = "SELECT p.*, c.name as category_name, b.name as brand_name
+        $query = "SELECT p.*, b.name as brand_name
                   FROM " . $this->table . " p
-                  LEFT JOIN categories c ON p.category_id = c.id
                   LEFT JOIN brands b ON p.brand_id = b.id
                   WHERE p.id = :id LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($product) {
+            $product['categories'] = $this->getCategoriesByProductId($id);
+            $product['category_ids'] = array_column($product['categories'], 'id');
+            // Compatibility
+            $product['category_name'] = !empty($product['categories']) ? $product['categories'][0]['name'] : '';
+        }
+
+        return $product;
     }
 
     // Tạo sản phẩm mới
     public function create($data) {
-        $query = "INSERT INTO " . $this->table . "
-                  (name, slug, description, price, old_price, stock, brand_id, category_id,
-                   image_url, gallery_urls, specifications, is_featured, status)
-                  VALUES (:name, :slug, :description, :price, :old_price, :stock, :brand_id, :category_id,
-                          :image_url, :gallery_urls, :specifications, :is_featured, :status)";
+        try {
+            $this->conn->beginTransaction();
 
-        $stmt = $this->conn->prepare($query);
+            $query = "INSERT INTO " . $this->table . "
+                      (name, slug, description, price, old_price, stock, brand_id,
+                       image_url, gallery_urls, specifications, is_featured, status)
+                      VALUES (:name, :slug, :description, :price, :old_price, :stock, :brand_id,
+                              :image_url, :gallery_urls, :specifications, :is_featured, :status)";
 
-        $stmt->bindParam(':name', $data['name']);
-        $stmt->bindParam(':slug', $data['slug']);
-        $stmt->bindParam(':description', $data['description']);
-        $stmt->bindParam(':price', $data['price']);
-        $stmt->bindParam(':old_price', $data['old_price']);
-        $stmt->bindParam(':stock', $data['stock']);
-        $stmt->bindParam(':brand_id', $data['brand_id']);
-        $stmt->bindParam(':category_id', $data['category_id']);
-        $stmt->bindParam(':image_url', $data['image_url']);
-        $stmt->bindParam(':gallery_urls', $data['gallery_urls']);
-        $stmt->bindParam(':specifications', $data['specifications']);
-        $stmt->bindParam(':is_featured', $data['is_featured']);
-        $stmt->bindParam(':status', $data['status']);
+            $stmt = $this->conn->prepare($query);
 
-        if ($stmt->execute()) {
-            return $this->conn->lastInsertId();
+            $stmt->bindParam(':name', $data['name']);
+            $stmt->bindParam(':slug', $data['slug']);
+            $stmt->bindParam(':description', $data['description']);
+            $stmt->bindParam(':price', $data['price']);
+            $stmt->bindParam(':old_price', $data['old_price']);
+            $stmt->bindParam(':stock', $data['stock']);
+            $stmt->bindParam(':brand_id', $data['brand_id']);
+            $stmt->bindParam(':image_url', $data['image_url']);
+            $stmt->bindParam(':gallery_urls', $data['gallery_urls']);
+            $stmt->bindParam(':specifications', $data['specifications']);
+            $stmt->bindParam(':is_featured', $data['is_featured']);
+            $stmt->bindParam(':status', $data['status']);
+
+            if (!$stmt->execute()) {
+                throw new \Exception("Error inserting product");
+            }
+
+            $productId = $this->conn->lastInsertId();
+
+            // Insert categories
+            if (!empty($data['category_ids'])) {
+                $this->addCategories($productId, $data['category_ids']);
+            }
+
+            $this->conn->commit();
+            return $productId;
+
+        } catch (\Exception $e) {
+            $this->conn->rollBack();
+            return false;
         }
-        return false;
     }
 
     // Cập nhật sản phẩm
     public function update($id, $data) {
-        $query = "UPDATE " . $this->table . " SET ";
-        $setParts = [];
-        $params = [':id' => $id];
+        try {
+            $this->conn->beginTransaction();
 
-        foreach ($data as $key => $value) {
-            $setParts[] = "$key = :$key";
-            $params[":$key"] = $value;
+            $query = "UPDATE " . $this->table . " SET ";
+            $setParts = [];
+            $params = [':id' => $id];
+
+            // Remove category_ids from main update data if present
+            $categoryIds = $data['category_ids'] ?? [];
+            unset($data['category_ids']);
+
+            foreach ($data as $key => $value) {
+                $setParts[] = "$key = :$key";
+                $params[":$key"] = $value;
+            }
+
+            $query .= implode(', ', $setParts) . " WHERE id = :id";
+
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt->execute($params)) {
+               throw new \Exception("Error updating product info");
+            }
+
+            // Update Categories
+            if (isset($categoryIds)) {
+                // Delete old
+                $delQuery = "DELETE FROM product_categories WHERE product_id = :product_id";
+                $delStmt = $this->conn->prepare($delQuery);
+                $delStmt->bindParam(':product_id', $id);
+                $delStmt->execute();
+
+                // Add new
+                if (!empty($categoryIds)) {
+                     $this->addCategories($id, $categoryIds);
+                }
+            }
+
+            $this->conn->commit();
+            return true;
+
+        } catch (\Exception $e) {
+            $this->conn->rollBack();
+            return false;
         }
+    }
 
-        $query .= implode(', ', $setParts) . " WHERE id = :id";
-
+    // Helper: Add categories
+    private function addCategories($productId, $categoryIds) {
+        $query = "INSERT INTO product_categories (product_id, category_id) VALUES (:product_id, :category_id)";
         $stmt = $this->conn->prepare($query);
-        return $stmt->execute($params);
+        foreach ($categoryIds as $catId) {
+            $stmt->bindValue(':product_id', $productId);
+            $stmt->bindValue(':category_id', $catId);
+            $stmt->execute();
+        }
+    }
+
+    // Helper: Get categories of a product
+    public function getCategoriesByProductId($productId) {
+        $query = "SELECT c.* FROM categories c
+                  JOIN product_categories pc ON c.id = pc.category_id
+                  WHERE pc.product_id = :product_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':product_id', $productId);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Xóa sản phẩm
@@ -175,9 +262,8 @@ class ProductModel {
 
     // Lấy sản phẩm nổi bật
     public function getFeatured($limit = null) {
-        $query = "SELECT p.*, c.name as category_name, b.name as brand_name
+        $query = "SELECT p.*, b.name as brand_name
                   FROM " . $this->table . " p
-                  LEFT JOIN categories c ON p.category_id = c.id
                   LEFT JOIN brands b ON p.brand_id = b.id
                   WHERE p.is_featured = 1 AND p.status = 'active'
                   ORDER BY p.created_at DESC";
@@ -196,9 +282,12 @@ class ProductModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Lấy sản phẩm theo danh mục
+    // Lấy sản phẩm theo danh mục (Updated)
     public function getByCategory($categoryId, $limit = null) {
-        $query = "SELECT * FROM " . $this->table . " WHERE category_id = :category_id AND status = 'active' ORDER BY created_at DESC";
+        $query = "SELECT p.* FROM " . $this->table . " p
+                  JOIN product_categories pc ON p.id = pc.product_id
+                  WHERE pc.category_id = :category_id AND p.status = 'active'
+                  ORDER BY p.created_at DESC";
         if ($limit) {
             $query .= " LIMIT :limit";
         }
@@ -308,11 +397,13 @@ class ProductModel {
     }
 
     public function getProductsByCategories() {
+        // Updated to use product_categories table
         $query = "SELECT
                     c.name,
-                    COUNT(p.id) as product_count
+                    COUNT(pc.product_id) as product_count
                   FROM categories c
-                  LEFT JOIN " . $this->table . " p ON c.id = p.category_id AND p.status = 'active'
+                  LEFT JOIN product_categories pc ON c.id = pc.category_id
+                  LEFT JOIN products p ON pc.product_id = p.id AND p.status = 'active'
                   GROUP BY c.id, c.name
                   ORDER BY product_count DESC";
 

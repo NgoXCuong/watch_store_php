@@ -88,7 +88,7 @@
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--text-muted);
+            color: var(--text-light);
             margin-bottom: 0.25rem;
         }
 
@@ -130,7 +130,7 @@
             text-transform: uppercase;
             font-size: 0.8rem;
             letter-spacing: 2px;
-            opacity: 0.7;
+            opacity: 0.8;
             transition: all 0.3s;
             z-index: 10;
         }
@@ -172,8 +172,8 @@
 
             <div class="auth-content">
                 <div class="text-center mb-5">
-                    <h1 class="text-white mb-2">Đăng Nhập</h1>
-                    <p class="text-muted small text-uppercase letter-spacing-2">Chào mừng bạn quay trở lại</p>
+                    <h1 class="text-white fw-bold  text-uppercase mb-2">Đăng Nhập</h1>
+                    <p class="text-white letter-spacing-2">Chào mừng bạn quay trở lại</p>
                 </div>
 
                 <?php if (isset($data['errors']['general'])): ?>
@@ -186,7 +186,7 @@
                     <div class="mb-4">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" 
-                               value="<?= htmlspecialchars($data['old_input']['email'] ?? '') ?>" placeholder="name@example.com" required>
+                               value="<?= htmlspecialchars($data['old_input']['email'] ?? '') ?>" placeholder="name@gmail.com" required>
                         <?php if (isset($data['errors']['email'])): ?>
                             <div class="text-danger small mt-1"><?= htmlspecialchars($data['errors']['email']) ?></div>
                         <?php endif; ?>

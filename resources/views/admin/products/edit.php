@@ -90,18 +90,30 @@
                                             <?php endif; ?>
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label for="category_id" class="form-label">Danh mục <span class="text-danger">*</span></label>
-                                            <select class="form-select <?php echo isset($errors['category_id']) ? 'is-invalid' : ''; ?>" id="category_id" name="category_id" required>
-                                                <option value="">Chọn danh mục</option>
+                                            <label class="form-label">Danh mục <span class="text-danger">*</span></label>
+                                            <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
+                                                <?php
+                                                    $selectedCategories = $old_input['category_ids'] ?? $product['category_ids'] ?? [];
+                                                    // Ensure selectedCategories is always an array
+                                                    if (!is_array($selectedCategories)) {
+                                                        $selectedCategories = [$selectedCategories];
+                                                    }
+                                                ?>
                                                 <?php foreach ($categories as $category): ?>
-                                                    <option value="<?php echo $category['id']; ?>"
-                                                            <?php echo (isset($old_input['category_id']) ? $old_input['category_id'] : $product['category_id']) == $category['id'] ? 'selected' : ''; ?>>
-                                                        <?php echo htmlspecialchars($category['name']); ?>
-                                                    </option>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" 
+                                                               name="category_ids[]" 
+                                                               value="<?php echo $category['id']; ?>" 
+                                                               id="cat_<?php echo $category['id']; ?>"
+                                                               <?php echo in_array($category['id'], $selectedCategories) ? 'checked' : ''; ?>>
+                                                        <label class="form-check-label" for="cat_<?php echo $category['id']; ?>">
+                                                            <?php echo htmlspecialchars($category['name']); ?>
+                                                        </label>
+                                                    </div>
                                                 <?php endforeach; ?>
-                                            </select>
+                                            </div>
                                             <?php if (isset($errors['category_id'])): ?>
-                                                <div class="invalid-feedback"><?php echo $errors['category_id']; ?></div>
+                                                <div class="text-danger small mt-1"><?php echo $errors['category_id']; ?></div>
                                             <?php endif; ?>
                                         </div>
                                     </div>

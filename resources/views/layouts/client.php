@@ -514,22 +514,7 @@
         ?>
         <div class="content-wrapper" style="<?php echo $wrapper_style; ?>">
             <?php
-            // Display alert messages
-            if (isset($_SESSION['success'])) {
-                echo '<div class="alert alert-success alert-custom alert-dismissible fade show mb-4" role="alert">
-                        <i class="far fa-check-circle me-2"></i>' . $_SESSION['success'] . '
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                      </div>';
-                unset($_SESSION['success']);
-            }
-
-            if (isset($_SESSION['error'])) {
-                echo '<div class="alert alert-danger alert-custom alert-dismissible fade show mb-4" role="alert">
-                        <i class="far fa-times-circle me-2"></i>' . $_SESSION['error'] . '
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                      </div>';
-                unset($_SESSION['error']);
-            }
+            // Display alert messages is handled by Toasts now
             ?>
 
             <?php
@@ -592,9 +577,107 @@
         </div>
     </footer>
 
+    <!-- Toast Container -->
+    <div id="toast-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1060; pointer-events: none;"></div>
+
+    <!-- CSS for Scroll Reveal -->
+    <style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // --- Scroll Reveal Logic ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, {
+                threshold: 0.15, // Trigger when 15% of element is visible
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+        });
+
+        // --- Toast Notification Logic ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            
+            // Create toast element
+            const toastEl = document.createElement('div');
+            toastEl.className = 'toast align-items-center border-0 mb-2 fade show';
+            toastEl.style.pointerEvents = 'auto'; // Re-enable clicks
+            toastEl.setAttribute('role', 'alert');
+            toastEl.setAttribute('aria-live', 'assertive');
+            toastEl.setAttribute('aria-atomic', 'true');
+            
+            // Set colors based on type
+            if (type === 'success') {
+                toastEl.classList.add('bg-dark', 'text-white');
+                toastEl.style.borderLeft = '5px solid var(--secondary-color)';
+            } else if (type === 'error') {
+                toastEl.classList.add('bg-danger', 'text-white');
+                toastEl.style.borderLeft = '5px solid #fff';
+            } else {
+                toastEl.classList.add('bg-white', 'text-dark');
+                toastEl.style.borderLeft = '5px solid var(--primary-color)';
+            }
+
+            // Icon selection
+            const icon = type === 'success' ? '<i class="fas fa-check-circle me-2 text-warning"></i>' 
+                       : (type === 'error' ? '<i class="fas fa-exclamation-circle me-2"></i>' 
+                       : '<i class="fas fa-info-circle me-2"></i>');
+
+            toastEl.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body d-flex align-items-center" style="font-size: 0.95rem;">
+                        ${icon}
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+
+            container.appendChild(toastEl);
+
+            // Initialize Bootstrap Toast (Optional if you want drag/drop behavior, but manual timeout is simpler here)
+            // Using simple timeout for auto-remove
+            setTimeout(() => {
+                toastEl.classList.remove('show');
+                setTimeout(() => toastEl.remove(), 500); // Wait for fade out transition
+            }, 3000);
+        }
+
+        // Display PHP Session Messages as Toasts
+        <?php if (isset($_SESSION['success'])): ?>
+            showToast('<?php echo $_SESSION['success']; ?>', 'success');
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            showToast('<?php echo $_SESSION['error']; ?>', 'error');
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+
+
         // Cart Count Update Logic
         <?php if (isset($_SESSION['user'])): ?>
         async function updateCartCount() {
@@ -626,26 +709,6 @@
                 if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
-
-        // Loading State for Buttons
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', function() {
-                const btn = this.querySelector('button[type="submit"]');
-                if (btn && !btn.disabled) {
-                    btn.disabled = true;
-                    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
-                }
-            });
-        });
-        
-        // Auto hide alerts
-        setTimeout(function() {
-            var alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-                var bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 5000);
     </script>
 </body>
 </html>

@@ -30,20 +30,25 @@
         <div class="row mb-4">
             <!-- Revenue Card -->
             <div class="col-md-3 mb-3">
-                <div class="card bg-success text-white hover-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
+                <div class="card bg-gradient-success text-white hover-card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-body position-relative">
+                        <div class="d-flex justify-content-between align-items-start position-relative z-index-1">
                             <div class="flex-grow-1">
-                                <h6 class="card-title mb-1">Doanh thu</h6>
-                                <h4 class="mb-1"><?php echo number_format($data['revenue']['total'] ?? $data['stats']['totalRevenue'], 0, ',', '.'); ?>đ</h4>
+                                <h6 class="card-title mb-1 text-white text-uppercase letter-spacing-1">Doanh thu</h6>
+                                <h3 class="mb-1 fw-bold"><?php echo number_format($data['revenue']['total'] ?? $data['stats']['totalRevenue'], 0, ',', '.'); ?>đ</h3>
                                 <?php if (isset($data['revenue']['growth'])): ?>
-                                    <p class="text-white <?php echo ($data['revenue']['growth'] >= 0) ? 'text-success' : 'text-warning'; ?>">
+                                    <p class="text-white mb-0 <?php echo ($data['revenue']['growth'] >= 0) ? '' : 'text-white-50'; ?>">
                                         <i class="fas fa-arrow-<?php echo ($data['revenue']['growth'] >= 0) ? 'up' : 'down'; ?>"></i>
                                         <?php echo abs($data['revenue']['growth']); ?>%
                                     </p>
                                 <?php endif; ?>
                             </div>
-                            <i class="fas fa-dollar-sign fa-2x opacity-75"></i>
+                            <div class="p-2 bg-white bg-opacity-25 rounded-3">
+                                <i class="fas fa-dollar-sign fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0 p-3 opacity-10">
+                            <i class="fas fa-chart-line fa-6x transform-scale-12"></i>
                         </div>
                     </div>
                 </div>
@@ -51,18 +56,23 @@
 
             <!-- Orders Card -->
             <div class="col-md-3 mb-3">
-                <div class="card bg-info text-white hover-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
+                <div class="card bg-gradient-primary text-white hover-card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-body position-relative">
+                        <div class="d-flex justify-content-between align-items-start position-relative z-index-1">
                             <div class="flex-grow-1">
-                                <h6 class="card-title mb-1">Đơn hàng</h6>
-                                <h4 class="mb-1"><?php echo number_format($data['orders']['total'] ?? $data['stats']['totalOrders'], 0, ',', '.'); ?></h4>
-                                <div class="d-flex justify-content-between">
-                                    <p>✓ Hoàn thành <?php echo $data['orders']['completed'] ?? 0; ?></p>
-                                    <p>⏳Đang xử lý <?php echo $data['orders']['pending'] ?? $data['stats']['pendingOrders']; ?></p>
+                                <h6 class="card-title mb-1 text-white text-uppercase letter-spacing-1">Đơn hàng</h6>
+                                <h3 class="mb-1 fw-bold"><?php echo number_format($data['orders']['total'] ?? $data['stats']['totalOrders'], 0, ',', '.'); ?></h3>
+                                <div class="d-flex flex-column">
+                                    <span><i class="fas fa-check-circle me-1 opacity-75"></i>Hoàn thành: <?php echo $data['orders']['completed'] ?? 0; ?></span>
+                                    <span><i class="fas fa-clock me-1 opacity-75"></i>Đang xử lý: <?php echo $data['orders']['pending'] ?? $data['stats']['pendingOrders']; ?></span>
                                 </div>
                             </div>
-                            <i class="fas fa-shopping-cart fa-2x opacity-75"></i>
+                            <div class="p-2 bg-white bg-opacity-25 rounded-3">
+                                <i class="fas fa-shopping-cart fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0 p-3 opacity-10">
+                            <i class="fas fa-shopping-bag fa-6x transform-scale-12"></i>
                         </div>
                     </div>
                 </div>
@@ -70,18 +80,23 @@
 
             <!-- Products Card -->
             <div class="col-md-3 mb-3">
-                <div class="card bg-warning text-white hover-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
+                <div class="card bg-gradient-warning text-white hover-card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-body position-relative">
+                        <div class="d-flex justify-content-between align-items-start position-relative z-index-1">
                             <div class="flex-grow-1">
-                                <h6 class="card-title mb-1">Sản phẩm</h6>
-                                <h4 class="mb-1"><?php echo number_format($data['products']['total'] ?? $data['stats']['totalProducts'], 0, ',', '.'); ?></h4>
-                                <div class="d-flex justify-content-between">
-                                    <p>✓ Hoạt động <?php echo $data['products']['active'] ?? 0; ?></p>
-                                    <p>⚠️Hết hàng <?php echo $data['products']['low_stock'] ?? $data['stats']['lowStockProducts']; ?></p>
+                                <h6 class="card-title mb-1 text-white text-uppercase letter-spacing-1">Sản phẩm</h6>
+                                <h3 class="mb-1 fw-bold"><?php echo number_format($data['products']['total'] ?? $data['stats']['totalProducts'], 0, ',', '.'); ?></h3>
+                                <div class="d-flex flex-column">
+                                    <span><i class="fas fa-check me-1 opacity-75"></i>Hoạt động: <?php echo $data['products']['active'] ?? 0; ?></span>
+                                    <span><i class="fas fa-exclamation-triangle me-1 opacity-75"></i>Hết hàng: <?php echo $data['products']['low_stock'] ?? $data['stats']['lowStockProducts']; ?></span>
                                 </div>
                             </div>
-                            <i class="fas fa-box fa-2x opacity-75"></i>
+                            <div class="p-2 bg-white bg-opacity-25 rounded-3">
+                                <i class="fas fa-box fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0 p-3 opacity-10">
+                            <i class="fas fa-box-open fa-6x transform-scale-12"></i>
                         </div>
                     </div>
                 </div>
@@ -89,17 +104,22 @@
 
             <!-- Customers Card -->
             <div class="col-md-3 mb-3">
-                <div class="card bg-primary text-white hover-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
+                <div class="card bg-gradient-info text-white hover-card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-body position-relative">
+                        <div class="d-flex justify-content-between align-items-start position-relative z-index-1">
                             <div class="flex-grow-1">
-                                <h6 class="card-title mb-1">Khách hàng</h6>
-                                <h4 class="mb-1"><?php echo number_format($data['customers']['total'] ?? $data['stats']['totalUsers'], 0, ',', '.'); ?></h4>
-                                <div class="d-flex justify-content-between">
-                                    <p>🆕 Khách hàng mới <?php echo $data['customers']['new'] ?? 0; ?></p>
+                                <h6 class="card-title mb-1 text-white text-uppercase letter-spacing-1">Khách hàng</h6>
+                                <h3 class="mb-1 fw-bold"><?php echo number_format($data['customers']['total'] ?? $data['stats']['totalUsers'], 0, ',', '.'); ?></h3>
+                                <div class="d-flex flex-column ">
+                                    <span><i class="fas fa-user-plus me-1 opacity-75"></i>Mới: <?php echo $data['customers']['new'] ?? 0; ?></span>
                                 </div>
                             </div>
-                            <i class="fas fa-users fa-2x opacity-75"></i>
+                            <div class="p-2 bg-white bg-opacity-25 rounded-3">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0 p-3 opacity-10">
+                            <i class="fas fa-user-friends fa-6x transform-scale-12"></i>
                         </div>
                     </div>
                 </div>
@@ -124,22 +144,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const ctx = document.getElementById('monthlyOrdersChart').getContext('2d');
         new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{
                     label: 'Số đơn hàng',
                     data: ordersData,
                     borderColor: '#667eea',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    tension: 0.4,
+                    backgroundColor: 'rgba(102, 126, 234, 0.7)',
+                    borderWidth: 1,
                     yAxisID: 'y'
                 }, {
                     label: 'Doanh thu (VNĐ)',
                     data: revenueData,
                     borderColor: '#4ecdc4',
-                    backgroundColor: 'rgba(78, 205, 196, 0.1)',
-                    tension: 0.4,
+                    backgroundColor: 'rgba(78, 205, 196, 0.7)',
+                    borderWidth: 1,
                     yAxisID: 'y1'
                 }]
             },
@@ -250,7 +270,7 @@ function changePeriod(days) {
                         <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Thống kê đơn hàng theo tháng</h5>
                     </div>
                     <div class="card-body">
-                        <canvas id="monthlyOrdersChart" width="400" height="200"></canvas>
+                        <canvas id="monthlyOrdersChart" width="400" height="300"></canvas>
                     </div>
                 </div>
             </div>
@@ -263,24 +283,9 @@ function changePeriod(days) {
                     </div>
                     <div class="card-body">
                         <?php if (!empty($data['topProducts'])): ?>
-                            <?php foreach ($data['topProducts'] as $index => $product): ?>
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="flex-shrink-0 me-3">
-                                        <span class="badge bg-primary rounded-pill" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
-                                            <?php echo $index + 1; ?>
-                                        </span>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <div class="fw-bold text-truncate" style="max-width: 150px;" title="<?php echo htmlspecialchars($product['name']); ?>">
-                                            <?php echo htmlspecialchars($product['name']); ?>
-                                        </div>
-                                        <small class="text-muted">
-                                            <?php echo $product['total_sold']; ?> đã bán -
-                                            <?php echo number_format($product['total_revenue'], 0, ',', '.'); ?>đ
-                                        </small>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="topProductsCharts"></canvas>
+                            </div>
                         <?php else: ?>
                             <div class="text-center text-muted py-4">
                                 <i class="fas fa-chart-bar fa-2x mb-2"></i>
@@ -291,6 +296,47 @@ function changePeriod(days) {
                 </div>
             </div>
         </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Top Products Chart
+            const topProductsData = <?php echo json_encode($data['topProducts'] ?? []); ?>;
+            
+            if (topProductsData.length > 0) {
+                const productLabels = topProductsData.map(item => item.name.length > 20 ? item.name.substring(0, 20) + '...' : item.name);
+                const productValues = topProductsData.map(item => item.total_sold);
+                const backgroundColors = [
+                    '#4ecdc4', '#667eea', '#f6d365', '#ff6b6b', '#a3a1fb'
+                ];
+
+                const ctxProduct = document.getElementById('topProductsCharts').getContext('2d');
+                new Chart(ctxProduct, {
+                    type: 'doughnut',
+                    data: {
+                        labels: productLabels,
+                        datasets: [{
+                            data: productValues,
+                            backgroundColor: backgroundColors,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    font: { size: 11 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        </script>
 
         <!-- Recent Orders & Alerts -->
         <div class="row mt-4">
@@ -428,3 +474,47 @@ function changePeriod(days) {
         </div>
     </div>
 </div>
+
+<style>
+/* Custom Gradients */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%) !important;
+}
+.bg-gradient-success {
+    background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%) !important;
+}
+.bg-gradient-info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+}
+
+/* Card Styling */
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+.bg-opacity-25 {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+}
+.letter-spacing-1 {
+    letter-spacing: 1px;
+}
+.transform-scale-12 {
+    transform: scale(1.2);
+    transition: transform 0.5s ease;
+}
+.hover-card:hover .transform-scale-12 {
+    transform: scale(1.4) rotate(10deg);
+}
+.opacity-10 {
+    opacity: 0.1 !important;
+}
+</style>

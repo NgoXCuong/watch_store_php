@@ -25,7 +25,7 @@ class ProductsController extends Controller {
         $minPrice = isset($_GET['min_price']) ? (float)$_GET['min_price'] : null;
         $maxPrice = isset($_GET['max_price']) ? (float)$_GET['max_price'] : null;
 
-        $perPage = 12; // Số sản phẩm mỗi trang
+        $perPage = 9; // Số sản phẩm mỗi trang
 
         // Lấy danh sách sản phẩm
         $products = $this->productModel->getAll($page, $perPage, $search, $categoryId, $brandId, $sort);
@@ -85,8 +85,12 @@ class ProductsController extends Controller {
             exit;
         }
 
-        // Lấy sản phẩm liên quan (cùng category)
-        $relatedProducts = $this->productModel->getByCategory($product['category_id'], 4);
+        // Lấy sản phẩm liên quan (cùng category đầu tiên tìm thấy)
+        $relatedProducts = [];
+        if (!empty($product['category_ids'])) {
+             $firstCategoryId = $product['category_ids'][0];
+             $relatedProducts = $this->productModel->getByCategory($firstCategoryId, 4);
+        }
 
         // Loại bỏ sản phẩm hiện tại khỏi danh sách related
         $relatedProducts = array_filter($relatedProducts, function($p) use ($id) {

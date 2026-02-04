@@ -5,7 +5,6 @@ use PDO;
 use PDOException;
 
 class Database {
-    // Thông tin kết nối (Sửa lại cho đúng với máy bạn)
     private $host = 'localhost';
     private $db_name = 'watch_store_db';
     private $username = 'root';

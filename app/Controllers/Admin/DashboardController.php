@@ -92,7 +92,7 @@ class DashboardController extends Controller {
     }
 
     private function getRecentOrders() {
-        return $this->orderModel->getRecentOrders(5);
+        return $this->orderModel->getRecentOrders(3);
     }
 
     // Analytics methods for dashboard

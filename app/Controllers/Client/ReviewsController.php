@@ -39,12 +39,11 @@ class ReviewsController extends Controller {
         }
 
         // Kiểm tra user đã mua sản phẩm này chưa
-        // Tạm thời tắt kiểm tra để test đánh giá
-        // if (!$this->hasUserPurchasedProduct($userId, $productId)) {
-        //     $_SESSION['error'] = 'Bạn chỉ có thể đánh giá sản phẩm đã mua';
-        //     header('Location: ' . BASE_URL . '/products/show/' . $productId);
-        //     exit;
-        // }
+        if (!$this->hasUserPurchasedProduct($userId, $productId)) {
+            $_SESSION['error'] = 'Bạn chỉ có thể đánh giá sản phẩm đã mua';
+            header('Location: ' . BASE_URL . '/products/show/' . $productId);
+            exit;
+        }
 
         // Kiểm tra đã đánh giá sản phẩm này trong đơn hàng chưa
         if ($this->hasUserReviewedProductInOrder($userId, $productId)) {

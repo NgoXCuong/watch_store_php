@@ -244,7 +244,7 @@ class ProfileController extends Controller {
         }
 
         // Cập nhật mật khẩu
-        $data = ['password' => $newPassword];
+        $data = ['password' => password_hash($newPassword, PASSWORD_DEFAULT)];
         if ($this->userModel->update($userId, $data)) {
             $_SESSION['success'] = 'Đổi mật khẩu thành công!';
             header('Location: ' . BASE_URL . '/profile');

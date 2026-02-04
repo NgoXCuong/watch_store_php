@@ -23,27 +23,27 @@
             <div class="col-lg-3 pe-lg-5">
                 <div class="sidebar mb-5 mb-lg-0 sticky-top" style="top: 100px; z-index: 900;">
                     <!-- Search -->
-                    <div class="mb-5">
+                    <div class="mb-4">
                         <form method="GET" class="position-relative">
                             <input type="text" name="search" class="form-control rounded-0 border-0 border-bottom shadow-none ps-0" 
                                    placeholder="Tìm kiếm..." value="<?php echo htmlspecialchars($data['search']); ?>"
-                                   style="background: transparent;">
+                                   style="background: transparent; border-color: #eee !important; color: #666;">
                             <button type="submit" class="btn position-absolute top-50 end-0 translate-middle-y border-0 p-0 text-muted">
-                                <i class="fas fa-search"></i>
+                                <i class="fas fa-search fa-sm"></i>
                             </button>
                         </form>
                     </div>
 
                     <!-- Categories -->
-                    <div class="mb-5">
-                        <h5 class="text-uppercase letter-spacing-2 mb-3 fs-6 fw-bold">Danh mục</h5>
+                    <div class="mb-4">
+                        <h5 class="text-uppercase letter-spacing-1 mb-3 fs-6 fw-bold text-dark">Danh mục</h5>
                         <div class="d-flex flex-column gap-2">
-                            <a href="<?php echo BASE_URL; ?>/products" class="text-decoration-none <?php echo !$data['selectedCategory'] ? 'text-primary fw-bold' : 'text-muted'; ?>">
+                            <a href="<?php echo BASE_URL; ?>/products" class="text-decoration-none <?php echo !$data['selectedCategory'] ? 'text-primary fw-bold' : 'text-secondary'; ?>">
                                 Tất cả
                             </a>
                             <?php foreach ($data['categories'] as $category): ?>
                                 <a href="?category=<?php echo $category['id']; ?>&brand=<?php echo $data['selectedBrand']; ?>&sort=<?php echo $data['selectedSort']; ?>" 
-                                   class="text-decoration-none <?php echo $data['selectedCategory'] == $category['id'] ? 'text-primary fw-bold' : 'text-muted'; ?> d-flex justify-content-between align-items-center">
+                                   class="text-decoration-none <?php echo $data['selectedCategory'] == $category['id'] ? 'text-primary fw-bold' : 'text-secondary'; ?> d-flex justify-content-between align-items-center">
                                     <?php echo htmlspecialchars($category['name']); ?>
                                 </a>
                             <?php endforeach; ?>
@@ -51,15 +51,15 @@
                     </div>
 
                     <!-- Brands -->
-                    <div class="mb-5">
-                        <h5 class="text-uppercase letter-spacing-2 mb-3 fs-6 fw-bold">Thương hiệu</h5>
+                    <div class="mb-4">
+                        <h5 class="text-uppercase letter-spacing-1 mb-3 fs-6 fw-bold text-dark">Thương hiệu</h5>
                         <div class="d-flex flex-column gap-2">
-                            <a href="?category=<?php echo $data['selectedCategory']; ?>&sort=<?php echo $data['selectedSort']; ?>" class="text-decoration-none <?php echo !$data['selectedBrand'] ? 'text-primary fw-bold' : 'text-muted'; ?>">
+                            <a href="?category=<?php echo $data['selectedCategory']; ?>&sort=<?php echo $data['selectedSort']; ?>" class="text-decoration-none <?php echo !$data['selectedBrand'] ? 'text-primary fw-bold' : 'text-secondary'; ?>">
                                 Tất cả
                             </a>
                             <?php foreach ($data['brands'] as $brand): ?>
                                 <a href="?brand=<?php echo $brand['id']; ?>&category=<?php echo $data['selectedCategory']; ?>&sort=<?php echo $data['selectedSort']; ?>" 
-                                   class="text-decoration-none <?php echo $data['selectedBrand'] == $brand['id'] ? 'text-primary fw-bold' : 'text-muted'; ?> d-flex justify-content-between align-items-center">
+                                   class="text-decoration-none <?php echo $data['selectedBrand'] == $brand['id'] ? 'text-primary fw-bold' : 'text-secondary'; ?> d-flex justify-content-between align-items-center">
                                     <?php echo htmlspecialchars($brand['name']); ?>
                                 </a>
                             <?php endforeach; ?>

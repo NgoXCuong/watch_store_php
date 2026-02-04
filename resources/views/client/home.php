@@ -60,7 +60,7 @@
 </section>
 
 <!-- Features Section -->
-<section class="py-5 bg-white border-bottom">
+<section class="py-5 bg-white border-bottom reveal">
     <div class="container py-4">
         <div class="row g-4 text-center">
             <div class="col-md-3">
@@ -97,7 +97,7 @@
 
 <!-- Featured Products -->
 <?php if (!empty($data['featuredProducts'])): ?>
-<section id="featured" class="section py-5">
+<section id="featured" class="section py-5 reveal">
     <div class="container py-5">
         <div class="text-center mb-5">
             <span class="text-warning text-uppercase letter-spacing-2 small fw-bold">Best Sellers</span>
@@ -178,7 +178,7 @@
 
 <!-- Categories Parallax -->
 <?php if (!empty($data['categories'])): ?>
-<section class="py-5 bg-dark position-relative overflow-hidden text-white">
+<section class="py-5 bg-dark position-relative overflow-hidden text-white reveal">
     <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('<?php echo BASE_URL; ?>/assets/img/banner.avif') fixed center center/cover; opacity: 0.2;"></div>
     <div class="container py-5 position-relative z-index-1">
         <div class="text-center mb-5">
@@ -206,7 +206,7 @@
 
 <!-- Latest Products -->
 <?php if (!empty($data['latestProducts'])): ?>
-<section class="py-5">
+<section class="py-5 reveal">
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div>
@@ -250,7 +250,7 @@
 
 <!-- Brands -->
 <?php if (!empty($data['brands'])): ?>
-<section class="py-5 border-top overflow-hidden">
+<section class="py-5 border-top overflow-hidden reveal">
     <div class="container-fluid">
         <div class="position-relative">
             <!-- Gradient Masks -->
@@ -283,7 +283,7 @@
 <?php endif; ?>
 
 <!-- Newsletter CTA -->
-<section class="py-5 bg-dark text-white text-center">
+<section class="py-5 bg-dark text-white text-center reveal">
     <div class="container py-4">
         <h2 class="display-6 fw-bold  text-white  text-uppercase mb-3" style="font-family: var(--font-heading);">Đăng ký nhận tin</h2>
         <p class="text-white-50 mb-4">Nhận thông báo về các bộ sưu tập mới và ưu đãi độc quyền.</p>

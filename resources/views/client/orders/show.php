@@ -110,8 +110,8 @@
                                                     </a>
                                                     <?php if ($data['order']['status'] === 'delivered' || $data['order']['payment_status'] === 'paid'): ?>
                                                         <a href="<?php echo BASE_URL; ?>/reviews/create/<?php echo $item['product_id']; ?>" 
-                                                           class="d-block mt-1 text-warning small text-decoration-none">
-                                                            <i class="far fa-star me-1"></i>Viết đánh giá
+                                                           class="btn btn-sm btn-outline-warning mt-2">
+                                                            <i class="fas fa-star me-1"></i>Viết đánh giá
                                                         </a>
                                                     <?php endif; ?>
                                                 </div>

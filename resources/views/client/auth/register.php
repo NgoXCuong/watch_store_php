@@ -102,7 +102,7 @@
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--text-muted);
+            color: var(--text-light);
             margin-bottom: 0.25rem;
         }
 
@@ -190,8 +190,8 @@
 
             <div class="auth-content">
                 <div class="text-center mb-5">
-                    <h1 class="text-white mb-2">Đăng Ký</h1>
-                    <p class="text-muted small text-uppercase letter-spacing-2">Tạo tài khoản mới</p>
+                    <h1 class="text-white fw-bold  text-uppercase mb-2">Đăng Ký</h1>
+                    <p class="text-light letter-spacing-2">Tạo tài khoản mới</p>
                 </div>
 
                 <?php if (isset($data['errors']['general'])): ?>

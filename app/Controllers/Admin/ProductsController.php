@@ -113,13 +113,20 @@ class ProductsController extends Controller {
             'old_price' => !empty($_POST['old_price']) ? (float)$_POST['old_price'] : null,
             'stock' => (int)($_POST['stock'] ?? 0),
             'brand_id' => (int)($_POST['brand_id'] ?? 0),
-            'category_id' => (int)($_POST['category_id'] ?? 0),
-            'image_url' => $imageUrl,
-            'gallery_urls' => $galleryUrls,
-            'specifications' => !empty(trim($_POST['specifications'] ?? '')) ? trim($_POST['specifications']) : null,
-            'is_featured' => isset($_POST['is_featured']) ? 1 : 0,
-            'status' => $_POST['status'] ?? 'active'
+            'category_ids' => $_POST['category_ids'] ?? [], // Array of IDs
         ];
+
+        $data['specifications'] = !empty(trim($_POST['specifications'] ?? '')) ? trim($_POST['specifications']) : null;
+        $data['is_featured'] = isset($_POST['is_featured']) ? 1 : 0;
+        $data['status'] = $_POST['status'] ?? 'active';
+
+        // Add file URLs to data
+        if (!empty($imageUrl)) {
+             $data['image_url'] = $imageUrl;
+        }
+        if (!empty($galleryUrls) && $galleryUrls != '[]') {
+             $data['gallery_urls'] = $galleryUrls;
+        }
 
         $errors = [];
 
@@ -140,15 +147,8 @@ class ProductsController extends Controller {
             $errors['brand_id'] = 'Vui lòng chọn thương hiệu';
         }
 
-        if ($data['category_id'] <= 0) {
-            $errors['category_id'] = 'Vui lòng chọn danh mục';
-        }
-
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            $_SESSION['old_input'] = $data;
-            header('Location: ' . BASE_URL . '/admin/products/create');
-            exit;
+        if (empty($data['category_ids'])) {
+            $errors['category_id'] = 'Vui lòng chọn ít nhất một danh mục';
         }
 
         // Tạo sản phẩm
@@ -253,7 +253,7 @@ class ProductsController extends Controller {
             'old_price' => !empty($_POST['old_price']) ? (float)$_POST['old_price'] : null,
             'stock' => (int)($_POST['stock'] ?? 0),
             'brand_id' => (int)($_POST['brand_id'] ?? 0),
-            'category_id' => (int)($_POST['category_id'] ?? 0),
+            'category_ids' => $_POST['category_ids'] ?? [], // Array
             'image_url' => $imageUrl,
             'gallery_urls' => $galleryUrls,
             'specifications' => !empty(trim($_POST['specifications'] ?? '')) ? trim($_POST['specifications']) : null,
@@ -280,8 +280,8 @@ class ProductsController extends Controller {
             $errors['brand_id'] = 'Vui lòng chọn thương hiệu';
         }
 
-        if ($data['category_id'] <= 0) {
-            $errors['category_id'] = 'Vui lòng chọn danh mục';
+        if (empty($data['category_ids'])) {
+            $errors['category_id'] = 'Vui lòng chọn ít nhất một danh mục';
         }
 
         if (!empty($errors)) {

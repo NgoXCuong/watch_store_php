@@ -43,33 +43,33 @@
                 <div class="card-body p-4 p-lg-5">
                     <div class="row g-4">
                         <div class="col-md-6 border-end-md">
-                            <div class="mb-4">
-                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Họ tên</label>
-                                <div class="fw-bold fs-5"><?php echo htmlspecialchars($data['user']['full_name']); ?></div>
+                            <div class="d-flex align-items-center mb-4">
+                                <label class="text-muted x-small letter-spacing-1 mb-0 me-3 flex-shrink-0" style="width: 130px;">Họ tên</label>
+                                <div class="fw-bold"><?php echo htmlspecialchars($data['user']['full_name']); ?></div>
                             </div>
-                            <div class="mb-4">
-                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Tên đăng nhập</label>
+                            <div class="d-flex align-items-center mb-4">
+                                <label class="text-muted x-small letter-spacing-1 mb-0 me-3 flex-shrink-0" style="width: 130px;">Tên đăng nhập</label>
                                 <div class="fw-bold"><?php echo htmlspecialchars($data['user']['username']); ?></div>
                             </div>
-                            <div>
-                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Email</label>
-                                <div class="fw-bold"><?php echo htmlspecialchars($data['user']['email']); ?></div>
+                            <div class="d-flex align-items-center">
+                                <label class="text-muted x-small letter-spacing-1 mb-0 me-3 flex-shrink-0" style="width: 130px;">Email</label>
+                                <div class="fw-bold text-break"><?php echo htmlspecialchars($data['user']['email']); ?></div>
                             </div>
                         </div>
 
                         <div class="col-md-6 ps-md-5">
-                            <div class="mb-4">
-                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Số điện thoại</label>
-                                <div class="fw-bold fs-5"><?php echo htmlspecialchars($data['user']['phone'] ?: 'Chưa cập nhật'); ?></div>
+                            <div class="d-flex align-items-center mb-4">
+                                <label class="text-muted x-small letter-spacing-1 mb-0 me-3 flex-shrink-0" style="width: 130px;">Số điện thoại</label>
+                                <div class="fw-bold"><?php echo htmlspecialchars($data['user']['phone'] ?: 'Chưa cập nhật'); ?></div>
                             </div>
-                            <div class="mb-4">
-                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Ngày tham gia</label>
+                            <div class="d-flex align-items-center mb-4">
+                                <label class="text-muted x-small letter-spacing-1 mb-0 me-3 flex-shrink-0" style="width: 130px;">Ngày tham gia</label>
                                 <div class="fw-bold"><?php echo date('d/m/Y', strtotime($data['user']['created_at'])); ?></div>
                             </div>
-                            <div>
-                                <label class="text-uppercase text-muted x-small letter-spacing-1 mb-1">Hạng thành viên</label>
+                            <div class="d-flex align-items-center">
+                                <label class="text-muted x-small letter-spacing-1 mb-0 me-3 flex-shrink-0" style="width: 130px;">Vai trò</label>
                                 <span class="badge bg-dark rounded-0 px-3 py-2 text-uppercase letter-spacing-1">
-                                    <?php echo $data['user']['role'] === 'admin' ? 'Admin' : ($data['user']['role'] === 'staff' ? 'Nhân viên' : 'Thành viên'); ?>
+                                    <?php echo $data['user']['role'] === 'admin' ? 'Admin' : ($data['user']['role'] === 'staff' ? 'Nhân viên' : 'Khách hàng'); ?>
                                 </span>
                             </div>
                         </div>
@@ -80,24 +80,26 @@
             <!-- Stats & Quick Actions -->
             <div class="row g-4 mb-5">
                 <div class="col-md-4">
-                    <div class="card border-0 shadow-sm rounded-0 h-100 bg-primary text-white overflow-hidden position-relative group-hover-parent">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 bg-gradient-primary text-white overflow-hidden position-relative group-hover-parent">
                         <div class="position-absolute top-0 end-0 p-3 opacity-25">
                             <i class="fas fa-shopping-bag fa-4x transform-scale-12"></i>
                         </div>
                         <div class="card-body p-4 position-relative z-index-1">
-                            <h2 class="display-4 fw-bold mb-0"><?php echo $data['orderStats']['total_orders']; ?></h2>
+                            <h2 class="display-5 fw-bold mb-0"><?php echo $data['orderStats']['total_orders']; ?></h2>
                             <p class="text-white-50 text-uppercase letter-spacing-1 small mb-4">Đơn hàng</p>
-                            <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-outline-light rounded-0 text-uppercase letter-spacing-1 small w-100 stretched-link">Xem lịch sử</a>
+                            <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-light bg-opacity-20 text-white border-0 rounded-pill px-4 btn-hover-light stretched-link small fw-bold">
+                                Xem lịch sử <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card border-0 shadow-sm rounded-0 h-100 bg-dark text-white overflow-hidden position-relative group-hover-parent">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 bg-gradient-warning text-white overflow-hidden position-relative group-hover-parent">
                         <div class="position-absolute top-0 end-0 p-3 opacity-25">
                             <i class="fas fa-star fa-4x transform-scale-12"></i>
                         </div>
                         <div class="card-body p-4 position-relative z-index-1">
-                            <h2 class="display-4 fw-bold mb-0 text-warning">
+                            <h2 class="display-5 fw-bold mb-0">
                                 <?php 
                                     $reviewModel = new \App\Models\ReviewModel();
                                     $reviews = $reviewModel->getByUserId($data['user']['id']);
@@ -105,23 +107,22 @@
                                 ?>
                             </h2>
                             <p class="text-white-50 text-uppercase letter-spacing-1 small mb-4">Đánh giá</p>
-                            <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-outline-warning rounded-0 text-uppercase letter-spacing-1 small w-100 stretched-link">Quản lý</a>
+                            <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-light bg-opacity-20 text-white border-0 rounded-pill px-4 btn-hover-light stretched-link small fw-bold">
+                                Quản lý <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card border-0 shadow-sm rounded-0 h-100 bg-light overflow-hidden position-relative group-hover-parent">
-                        <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 bg-gradient-success text-white overflow-hidden position-relative group-hover-parent">
+                        <div class="position-absolute top-0 end-0 p-3 opacity-25">
                             <i class="fas fa-wallet fa-4x transform-scale-12"></i>
                         </div>
                         <div class="card-body p-4 position-relative z-index-1">
-                            <h3 class="fw-bold mb-0 text-truncate" title="<?php echo number_format($data['orderStats']['total_spent'], 0, ',', '.'); ?>đ">
+                            <h3 class="display-6 fw-bold mb-0 text-truncate" title="<?php echo number_format($data['orderStats']['total_spent'], 0, ',', '.'); ?>đ">
                                 <?php echo number_format($data['orderStats']['total_spent'], 0, ',', '.'); ?>đ
                             </h3>
-                            <p class="text-muted text-uppercase letter-spacing-1 small mb-4">Tổng chi tiêu</p>
-                            <a href="<?php echo BASE_URL; ?>/profile/wishlist" class="btn btn-outline-dark rounded-0 text-uppercase letter-spacing-1 small w-100 stretched-link">
-                                <i class="fas fa-heart me-2 text-danger"></i>Yêu thích
-                            </a>
+                            <p class="text-white-50 text-uppercase letter-spacing-1 small mb-4">Tổng chi tiêu</p>
                         </div>
                     </div>
                 </div>
@@ -219,5 +220,26 @@
 .group-hover-parent:hover .transform-scale-12 {
     transform: scale(1.4);
     transition: transform 0.5s ease;
+}
+
+/* Custom Gradients */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%) !important;
+}
+.bg-gradient-success {
+    background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%) !important;
+}
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+.bg-opacity-20 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+.btn-hover-light:hover {
+    background-color: rgba(255, 255, 255, 0.3) !important;
 }
 </style>

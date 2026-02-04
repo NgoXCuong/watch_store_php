@@ -5,7 +5,12 @@
             <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
                 <div class="card-body text-center p-4 bg-light">
                     <div class="position-relative d-inline-block mb-3">
-                        <img src="<?php echo $data['user']['avatar_url'] ? htmlspecialchars($data['user']['avatar_url']) : BASE_URL . '/assets/img/default-avatar.png'; ?>" 
+<?php 
+                        $sidebarAvatarUrl = !empty($data['user']['avatar_url']) 
+                            ? htmlspecialchars($data['user']['avatar_url']) 
+                            : BASE_URL . '/assets/img/default-avatar.png';
+                        ?>
+                        <img src="<?php echo $sidebarAvatarUrl; ?>" 
                              alt="Avatar" 
                              class="rounded-circle shadow-sm object-fit-cover"
                              style="width: 100px; height: 100px;">
@@ -59,8 +64,13 @@
                         <!-- Avatar Upload -->
                         <div class="mb-4 text-center">
                             <div class="position-relative d-inline-block">
+<?php 
+                                $formAvatarUrl = !empty($data['user']['avatar_url']) 
+                                    ? htmlspecialchars($data['user']['avatar_url']) 
+                                    : BASE_URL . '/assets/img/default-avatar.png';
+                                ?>
                                 <img id="avatarPreview" 
-                                     src="<?php echo $data['user']['avatar_url'] ? htmlspecialchars($data['user']['avatar_url']) : BASE_URL . '/assets/img/default-avatar.png'; ?>" 
+                                     src="<?php echo $formAvatarUrl; ?>" 
                                      alt="Avatar" 
                                      class="rounded-circle shadow-sm object-fit-cover border border-3 border-light"
                                      style="width: 120px; height: 120px;">

@@ -240,7 +240,16 @@ $gallery = array_unique($gallery);
                             </tr>
                             <tr>
                                 <td class="fw-bold">Danh mục</td>
-                                <td><?php echo htmlspecialchars($data['product']['category_name'] ?? 'N/A'); ?></td>
+                                <td>
+                                    <?php 
+                                    if (!empty($data['product']['categories'])) {
+                                        $catNames = array_map(function($c) { return $c['name']; }, $data['product']['categories']);
+                                        echo htmlspecialchars(implode(', ', $catNames));
+                                    } else {
+                                        echo htmlspecialchars($data['product']['category_name'] ?? 'N/A');
+                                    }
+                                    ?>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="fw-bold">Tình trạng</td>

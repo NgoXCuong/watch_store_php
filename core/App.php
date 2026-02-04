@@ -50,8 +50,15 @@ class App {
 
         // 4. Kiểm tra Action (Hàm bên trong Controller)
         if (isset($url[0])) {
+            // Convert spinal-case (kebab-case) to camelCase
+            // e.g. change-password => changePassword
+            $formattedAction = lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $url[0]))));
+            
             if (method_exists($this->controller, $url[0])) {
                 $this->action = $url[0];
+                array_shift($url);
+            } elseif (method_exists($this->controller, $formattedAction)) {
+                $this->action = $formattedAction;
                 array_shift($url);
             }
         }
