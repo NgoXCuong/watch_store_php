@@ -444,6 +444,33 @@
             font-weight: 500;
         }
         
+        /* User Dropdown */
+        .user-menu-dropdown {
+            animation: dropdownFadeIn 0.2s ease;
+        }
+
+        .user-menu-dropdown .dropdown-item {
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+
+        .user-menu-dropdown .dropdown-item:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color) !important;
+            transform: translateX(5px);
+        }
+
+        .user-menu-dropdown .dropdown-item.text-danger:hover {
+            background-color: #ffeaea;
+            color: #dc3545 !important;
+        }
+
+        @keyframes dropdownFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Responsive */
         @media (max-width: 991px) {
             .hero-title-main { font-size: 3rem; }
@@ -454,6 +481,127 @@
         }
         
         /* Include Utilities */
+        /* Sidebar Filters */
+        .filter-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            color: #666;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .filter-item:hover {
+            color: var(--secondary-color);
+        }
+
+        .filter-item.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .filter-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .filter-item:hover .filter-checkbox {
+            border-color: var(--secondary-color);
+        }
+
+        .filter-item.active .filter-checkbox {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+
+        .filter-checkbox i {
+            display: none;
+            font-size: 10px;
+        }
+
+        .filter-item.active .filter-checkbox i {
+            display: block;
+        }
+
+        /* Product Card Enhancements */
+        .product-card {
+            border: 1px solid #f0f0f0; /* Lighter border */
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08); /* Highlight shadow */
+            transform: translateY(-5px);
+            border-color: transparent;
+        }
+
+        .discount-badge {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .product-price-highlight {
+            color: var(--danger-color); /* Make price pop */
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+        
+        /* Layout Adjustments */
+        .sidebar {
+            padding-right: 2rem; /* Increase separation */
+        }
+        
+        .breadcrumb-section {
+            background-color: white !important; /* Cleaner look */
+            border-bottom: 1px solid #f0f0f0 !important;
+        }
+
+        /* Search Bar in Header - Enhanced */
+        .header-search {
+            position: relative;
+            width: 300px;
+        }
+        .header-search input {
+            padding-right: 40px;
+            border-radius: 10px; /* Pillow shape for modern look */
+            background: #f8f9fa;
+            border: 1px solid transparent;
+        }
+        .header-search input:focus {
+            background: white;
+            border-color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .header-search button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: #999;
+            transition: color 0.3s;
+        }
+        .header-search button:hover {
+            color: var(--secondary-color);
+        }
+
         <?php include __DIR__ . '/utilities.css'; ?>
     </style>
 </head>
@@ -476,9 +624,9 @@
             <!-- User Actions -->
             <div class="nav">
                 <!-- Search Bar -->
-                <form action="<?php echo BASE_URL; ?>/products" method="GET" class="search-form d-none border  d-lg-block">
-                    <input type="text" name="search" class="search-input" placeholder="Tìm kiếm..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                    <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                <form action="<?php echo BASE_URL; ?>/products" method="GET" class="header-search d-none d-lg-block me-4">
+                    <input type="text" name="search" class="form-control shadow-none" placeholder="Tìm kiếm đồng hồ..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                    <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
                 <a href="<?php echo BASE_URL; ?>/cart" class="cart-link" title="Giỏ hàng">
                     <i class="fas fa-shopping-bag" style="font-size: 1.2rem;"></i>
@@ -490,13 +638,31 @@
                         <a href="#" class="cart-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="far fa-user" style="font-size: 1.2rem;"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-0 p-2">
-                            <li class="px-3 py-2 text-muted small border-bottom mb-2">Xin chào, <?php echo htmlspecialchars($_SESSION['user']['username']); ?></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/profile">Hồ sơ cá nhân</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/orders">Lịch sử đơn hàng</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>/reviews/myReviews">Đánh giá của tôi</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="<?php echo BASE_URL; ?>/auth/logout">Đăng xuất</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-0 p-0 user-menu-dropdown" style="min-width: 250px; overflow: hidden; margin-top: 15px;">
+                            <li class="p-3 bg-light border-bottom">
+                                <div class="small text-muted text-uppercase fw-bold letter-spacing-1 mb-1">Xin chào</div>
+                                <div class="fw-bold fs-6 text-dark"><?php echo htmlspecialchars($_SESSION['user']['username']); ?></div>
+                            </li>
+                            <li class="p-2">
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-3 text-secondary" href="<?php echo BASE_URL; ?>/profile">
+                                    <i class="far fa-id-card text-center" style="width: 20px;"></i>
+                                    <span>Hồ sơ cá nhân</span>
+                                </a>
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-3 text-secondary" href="<?php echo BASE_URL; ?>/orders">
+                                    <i class="fas fa-history text-center" style="width: 20px;"></i>
+                                    <span>Lịch sử đơn hàng</span>
+                                </a>
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-3 text-secondary" href="<?php echo BASE_URL; ?>/reviews/myReviews">
+                                    <i class="far fa-star text-center" style="width: 20px;"></i>
+                                    <span>Đánh giá của tôi</span>
+                                </a>
+                            </li>
+                            <li class="border-top p-2 bg-light">
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-3 text-danger fw-bold" href="<?php echo BASE_URL; ?>/auth/logout">
+                                    <i class="fas fa-sign-out-alt text-center" style="width: 20px;"></i>
+                                    <span>Đăng xuất</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 <?php else: ?>

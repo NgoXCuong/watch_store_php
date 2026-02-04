@@ -13,18 +13,170 @@
 
 
 <!-- Custom Tab Styling -->
+<!-- Custom Styling -->
 <style>
+    /* Sticky Tabs */
+    /* Sticky Tabs - REMOVED sticky behavior */
+    .sticky-tabs {
+        /* position: sticky; */
+        /* top: 80px; */
+        /* z-index: 100; */
+        /* background: rgba(255, 255, 255, 0.95); */
+        /* backdrop-filter: blur(10px); */
+        /* box-shadow: 0 5px 20px rgba(0,0,0,0.05); */
+    }
+    
     .nav-tabs .nav-link {
-        color: #6c757d;
-        border-bottom: 2px solid transparent !important;
+        color: #999;
+        border: none !important;
+        border-bottom: 3px solid transparent !important;
         transition: all 0.3s;
+        padding: 1.5rem 0;
+        font-size: 0.9rem;
     }
+    
     .nav-tabs .nav-link:hover {
-        color: var(--secondary-color);
+        color: var(--primary-color);
     }
+    
     .nav-tabs .nav-link.active {
         color: var(--secondary-color) !important;
-        border-bottom: 2px solid var(--secondary-color) !important;
+        border-bottom: 3px solid var(--secondary-color) !important;
+        background: transparent !important;
+    }
+
+    /* Description Typography */
+    .typography-content h2, 
+    .typography-content h3 {
+        font-family: var(--font-heading);
+        color: var(--primary-color);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .typography-content p {
+        margin-bottom: 1.5rem;
+        color: #555;
+    }
+
+    .typography-content ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 2rem;
+    }
+
+    .typography-content ul li {
+        position: relative;
+        padding-left: 2rem;
+        margin-bottom: 0.8rem;
+        color: #555;
+    }
+
+    .typography-content ul li::before {
+        content: '\f00c'; /* FontAwesome Check */
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        top: 2px;
+        color: var(--secondary-color);
+    }
+    
+    .typography-content b, 
+    .typography-content strong {
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+
+    .typography-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin: 2rem 0;
+        box-shadow: var(--shadow-soft);
+    }
+
+    /* Specs Grid */
+    .specs-group-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 0.5rem;
+        display: inline-block;
+    }
+
+    .spec-item {
+        margin-bottom: 0;
+        padding: 12px 15px;
+        display: flex;
+        align-items: baseline;
+        border-bottom: 1px solid #f5f5f5;
+        font-size: 0.95rem;
+    }
+
+    .spec-item:nth-of-type(odd) {
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
+
+    .spec-item:last-child {
+        border-bottom: none;
+    }
+
+    .spec-label {
+        width: 40%;
+        color: #999;
+        font-size: 0.9rem;
+    }
+
+    .spec-value {
+        width: 60%;
+        color: var(--primary-color);
+        font-weight: 500;
+    }
+
+    /* Review Summary */
+    .review-summary-box {
+        background-color: #f8f9fa;
+        padding: 2rem;
+        border-radius: 8px;
+    }
+
+    .rating-big {
+        font-size: 3.5rem;
+        font-weight: 700;
+        line-height: 1;
+        color: var(--primary-color);
+    }
+
+    .progress {
+        height: 8px;
+        background-color: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background-color: var(--secondary-color);
+    }
+    
+    .avatar-placeholder {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
     }
 </style>
 
@@ -196,7 +348,7 @@ $gallery = array_unique($gallery);
 <!-- Details & Reviews Tabs -->
 <section class="bg-light py-5">
     <div class="container" style="max-width: 1300px;">
-        <ul class="nav nav-tabs border-0 justify-content-center mb-5 gap-4" id="productTabs" role="tablist">
+        <ul class="nav nav-tabs border-0 justify-content-center mb-5 gap-4 sticky-tabs" id="productTabs" role="tablist">
             <li class="nav-item border-0" role="presentation">
                 <button class="nav-link active bg-transparent border-0 text-uppercase letter-spacing-2 fw-bold rounded-0 pb-2 px-0" 
                         id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">
@@ -231,116 +383,155 @@ $gallery = array_unique($gallery);
 
             <!-- Specs -->
             <div class="tab-pane fade" id="specifications" role="tabpanel">
-                <div class="table-responsive">
-                    <table class="table table-borderless table-striped">
-                        <tbody>
-                            <tr>
-                                <td class="fw-bold w-25">Thương hiệu</td>
-                                <td><?php echo htmlspecialchars($data['product']['brand_name'] ?? 'N/A'); ?></td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Danh mục</td>
-                                <td>
-                                    <?php 
-                                    if (!empty($data['product']['categories'])) {
-                                        $catNames = array_map(function($c) { return $c['name']; }, $data['product']['categories']);
-                                        echo htmlspecialchars(implode(', ', $catNames));
-                                    } else {
-                                        echo htmlspecialchars($data['product']['category_name'] ?? 'N/A');
-                                    }
-                                    ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Tình trạng</td>
-                                <td><?php echo $data['product']['stock'] > 0 ? 'Còn hàng' : 'Hết hàng'; ?></td>
-                            </tr>
-                            <?php 
-                            if (!empty($data['product']['specifications'])) {
-                                $specs = json_decode($data['product']['specifications'], true);
-                                
-                                // Mapping keys to Vietnamese
-                                $specMap = [
-                                    'brand' => 'Thương hiệu',
-                                    'origin' => 'Xuất xứ',
-                                    'target' => 'Đối tượng',
-                                    'gender' => 'Giới tính',
-                                    'line' => 'Dòng sản phẩm',
-                                    'water_resistance' => 'Chống nước',
-                                    'water_resist' => 'Chống nước',
-                                    'dial_type' => 'Loại mặt số',
-                                    'movement' => 'Loại máy',
-                                    'engine' => 'Động cơ',
-                                    'crystal_material' => 'Chất liệu kính',
-                                    'glass_material' => 'Chất liệu kính',
-                                    'glass' => 'Kính',
-                                    'case_material' => 'Chất liệu vỏ',
-                                    'band_material' => 'Chất liệu dây',
-                                    'strap_material' => 'Chất liệu dây',
-                                    'band_width' => 'Độ rộng dây',
-                                    'clasp' => 'Kiểu khóa',
-                                    'case_size' => 'Size mặt',
-                                    'case_thickness' => 'Độ dày',
-                                    'thickness' => 'Độ dày',
-                                    'face_color' => 'Màu mặt',
-                                    'dial_color' => 'Màu mặt',
-                                    'case_diameter' => 'Đường kính mặt',
-                                    'diameter' => 'Đường kính',
-                                    'case_color' => 'Màu vỏ',
-                                    'face_shape' => 'Hình dáng mặt',
-                                    'shape' => 'Hình dáng',
-                                    'collection' => 'Bộ sưu tập',
-                                    'features' => 'Tính năng',
-                                    'function' => 'Chức năng',
-                                    'warranty' => 'Bảo hành'
-                                ];
+                <?php
+                // Process Specs Grouping
+                $specs = [];
+                if (!empty($data['product']['specifications'])) {
+                    $specs = json_decode($data['product']['specifications'], true) ?? [];
+                }
 
-                                if (is_array($specs)) {
-                                    foreach ($specs as $key => $value) {
-                                        // Normalize key: lowercase and removing special chars if needed, 
-                                        // stick to simple lookup
-                                        $displayKey = $specMap[$key] ?? $key;
-                                        // If key is not in map, maybe try capitalize first letter
-                                        if (!isset($specMap[$key])) {
-                                            $displayKey = ucfirst(str_replace('_', ' ', $key));
-                                        }
-                                        
-                                        echo '<tr>';
-                                        echo '<td class="fw-bold">' . htmlspecialchars($displayKey) . '</td>';
-                                        echo '<td>' . htmlspecialchars($value) . '</td>';
-                                        echo '</tr>';
-                                    }
-                                }
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                $specMap = [
+                    'brand' => 'Thương hiệu', 'origin' => 'Xuất xứ', 'target' => 'Đối tượng', 'gender' => 'Giới tính', 'line' => 'Dòng sản phẩm',
+                    'water_resistance' => 'Chống nước', 'water_resist' => 'Chống nước', 'dial_type' => 'Loại mặt số',
+                    'movement' => 'Loại máy', 'engine' => 'Động cơ',
+                    'crystal_material' => 'Chất liệu kính', 'glass_material' => 'Chất liệu kính', 'glass' => 'Kính',
+                    'case_material' => 'Chất liệu vỏ', 'band_material' => 'Chất liệu dây', 'strap_material' => 'Chất liệu dây',
+                    'band_width' => 'Độ rộng dây', 'clasp' => 'Kiểu khóa',
+                    'case_size' => 'Size mặt', 'case_thickness' => 'Độ dày', 'thickness' => 'Độ dày',
+                    'face_color' => 'Màu mặt', 'dial_color' => 'Màu mặt',
+                    'case_diameter' => 'Đường kính mặt', 'diameter' => 'Đường kính', 'case_color' => 'Màu vỏ',
+                    'face_shape' => 'Hình dáng mặt', 'shape' => 'Hình dáng',
+                    'collection' => 'Bộ sưu tập', 'features' => 'Tính năng', 'function' => 'Chức năng', 'warranty' => 'Bảo hành'
+                ];
+
+                // Group Definitions
+                $groups = [
+                    'general' => ['title' => 'Thông tin chung', 'keys' => ['brand', 'origin', 'gender', 'target', 'collection', 'line', 'warranty']],
+                    'movement' => ['title' => 'Bộ máy & Năng lượng', 'keys' => ['movement', 'engine', 'function', 'features', 'water_resistance', 'water_resist']],
+                    'appearance' => ['title' => 'Ngoại hình & Chất liệu', 'keys' => ['dial_type', 'case_size', 'case_diameter', 'diameter', 'case_thickness', 'thickness', 'face_shape', 'shape', 'face_color', 'dial_color', 'glass', 'glass_material', 'crystal_material', 'case_material', 'case_color', 'band_material', 'strap_material', 'band_width', 'clasp']]
+                ];
+
+                // Assign raw specs to groups
+                $groupedSpecs = [];
+                $usedKeys = [];
+
+                foreach ($groups as $groupKey => $groupDef) {
+                    $groupData = [];
+                    foreach ($groupDef['keys'] as $key) {
+                        if (isset($specs[$key]) && !empty($specs[$key])) {
+                            $groupData[$key] = $specs[$key];
+                            $usedKeys[$key] = true;
+                        }
+                    }
+                    if (!empty($groupData)) {
+                        $groupedSpecs[$groupKey] = [
+                            'title' => $groupDef['title'],
+                            'data' => $groupData
+                        ];
+                    }
+                }
+
+                // Collect remaining specs
+                $others = [];
+                foreach ($specs as $key => $value) {
+                    if (!isset($usedKeys[$key]) && !empty($value)) {
+                        $others[$key] = $value;
+                    }
+                }
+                if (!empty($others)) {
+                    $groupedSpecs['others'] = [
+                        'title' => 'Thông số khác',
+                        'data' => $others
+                    ];
+                }
+                
+                // Always add static info if missing
+                // Always add static info if missing
+                if (!isset($usedKeys['brand'])) {
+                    if (!isset($groupedSpecs['general'])) {
+                        $groupedSpecs['general'] = [
+                            'title' => 'Thông tin chung',
+                            'data' => []
+                        ];
+                    }
+                    $groupedSpecs['general']['data']['brand'] = $data['product']['brand_name'] ?? 'N/A';
+                }
+                ?>
+
+                <div class="row g-5">
+                    <?php if (empty($specs)): ?>
+                         <div class="col-12 text-center text-muted py-5">Đang cập nhật thông số...</div>
+                    <?php else: ?>
+                        <?php foreach ($groupedSpecs as $group): ?>
+                            <div class="col-md-6">
+                                <h4 class="specs-group-title"><?php echo $group['title']; ?></h4>
+                                <?php foreach ($group['data'] as $key => $value): ?>
+                                    <div class="spec-item">
+                                        <div class="spec-label">
+                                            <?php echo htmlspecialchars($specMap[$key] ?? ucfirst(str_replace('_', ' ', $key))); ?>
+                                        </div>
+                                        <div class="spec-value">
+                                            <?php 
+                                            echo htmlspecialchars($value); 
+                                            // Add visual bar for water resistance
+                                            if (in_array($key, ['water_resistance', 'water_resist'])) {
+                                                echo '<div class="progress mt-2" style="height: 4px; width: 100px; opacity: 0.5;">
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 100%"></div>
+                                                      </div>';
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
 
             <!-- Reviews -->
             <div class="tab-pane fade" id="reviews" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-4">
-                    <div>
-                        <h4 class="mb-1">Đánh giá khách hàng</h4>
-                        <div class="text-warning">
-                            <?php
-                            for ($i = 1; $i <= 5; $i++) {
-                                if ($i <= $avgRating) {
-                                    echo '<i class="fas fa-star"></i>';
-                                } elseif ($i - 0.5 <= $avgRating) {
-                                    echo '<i class="fas fa-star-half-alt"></i>';
-                                } else {
-                                    echo '<i class="far fa-star"></i>';
-                                }
-                            }
-                            ?>
-                            <span class="text-muted ms-2 small"><?php echo $avgRating > 0 ? $avgRating . '/5' : 'Chưa có đánh giá'; ?></span>
+                <div class="row mb-5 align-items-center">
+                    <div class="col-md-5">
+                        <div class="review-summary-box text-center">
+                            <div class="rating-big mb-2"><?php echo $avgRating > 0 ? $avgRating : '0.0'; ?></div>
+                            <div class="text-warning mb-2 fs-5">
+                                <?php
+                                for ($i = 1; $i <= 5; $i++) echo $i <= $avgRating ? '<i class="fas fa-star"></i>' : ($i - 0.5 <= $avgRating ? '<i class="fas fa-star-half-alt"></i>' : '<i class="far fa-star"></i>');
+                                ?>
+                            </div>
+                            <div class="text-muted small"><?php echo count($data['reviews'] ?? []); ?> đánh giá</div>
                         </div>
                     </div>
-                    <?php if (isset($_SESSION['user']) && $data['canReview']): ?>
-                        <button class="btn btn-outline-dark rounded-0 px-4" onclick="showReviewForm()">Viết đánh giá</button>
-                    <?php endif; ?>
+                    <div class="col-md-7 mt-4 mt-md-0">
+                        <?php
+                        $starCounts = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
+                        foreach ($data['reviews'] ?? [] as $r) {
+                            if (isset($starCounts[$r['rating']])) $starCounts[$r['rating']]++;
+                        }
+                        $total = max(count($data['reviews'] ?? []), 1); // Avoid div by zero
+                        ?>
+                        <div class="d-flex flex-column gap-2 px-md-4">
+                            <?php for ($star = 5; $star >= 1; $star--): ?>
+                                <?php $percent = ($starCounts[$star] / $total) * 100; ?>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="text-muted small fw-bold" style="width: 30px;"><?php echo $star; ?> <i class="fas fa-star text-warning"></i></div>
+                                    <div class="progress flex-grow-1" style="height: 6px;">
+                                        <div class="progress-bar" role="progressbar" style="width: <?php echo $percent; ?>%"></div>
+                                    </div>
+                                    <div class="text-muted small text-end" style="width: 30px;"><?php echo $starCounts[$star]; ?></div>
+                                </div>
+                            <?php endfor; ?>
+                        </div>
+                        
+                        <div class="mt-4 text-center text-md-start px-md-4">
+                            <?php if (isset($_SESSION['user']) && $data['canReview']): ?>
+                                <button class="btn btn-dark rounded-0 px-4 py-2 text-uppercase letter-spacing-1" onclick="showReviewForm()">Viết đánh giá</button>
+                            <?php elseif (!isset($_SESSION['user'])): ?>
+                                <a href="<?php echo BASE_URL; ?>/auth/login" class="btn btn-outline-dark rounded-0 px-4">Đăng nhập để đánh giá</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Review Form (Hidden by default) -->
@@ -370,15 +561,36 @@ $gallery = array_unique($gallery);
                 <div class="reviews-list">
                     <?php if (!empty($data['reviews'])): ?>
                         <?php foreach ($data['reviews'] as $review): ?>
-                            <div class="mb-4 border-bottom pb-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div class="fw-bold text-uppercase"><?php echo htmlspecialchars($review['user_name']); ?></div>
-                                    <div class="small text-muted"><?php echo date('d/m/Y', strtotime($review['created_at'])); ?></div>
+                            <div class="mb-4 border-bottom pb-4">
+                                <div class="d-flex gap-3">
+                                    <div class="flex-shrink-0">
+                                        <?php if (!empty($review['avatar_url'])): ?>
+                                            <img src="<?php echo htmlspecialchars($review['avatar_url']); ?>" class="rounded-circle object-fit-cover" style="width: 50px; height: 50px;">
+                                        <?php else: ?>
+                                            <div class="avatar-placeholder">
+                                                <?php 
+                                                $parts = explode(' ', $review['user_name']);
+                                                $initials = '';
+                                                if (count($parts) > 0) $initials .= strtoupper(mb_substr($parts[0], 0, 1));
+                                                if (count($parts) > 1) $initials .= strtoupper(mb_substr(end($parts), 0, 1));
+                                                echo $initials ?: 'U';
+                                                ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h6 class="mb-0 fw-bold"><?php echo htmlspecialchars($review['user_name']); ?></h6>
+                                            <small class="text-muted"><?php echo date('d/m/Y', strtotime($review['created_at'])); ?></small>
+                                        </div>
+                                        <div class="text-warning mb-2 small">
+                                            <?php for($i=1; $i<=5; $i++) echo $i <= $review['rating'] ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>'; ?>
+                                        </div>
+                                        <p class="text-secondary mb-0"><?php echo nl2br(htmlspecialchars($review['comment'])); ?></p>
+                                        
+                                        <!-- Placeholder for admin reply if needed later -->
+                                    </div>
                                 </div>
-                                <div class="text-warning mb-2 small">
-                                    <?php for($i=1; $i<=5; $i++) echo $i <= $review['rating'] ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>'; ?>
-                                </div>
-                                <p class="text-muted mb-0"><?php echo nl2br(htmlspecialchars($review['comment'])); ?></p>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>

@@ -22,47 +22,63 @@
             <!-- Sidebar -->
             <div class="col-lg-3 pe-lg-5">
                 <div class="sidebar mb-5 mb-lg-0 sticky-top" style="top: 100px; z-index: 900;">
-                    <!-- Search -->
-                    <div class="mb-4">
-                        <form method="GET" class="position-relative">
-                            <input type="text" name="search" class="form-control rounded-0 border-0 border-bottom shadow-none ps-0" 
-                                   placeholder="Tìm kiếm..." value="<?php echo htmlspecialchars($data['search']); ?>"
-                                   style="background: transparent; border-color: #eee !important; color: #666;">
-                            <button type="submit" class="btn position-absolute top-50 end-0 translate-middle-y border-0 p-0 text-muted">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </form>
+                    <!-- Price Range -->
+                    <div class="mb-5">
+                        <h5 class="text-uppercase letter-spacing-1 mb-4 fs-6 fw-bold text-dark border-bottom pb-2">Khoảng giá</h5>
+                        <div class="price-slider-wrapper">
+                            <!-- Dual Range Custom Sliders -->
+                            <div class="slider-container position-relative mb-4" style="height: 4px; background: #e9ecef; border-radius: 5px; margin-top: 15px;">
+                                <div class="slider-track bg-dark position-absolute" style="height: 100%; border-radius: 5px; z-index: 1;"></div>
+                                <input type="range" class="position-absolute w-100 p-0 m-0" min="0" max="100000000" step="100000" id="slider-1" value="<?php echo $data['minPrice'] ?? 0; ?>" style="z-index: 2;">
+                                <input type="range" class="position-absolute w-100 p-0 m-0" min="0" max="100000000" step="100000" id="slider-2" value="<?php echo $data['maxPrice'] ?? 500000000; ?>" style="z-index: 2;">
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="fw-bold text-muted small" id="range1">0đ</span>
+                                <span class="fw-bold text-muted small" id="range2">100.000.000đ</span>
+                            </div>
+
+                            <button type="button" class="btn btn-dark w-100 text-uppercase small letter-spacing-1" onclick="applyPriceFilter()">Lọc giá</button>
+                        </div>
                     </div>
 
                     <!-- Categories -->
-                    <div class="mb-4">
-                        <h5 class="text-uppercase letter-spacing-1 mb-3 fs-6 fw-bold text-dark">Danh mục</h5>
-                        <div class="d-flex flex-column gap-2">
-                            <a href="<?php echo BASE_URL; ?>/products" class="text-decoration-none <?php echo !$data['selectedCategory'] ? 'text-primary fw-bold' : 'text-secondary'; ?>">
-                                Tất cả
-                            </a>
-                            <?php foreach ($data['categories'] as $category): ?>
-                                <a href="?category=<?php echo $category['id']; ?>&brand=<?php echo $data['selectedBrand']; ?>&sort=<?php echo $data['selectedSort']; ?>" 
-                                   class="text-decoration-none <?php echo $data['selectedCategory'] == $category['id'] ? 'text-primary fw-bold' : 'text-secondary'; ?> d-flex justify-content-between align-items-center">
-                                    <?php echo htmlspecialchars($category['name']); ?>
+                    <div class="mb-5">
+                        <h5 class="text-uppercase letter-spacing-1 mb-3 fs-6 fw-bold text-dark border-bottom pb-2">Danh mục</h5>
+                        <div class="filter-scroll-container">
+                            <div class="d-flex flex-column gap-2">
+                                <a href="<?php echo BASE_URL; ?>/products" class="text-decoration-none filter-item <?php echo !$data['selectedCategory'] ? 'active' : ''; ?>">
+                                    <div class="filter-checkbox"><i class="fas fa-check"></i></div>
+                                    <span>Tất cả</span>
                                 </a>
-                            <?php endforeach; ?>
+                                <?php foreach ($data['categories'] as $category): ?>
+                                    <a href="?category=<?php echo $category['id']; ?>&brand=<?php echo $data['selectedBrand']; ?>&sort=<?php echo $data['selectedSort']; ?>" 
+                                       class="text-decoration-none filter-item <?php echo $data['selectedCategory'] == $category['id'] ? 'active' : ''; ?>">
+                                        <div class="filter-checkbox"><i class="fas fa-check"></i></div>
+                                        <span><?php echo htmlspecialchars($category['name']); ?></span>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Brands -->
-                    <div class="mb-4">
-                        <h5 class="text-uppercase letter-spacing-1 mb-3 fs-6 fw-bold text-dark">Thương hiệu</h5>
-                        <div class="d-flex flex-column gap-2">
-                            <a href="?category=<?php echo $data['selectedCategory']; ?>&sort=<?php echo $data['selectedSort']; ?>" class="text-decoration-none <?php echo !$data['selectedBrand'] ? 'text-primary fw-bold' : 'text-secondary'; ?>">
-                                Tất cả
-                            </a>
-                            <?php foreach ($data['brands'] as $brand): ?>
-                                <a href="?brand=<?php echo $brand['id']; ?>&category=<?php echo $data['selectedCategory']; ?>&sort=<?php echo $data['selectedSort']; ?>" 
-                                   class="text-decoration-none <?php echo $data['selectedBrand'] == $brand['id'] ? 'text-primary fw-bold' : 'text-secondary'; ?> d-flex justify-content-between align-items-center">
-                                    <?php echo htmlspecialchars($brand['name']); ?>
+                    <div class="mb-5">
+                        <h5 class="text-uppercase letter-spacing-1 mb-3 fs-6 fw-bold text-dark border-bottom pb-2">Thương hiệu</h5>
+                        <div class="filter-scroll-container">
+                            <div class="d-flex flex-column gap-2">
+                                <a href="?category=<?php echo $data['selectedCategory']; ?>&sort=<?php echo $data['selectedSort']; ?>" class="text-decoration-none filter-item <?php echo !$data['selectedBrand'] ? 'active' : ''; ?>">
+                                    <div class="filter-checkbox"><i class="fas fa-check"></i></div>
+                                    <span>Tất cả</span>
                                 </a>
-                            <?php endforeach; ?>
+                                <?php foreach ($data['brands'] as $brand): ?>
+                                    <a href="?brand=<?php echo $brand['id']; ?>&category=<?php echo $data['selectedCategory']; ?>&sort=<?php echo $data['selectedSort']; ?>" 
+                                       class="text-decoration-none filter-item <?php echo $data['selectedBrand'] == $brand['id'] ? 'active' : ''; ?>">
+                                        <div class="filter-checkbox"><i class="fas fa-check"></i></div>
+                                        <span><?php echo htmlspecialchars($brand['name']); ?></span>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +131,7 @@
                                 <div class="product-card border h-100">
                                     <div class="product-image-wrapper">
                                         <?php if ($product['old_price'] && $product['old_price'] > $product['price']): ?>
-                                            <div class="position-absolute top-0 start-0 m-3 badge bg-dark rounded-0 fw-normal small z-2">
+                                            <div class="discount-badge">
                                                 -<?php echo round((1 - $product['price'] / $product['old_price']) * 100); ?>%
                                             </div>
                                         <?php endif; ?>
@@ -133,18 +149,25 @@
                                         </a>
 
                                         <!-- Quick Actions Overlay -->
-                                        <div class="position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0 product-actions-overlay" style="transition: opacity 0.3s;">
-                                            <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>" class="btn btn-light rounded-circle shadow-sm" style="width: 40px; height: 40px; padding: 0; line-height: 40px;">
-                                                <i class="far fa-eye"></i>
+                                        <div class="position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0 product-actions-overlay" style="transition: all 0.3s; transform: translateY(20px);">
+                                            <!-- View Details -->
+                                            <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>" class="btn btn-light bg-white text-dark btn-action shadow-sm" title="Xem chi tiết">
+                                                <i class="fas fa-eye"></i>
                                             </a>
+
+                                            <!-- Add to Cart -->
                                             <?php if (isset($_SESSION['user'])): ?>
                                                 <form action="<?php echo BASE_URL; ?>/cart/add" method="POST">
                                                     <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                                                     <input type="hidden" name="quantity" value="1">
-                                                    <button type="submit" class="btn btn-dark rounded-circle shadow-sm" style="width: 40px; height: 40px; padding: 0; line-height: 40px;">
-                                                        <i class="fas fa-shopping-bag"></i>
+                                                    <button type="submit" class="btn btn-dark btn-action shadow-sm" title="Thêm vào giỏ">
+                                                        <i class="fas fa-shopping-cart"></i>
                                                     </button>
                                                 </form>
+                                            <?php else: ?>
+                                                <a href="<?php echo BASE_URL; ?>/auth/login" class="btn btn-dark btn-action shadow-sm" title="Thêm vào giỏ">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </a>
                                             <?php endif; ?>
                                         </div>
                                     </div>
@@ -159,11 +182,12 @@
                                             </a>
                                         </h3>
                                         <div class="product-price">
-                                            <span class="fw-bold fs-5">
+                                            <span class="product-price-highlight">
                                                 <?php echo number_format($product['price'], 0, ',', '.'); ?>đ
                                             </span>
                                             <?php if ($product['old_price'] && $product['old_price'] > $product['price']): ?>
-                                                <span class="text-decoration-line-through text-muted small me-2">
+                                                <br>
+                                                <span class="text-decoration-line-through text-muted small">
                                                     <?php echo number_format($product['old_price'], 0, ',', '.'); ?>đ
                                                 </span>
                                             <?php endif; ?>
@@ -220,7 +244,195 @@
 
 <style>
 /* Additional style for this view specifically to handle hover effect that isn't global */
+/* Additional style for this view specifically to handle hover effect that isn't global */
 .product-card:hover .product-actions-overlay {
     opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* Sidebar Custom Scrollbar */
+.filter-scroll-container {
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px; /* Avoid content hide */
+}
+
+.filter-scroll-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.filter-scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+.filter-scroll-container::-webkit-scrollbar-thumb {
+    background: #ccc; 
+    border-radius: 4px;
+}
+
+.filter-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #888; 
+}
+
+/* Action Buttons */
+.btn-action {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-action:hover {
+    background-color: var(--secondary-color, #c9a050) !important;
+    color: white !important;
+    transform: translateY(-3px);
+}
+
+.active .filter-checkbox {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.active .filter-checkbox i {
+    opacity: 1;
+}
+/* Slider Styles */
+input[type="range"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    outline: none;
+    position: absolute;
+    margin: 0;
+    top: 0;
+    bottom: 0;
+    background-color: transparent;
+    pointer-events: none;
+}
+.slider-track {
+    height: 100%; /* Match parent height */
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    border-radius: 5px;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    height: 5px; /* Same as container height */
+    background: transparent; /* Fix for double track */
+    border: none; /* remove default border */
+}
+input[type="range"]::-moz-range-track {
+    -moz-appearance: none;
+    height: 5px;
+    background: transparent;
+    border: none;
+}
+input[type="range"]::-ms-track {
+    appearance: none;
+    height: 5px;
+    background: transparent;
+    border: none;
+    color: transparent;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    cursor: pointer;
+    margin-top: -8px; 
+    pointer-events: auto;
+    border-radius: 50%;
+    border: 3px solid #000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(0.95);
+}
+input[type="range"]::-moz-range-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: #fff;
+    pointer-events: auto;
+    border: 3px solid #000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
 }
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const slider1 = document.getElementById("slider-1");
+    const slider2 = document.getElementById("slider-2");
+    const display1 = document.getElementById("range1");
+    const display2 = document.getElementById("range2");
+    const track = document.querySelector(".slider-track");
+    const minGap = 1000000; // 1 million gap
+
+    function slideOne() {
+        if(parseInt(slider2.value) - parseInt(slider1.value) <= minGap){
+            slider1.value = parseInt(slider2.value) - minGap;
+        }
+        updateDisplay();
+    }
+
+    function slideTwo() {
+        if(parseInt(slider2.value) - parseInt(slider1.value) <= minGap){
+            slider2.value = parseInt(slider1.value) + minGap;
+        }
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        display1.textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(slider1.value);
+        display2.textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(slider2.value);
+        fillColor();
+    }
+
+    function fillColor() {
+        const percent1 = (slider1.value / slider1.max) * 100;
+        const percent2 = (slider2.value / slider2.max) * 100;
+        track.style.left = percent1 + "%";
+        track.style.right = (100 - percent2) + "%";
+    }
+
+    if(slider1 && slider2) {
+        slider1.addEventListener("input", slideOne);
+        slider2.addEventListener("input", slideTwo);
+        
+        // Init
+        slideOne();
+        slideTwo();
+    }
+});
+
+function applyPriceFilter() {
+    const slider1 = document.getElementById("slider-1");
+    const slider2 = document.getElementById("slider-2");
+    
+    const min = Math.min(slider1.value, slider2.value);
+    const max = Math.max(slider1.value, slider2.value);
+    
+    // Update URL params
+    const url = new URL(window.location.href);
+    url.searchParams.set("min_price", min);
+    url.searchParams.set("max_price", max);
+    url.searchParams.set("page", 1); // Reset page
+    
+    window.location.href = url.toString();
+}
+</script>

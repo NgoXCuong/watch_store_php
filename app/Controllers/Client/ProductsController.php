@@ -28,8 +28,8 @@ class ProductsController extends Controller {
         $perPage = 9; // Số sản phẩm mỗi trang
 
         // Lấy danh sách sản phẩm
-        $products = $this->productModel->getAll($page, $perPage, $search, $categoryId, $brandId, $sort);
-        $total = $this->productModel->countAll($search, $categoryId, $brandId);
+        $products = $this->productModel->getAll($page, $perPage, $search, $categoryId, $brandId, $sort, $minPrice, $maxPrice);
+        $total = $this->productModel->countAll($search, $categoryId, $brandId, $minPrice, $maxPrice);
         $totalPages = ceil($total / $perPage);
 
         // Lấy danh sách categories và brands để filter

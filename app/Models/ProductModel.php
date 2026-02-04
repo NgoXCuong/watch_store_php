@@ -14,7 +14,7 @@ class ProductModel {
     }
 
     // Lấy tất cả sản phẩm với phân trang
-    public function getAll($page = 1, $limit = 10, $search = '', $categoryId = null, $brandId = null, $sort = 'default') {
+    public function getAll($page = 1, $limit = 10, $search = '', $categoryId = null, $brandId = null, $sort = 'default', $minPrice = null, $maxPrice = null) {
         $offset = ($page - 1) * $limit;
         $where = "p.status = 'active'"; // Thêm điều kiện active mặc định
         $params = [];
@@ -24,7 +24,7 @@ class ProductModel {
             $params[':search'] = '%' . $search . '%';
         }
 
-        // Lọc theo danh mục (Sử dụng bảng trung gian)
+        // Lọc theo danh mục
         if ($categoryId) {
             $where .= " AND EXISTS (SELECT 1 FROM product_categories pc WHERE pc.product_id = p.id AND pc.category_id = :category_id)";
             $params[':category_id'] = $categoryId;
@@ -33,6 +33,16 @@ class ProductModel {
         if ($brandId) {
             $where .= " AND p.brand_id = :brand_id";
             $params[':brand_id'] = $brandId;
+        }
+
+        // Filter by Price
+        if ($minPrice !== null) {
+            $where .= " AND p.price >= :min_price";
+            $params[':min_price'] = $minPrice;
+        }
+        if ($maxPrice !== null) {
+            $where .= " AND p.price <= :max_price";
+            $params[':max_price'] = $maxPrice;
         }
 
         // Xác định cách sắp xếp
@@ -84,7 +94,7 @@ class ProductModel {
     }
 
     // Đếm tổng số sản phẩm
-    public function countAll($search = '', $categoryId = null, $brandId = null) {
+    public function countAll($search = '', $categoryId = null, $brandId = null, $minPrice = null, $maxPrice = null) {
         $where = "p.status = 'active'";
         $params = [];
 
@@ -101,6 +111,16 @@ class ProductModel {
         if ($brandId) {
             $where .= " AND p.brand_id = :brand_id";
             $params[':brand_id'] = $brandId;
+        }
+
+        // Filter by Price
+        if ($minPrice !== null) {
+            $where .= " AND p.price >= :min_price";
+            $params[':min_price'] = $minPrice;
+        }
+        if ($maxPrice !== null) {
+            $where .= " AND p.price <= :max_price";
+            $params[':max_price'] = $maxPrice;
         }
 
         $query = "SELECT COUNT(*) as total FROM " . $this->table . " p WHERE $where";
