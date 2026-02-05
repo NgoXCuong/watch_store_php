@@ -101,12 +101,9 @@ class ProfileController extends Controller {
         }
 
         $data = [
-            'username' => trim($_POST['username'] ?? ''),
             'email' => trim($_POST['email'] ?? ''),
             'full_name' => trim($_POST['full_name'] ?? ''),
-            'phone' => trim($_POST['phone'] ?? ''),
-            'phone' => trim($_POST['phone'] ?? ''),
-            'avatar_url' => trim($_POST['avatar_url'] ?? '') // Keep old url if no new file
+            'phone' => trim($_POST['phone'] ?? '')
         ];
 
         // Handle File Upload
@@ -124,11 +121,7 @@ class ProfileController extends Controller {
         $errors = [];
 
         // Validation
-        if (empty($data['username'])) {
-            $errors['username'] = 'Tên đăng nhập không được để trống';
-        } elseif ($data['username'] !== $user['username'] && $this->userModel->findByUsername($data['username'])) {
-            $errors['username'] = 'Tên đăng nhập đã tồn tại';
-        }
+        // Username cannot be changed, so we don't validate or update it.
 
         if (empty($data['email'])) {
             $errors['email'] = 'Email không được để trống';
@@ -156,7 +149,7 @@ class ProfileController extends Controller {
         // Cập nhật thông tin
         if ($this->userModel->update($userId, $data)) {
             // Cập nhật session
-            $_SESSION['user']['username'] = $data['username'];
+            // Username không thay đổi
             $_SESSION['user']['email'] = $data['email'];
             $_SESSION['user']['full_name'] = $data['full_name'];
             if (!empty($data['avatar_url'])) {

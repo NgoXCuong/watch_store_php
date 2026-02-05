@@ -15,7 +15,7 @@ class OrdersController extends Controller {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
         $status = isset($_GET['status']) ? trim($_GET['status']) : '';
-        $limit = 10;
+        $limit = 8;
 
         $orders = $this->orderModel->getAll($page, $limit, $search, $status);
         $total = $this->orderModel->countAll($search, $status);

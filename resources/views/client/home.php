@@ -130,17 +130,27 @@
                             <?php endif; ?>
 
                             <!-- Hover Overlay -->
-                            <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-white bg-opacity-90 translate-y-100 transition-transform group-hover-visible d-flex justify-content-center gap-2">
-                                <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>" class="btn btn-outline-dark rounded-circle" style="width: 40px; height: 40px; padding: 0; line-height: 38px;">
-                                    <i class="far fa-eye"></i>
+                            <!-- Quick Actions Overlay -->
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0 product-actions-overlay" style="transition: all 0.3s; transform: translateY(20px);">
+                                <!-- View Details -->
+                                <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>" class="btn btn-light bg-white text-dark btn-action shadow-sm" title="Xem chi tiết">
+                                    <i class="fas fa-eye"></i>
                                 </a>
-                                <form action="<?php echo BASE_URL; ?>/cart/add" method="POST">
-                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button class="btn btn-dark rounded-circle" style="width: 40px; height: 40px; padding: 0; line-height: 38px;">
-                                        <i class="fas fa-shopping-bag"></i>
-                                    </button>
-                                </form>
+
+                                <!-- Add to Cart -->
+                                <?php if (isset($_SESSION['user'])): ?>
+                                    <form action="<?php echo BASE_URL; ?>/cart/add" method="POST">
+                                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-dark btn-action shadow-sm" title="Thêm vào giỏ">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+                                <?php else: ?>
+                                    <a href="<?php echo BASE_URL; ?>/auth/login" class="btn btn-dark btn-action shadow-sm" title="Thêm vào giỏ">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                <?php endif; ?>
                             </div>
                         </div>
 
@@ -340,5 +350,28 @@
 }
 .hover-scale:hover {
     transform: scale(1.1);
+}
+
+/* Action Buttons */
+.btn-action {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-action:hover {
+    background-color: var(--secondary-color, #c9a050) !important;
+    color: white !important;
+    transform: translateY(-3px);
+}
+
+.product-card:hover .product-actions-overlay {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 </style>

@@ -14,7 +14,7 @@ class ReviewsController extends Controller {
     public function index() {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $status = isset($_GET['status']) ? $_GET['status'] : 'all'; // all, approved, pending
-        $limit = 10;
+        $limit = 8;
 
         // Convert status to boolean for model
         $approved = null;

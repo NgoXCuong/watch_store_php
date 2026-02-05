@@ -12,14 +12,33 @@ class CategoriesController extends Controller {
 
     // Hiển thị danh sách danh mục
     public function index() {
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = 8; // User requested 8 items per page
+
         $categories = $this->categoryModel->getAll();
 
         // Tổ chức danh mục theo cấp
         $organizedCategories = $this->organizeCategories($categories);
 
+        // Pagination Logic for Array
+        $total = count($organizedCategories);
+        $totalPages = ceil($total / $limit);
+        
+        // Ensure page validity
+        if ($page < 1) $page = 1;
+        if ($page > $totalPages && $totalPages > 0) $page = $totalPages;
+
+        $offset = ($page - 1) * $limit;
+        
+        // Slice the array for current page
+        $pagedCategories = array_slice($organizedCategories, $offset, $limit);
+
         $this->view('admin/categories/index', [
             'title' => 'Quản lý danh mục',
-            'categories' => $organizedCategories,
+            'categories' => $pagedCategories,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'total' => $total,
             'layout' => 'admin'
         ]);
     }

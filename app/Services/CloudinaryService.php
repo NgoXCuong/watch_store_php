@@ -54,7 +54,7 @@ class CloudinaryService {
 
             return [
                 'public_id' => $data['public_id'],
-                'url'       => $data['secure_url'],
+                'url'       => $data['url'],
                 'width'     => $data['width'] ?? 0,
                 'height'    => $data['height'] ?? 0,
                 'format'    => $data['format'] ?? 'jpg',

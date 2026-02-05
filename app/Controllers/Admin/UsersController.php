@@ -14,7 +14,7 @@ class UsersController extends Controller {
     public function index() {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-        $limit = 10;
+        $limit = 8;
 
         $users = $this->userModel->getAll($page, $limit, $search);
         $total = $this->userModel->countAll($search);

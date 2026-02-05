@@ -14,7 +14,7 @@ class VouchersController extends Controller {
     public function index() {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-        $limit = 10;
+        $limit = 8;
 
         $vouchers = $this->voucherModel->getAll($page, $limit, $search);
         $total = $this->voucherModel->countAll($search);

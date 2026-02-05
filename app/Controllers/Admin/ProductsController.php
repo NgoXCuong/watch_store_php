@@ -20,7 +20,7 @@ class ProductsController extends Controller {
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
         $categoryId = isset($_GET['category']) ? (int)$_GET['category'] : null;
         $brandId = isset($_GET['brand']) ? (int)$_GET['brand'] : null;
-        $limit = 10;
+        $limit = 8;
 
         $products = $this->productModel->getAll($page, $limit, $search, $categoryId, $brandId);
         $total = $this->productModel->countAll($search, $categoryId, $brandId);

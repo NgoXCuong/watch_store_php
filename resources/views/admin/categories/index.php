@@ -80,6 +80,37 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Pagination -->
+        <?php if (isset($totalPages) && $totalPages > 1): ?>
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <?php if ($currentPage > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $currentPage - 1; ?>">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php for ($i = max(1, $currentPage - 2); $i <= min($totalPages, $currentPage + 2); $i++): ?>
+                        <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>">
+                            <a class="page-link" href="?page=<?php echo $i; ?>">
+                                <?php echo $i; ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <?php if ($currentPage < $totalPages): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $currentPage + 1; ?>">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
     </div>
 </div>
 
