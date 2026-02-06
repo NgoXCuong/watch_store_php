@@ -181,7 +181,7 @@
                         <a href="<?php echo BASE_URL; ?>/products" class="btn btn-primary w-100 mb-2">
                             <i class="fas fa-redo me-2"></i>Mua lại
                         </a>
-                        <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-outline-secondary w-100">
+                        <a href="<?php echo BASE_URL; ?>/reviews/my-reviews" class="btn btn-outline-secondary w-100">
                             <i class="fas fa-list me-2"></i>Xem đánh giá của tôi
                         </a>
                     <?php endif; ?>

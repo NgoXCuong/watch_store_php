@@ -84,6 +84,7 @@ class AuthController extends Controller {
             'username' => $user['username'],
             'email' => $user['email'],
             'full_name' => $user['full_name'],
+            'avatar_url' => $user['avatar_url'],
             'role' => $user['role']
         ];
 
@@ -198,6 +199,7 @@ class AuthController extends Controller {
                 'username' => $user['username'],
                 'email' => $user['email'],
                 'full_name' => $user['full_name'],
+                'avatar_url' => $user['avatar_url'],
                 'role' => $user['role']
             ];
 

@@ -107,7 +107,7 @@
                                 ?>
                             </h2>
                             <p class="text-white-50 text-uppercase letter-spacing-1 small mb-4">Đánh giá</p>
-                            <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="btn btn-light bg-opacity-20 text-white border-0 rounded-pill px-4 btn-hover-light stretched-link small fw-bold">
+                            <a href="<?php echo BASE_URL; ?>/reviews/my-reviews" class="btn btn-light bg-opacity-20 text-white border-0 rounded-pill px-4 btn-hover-light stretched-link small fw-bold">
                                 Quản lý <i class="fas fa-arrow-right ms-2"></i>
                             </a>
                         </div>

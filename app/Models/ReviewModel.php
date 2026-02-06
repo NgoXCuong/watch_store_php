@@ -68,7 +68,7 @@ class ReviewModel {
 
     // Lấy đánh giá theo ID
     public function findById($id) {
-        $query = "SELECT r.*, p.name as product_name, u.full_name as user_name
+        $query = "SELECT r.*, p.name as product_name, p.image_url, u.full_name as user_name, u.avatar_url
                   FROM " . $this->table . " r
                   JOIN products p ON r.product_id = p.id
                   JOIN users u ON r.user_id = u.id
@@ -224,7 +224,7 @@ class ReviewModel {
 
     // Lấy đánh giá theo user
     public function getByUserId($userId) {
-        $query = "SELECT r.*, p.name as product_name
+        $query = "SELECT r.*, p.name as product_name, p.image_url as product_image
                   FROM " . $this->table . " r
                   JOIN products p ON r.product_id = p.id
                   WHERE r.user_id = :user_id

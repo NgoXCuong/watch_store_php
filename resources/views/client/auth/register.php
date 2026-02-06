@@ -200,7 +200,7 @@
                     </div>
                 <?php endif; ?>
 
-                <form action="<?= BASE_URL ?>/auth/registerProcess" method="POST">
+                <form action="<?= BASE_URL ?>/auth/register-process" method="POST">
                     <div class="row g-4 mb-4">
                         <div class="col-md-6">
                             <label for="username" class="form-label">Tên đăng nhập</label>

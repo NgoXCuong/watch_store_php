@@ -652,7 +652,7 @@
                                     <i class="fas fa-history text-center" style="width: 20px;"></i>
                                     <span>Lịch sử đơn hàng</span>
                                 </a>
-                                <a class="dropdown-item py-2 d-flex align-items-center gap-3 text-secondary" href="<?php echo BASE_URL; ?>/reviews/myReviews">
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-3 text-secondary" href="<?php echo BASE_URL; ?>/reviews/my-reviews">
                                     <i class="far fa-star text-center" style="width: 20px;"></i>
                                     <span>Đánh giá của tôi</span>
                                 </a>

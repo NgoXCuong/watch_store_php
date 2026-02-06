@@ -182,7 +182,7 @@
                     </div>
                 <?php endif; ?>
 
-                <form action="<?= BASE_URL ?>/auth/loginProcess" method="POST">
+                <form action="<?= BASE_URL ?>/auth/login-process" method="POST">
                     <div class="mb-4">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" 

@@ -188,7 +188,7 @@
                 
                 <div class="mb-4">
                     <h5 class="fw-bold mb-2"><i class="fas fa-map-marker-alt text-warning me-2"></i>Địa chỉ chính</h5>
-                    <p class="text-muted mb-0 ps-4">Số 10, Ngõ 1, Đường Phan Tây Nhạc, Phường Nam Từ Liêm, Hà Nội</p>
+                    <p class="text-muted mb-0 ps-4">Đường Phan Tây Nhạc, Phường Nam Từ Liêm, Hà Nội</p>
                 </div>
                 
                 <div class="mb-4">

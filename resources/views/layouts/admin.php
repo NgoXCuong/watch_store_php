@@ -344,8 +344,12 @@
                     <div class="small fw-bold text-dark"><?php echo $_SESSION['user']['full_name'] ?? 'Administrator'; ?></div>
                     <div class="x-small text-muted" style="font-size: 0.75rem;">Admin Access</div>
                 </div>
-                <div class="user-avatar">
-                    <?php echo strtoupper(substr($_SESSION['user']['username'] ?? 'A', 0, 1)); ?>
+                <div class="user-avatar" style="<?php echo (!empty($_SESSION['user']['avatar_url'])) ? 'background: none;' : ''; ?>">
+                    <?php if (!empty($_SESSION['user']['avatar_url'])): ?>
+                        <img src="<?php echo htmlspecialchars($_SESSION['user']['avatar_url']); ?>" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    <?php else: ?>
+                        <?php echo strtoupper(substr($_SESSION['user']['username'] ?? 'A', 0, 1)); ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>
@@ -353,39 +357,15 @@
         <!-- Content Flow -->
         <div class="content-wrapper fade-in-up">
             <?php
-            // Alert Messages
-            if (isset($_SESSION['success'])) {
-                echo '<div class="alert alert-success alert-custom alert-dismissible fade show mb-4" role="alert">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-success text-white rounded-circle p-2 me-3"><i class="fas fa-check"></i></div>
-                            <div>
-                                <h6 class="mb-0 fw-bold">Thành công!</h6>
-                                <div class="small">' . $_SESSION['success'] . '</div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                      </div>';
-                unset($_SESSION['success']);
-            }
-
-            if (isset($_SESSION['error'])) {
-                echo '<div class="alert alert-danger alert-custom alert-dismissible fade show mb-4" role="alert">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-danger text-white rounded-circle p-2 me-3"><i class="fas fa-exclamation"></i></div>
-                            <div>
-                                <h6 class="mb-0 fw-bold">Lỗi!</h6>
-                                <div class="small">' . $_SESSION['error'] . '</div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                      </div>';
-                unset($_SESSION['error']);
-            }
+            // Alerts are now handled by Toasts
             ?>
 
             <?php if (isset($content)) echo $content; ?>
         </div>
     </main>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1060; pointer-events: none;"></div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -401,14 +381,64 @@
             document.getElementById('sidebarOverlay').classList.remove('active');
         });
 
-        // Auto hide alerts
-        setTimeout(function() {
-            var alerts = document.querySelectorAll('.alert-dismissible');
-            alerts.forEach(function(alert) {
-                var bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 5000);
+        // --- Toast Notification Logic ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            
+            // Create toast element
+            const toastEl = document.createElement('div');
+            toastEl.className = 'toast align-items-center border-0 mb-2 fade show';
+            toastEl.style.pointerEvents = 'auto'; // Re-enable clicks
+            toastEl.setAttribute('role', 'alert');
+            toastEl.setAttribute('aria-live', 'assertive');
+            toastEl.setAttribute('aria-atomic', 'true');
+            
+            // Set colors based on type
+            if (type === 'success') {
+                toastEl.classList.add('bg-success', 'text-white'); // Using standard success color for admin
+                toastEl.style.borderLeft = '5px solid #198754';
+            } else if (type === 'error') {
+                toastEl.classList.add('bg-danger', 'text-white');
+                toastEl.style.borderLeft = '5px solid #fff';
+            } else {
+                toastEl.classList.add('bg-white', 'text-dark');
+                toastEl.style.borderLeft = '5px solid var(--admin-primary)';
+            }
+
+            // Icon selection
+            const icon = type === 'success' ? '<i class="fas fa-check-circle me-2"></i>' 
+                       : (type === 'error' ? '<i class="fas fa-exclamation-circle me-2"></i>' 
+                       : '<i class="fas fa-info-circle me-2"></i>');
+
+            toastEl.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body d-flex align-items-center" style="font-size: 0.95rem;">
+                        ${icon}
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+
+            container.appendChild(toastEl);
+
+            // Auto remove
+            setTimeout(() => {
+                toastEl.classList.remove('show');
+                setTimeout(() => toastEl.remove(), 500); 
+            }, 3000);
+        }
+
+        // Display PHP Session Messages as Toasts
+        <?php if (isset($_SESSION['success'])): ?>
+            showToast('<?php echo $_SESSION['success']; ?>', 'success');
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            showToast('<?php echo $_SESSION['error']; ?>', 'error');
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
     </script>
 </body>
 </html>

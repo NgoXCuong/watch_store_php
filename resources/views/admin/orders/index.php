@@ -215,7 +215,7 @@ function viewOrderDetails(orderId) {
     viewFullBtn.href = `<?php echo BASE_URL; ?>/admin/orders/show/${orderId}`;
 
     // Fetch order details
-    fetch(`<?php echo BASE_URL; ?>/admin/orders/getOrderDetails/${orderId}`)
+    fetch(`<?php echo BASE_URL; ?>/admin/orders/get-order-details/${orderId}`)
         .then(response => response.json())
         .then(data => {
             if (data.error) {

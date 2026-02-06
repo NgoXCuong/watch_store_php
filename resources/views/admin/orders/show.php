@@ -141,7 +141,7 @@
                             <span class="badge bg-<?php echo $statusClass; ?> float-end"><?php echo $statusLabel; ?></span>
                         </div>
 
-                        <form action="<?php echo BASE_URL; ?>/admin/orders/updateStatus/<?php echo $order['id']; ?>" method="POST">
+                        <form action="<?php echo BASE_URL; ?>/admin/orders/update-status/<?php echo $order['id']; ?>" method="POST">
                             <div class="mb-3">
                                 <label for="status" class="form-label">Cập nhật trạng thái:</label>
                                 <select name="status" id="status" class="form-select" onchange="this.form.submit()">
@@ -197,7 +197,7 @@
                             </span>
                         </div>
 
-                        <form action="<?php echo BASE_URL; ?>/admin/orders/updatePaymentStatus/<?php echo $order['id']; ?>" method="POST">
+                        <form action="<?php echo BASE_URL; ?>/admin/orders/update-payment-status/<?php echo $order['id']; ?>" method="POST">
                             <div class="mb-3">
                                 <label for="payment_status" class="form-label">Cập nhật trạng thái thanh toán:</label>
                                 <select name="payment_status" id="payment_status" class="form-select" onchange="this.form.submit()">

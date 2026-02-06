@@ -22,19 +22,9 @@ foreach ($data['cartItems'] as $item) {
 <div class="container mb-5" style="max-width: 1400px;">
     <h1 class="text-uppercase letter-spacing-2 mb-5 text-center" style="font-family: var(--font-heading);">Giỏ hàng của bạn</h1>
 
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success rounded-0 border-0 mb-4" role="alert">
-            <i class="fas fa-check-circle me-2"></i><?php echo $_SESSION['success']; ?>
-        </div>
-        <?php unset($_SESSION['success']); ?>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger rounded-0 border-0 mb-4" role="alert">
-            <i class="fas fa-exclamation-triangle me-2"></i><?php echo $_SESSION['error']; ?>
-        </div>
-        <?php unset($_SESSION['error']); ?>
-    <?php endif; ?>
+    <?php
+    // Alerts are handled by global Toast in layout
+    ?>
 
     <?php if (empty($data['cartItems'])): ?>
         <div class="text-center py-5 bg-light">

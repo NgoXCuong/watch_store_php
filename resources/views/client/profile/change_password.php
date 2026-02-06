@@ -30,7 +30,7 @@
                 <a href="<?php echo BASE_URL; ?>/profile/change-password" class="list-group-item list-group-item-action py-3 active fw-bold">
                     <i class="fas fa-key me-3"></i>Đổi mật khẩu
                 </a>
-                <a href="<?php echo BASE_URL; ?>/reviews/myReviews" class="list-group-item list-group-item-action py-3">
+                <a href="<?php echo BASE_URL; ?>/reviews/my-reviews" class="list-group-item list-group-item-action py-3">
                     <i class="fas fa-star me-3 text-muted"></i>Đánh giá của tôi
                 </a>
             </div>
