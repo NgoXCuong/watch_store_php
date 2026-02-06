@@ -8,8 +8,8 @@ class Database {
     private $host = 'localhost';
     private $db_name = 'watch_store_db';
     private $username = 'root';
-    private $password = ''; // Mặc định XAMPP không có pass
-    private $port = '3307'; // <--- QUAN TRỌNG: Phải khớp với cổng MySQL của bạn
+    private $password = ''; 
+    private $port = '3307'; 
 
     public $conn;
 

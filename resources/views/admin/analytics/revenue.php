@@ -1,377 +1,219 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $data['title'] ?? 'Báo cáo doanh thu'; ?></title>
-
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-        .report-header {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .date-filters {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .date-input {
-            padding: 0.5rem 1rem;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-
-        .btn-filter {
-            padding: 0.5rem 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-filter:hover {
-            background: var(--secondary-color);
-        }
-
-        .export-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .btn-export {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid var(--primary-color);
-            background: white;
-            color: var(--primary-color);
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-export:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .stats-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .chart-container {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .chart-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .chart-item {
-            height: 400px;
-        }
-
-        .data-table {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .table-header {
-            background: var(--primary-color);
-            color: white;
-            padding: 1rem;
-            font-weight: 600;
-        }
-
-        .table-body {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .table-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            padding: 1rem;
-            border-bottom: 1px solid #e9ecef;
-            align-items: center;
-        }
-
-        .table-row:hover {
-            background: #f8f9fa;
-        }
-
-        .table-cell {
-            text-align: center;
-        }
-
-        .revenue-amount {
-            font-weight: 600;
-            color: var(--success-color);
-        }
-
-        @media (max-width: 768px) {
-            .chart-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .date-filters {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .export-buttons {
-                flex-direction: column;
-            }
-
-            .table-row {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-                text-align: left;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Report Header -->
-    <div class="report-header">
-        <h2><i class="fas fa-chart-line me-2"></i>Báo cáo doanh thu</h2>
-        <p class="text-muted">Phân tích chi tiết doanh thu theo thời gian</p>
-
-        <!-- Date Filters -->
-        <form method="GET" class="date-filters">
-            <label for="start_date">Từ ngày:</label>
-            <input type="date" id="start_date" name="start_date" class="date-input"
-                   value="<?php echo $data['startDate']; ?>">
-
-            <label for="end_date">Đến ngày:</label>
-            <input type="date" id="end_date" name="end_date" class="date-input"
-                   value="<?php echo $data['endDate']; ?>">
-
-            <button type="submit" class="btn-filter">
-                <i class="fas fa-filter me-1"></i>Lọc
+<div class="container-fluid p-0">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 fade-in-up">
+        <div>
+            <h2 class="text-uppercase fw-bold text-dark mb-1" style="font-family: 'Playfair Display', serif;">
+                Báo cáo doanh thu
+            </h2>
+             <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>/admin/analytics" class="text-decoration-none text-muted">Analytics</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Doanh thu</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <!-- Date Filter Form -->
+        <form action="" method="GET" class="d-flex gap-2 bg-white p-2 rounded-pill shadow-sm border">
+            <input type="date" name="start_date" value="<?php echo $data['startDate']; ?>" 
+                   class="form-control border-0 bg-transparent rounded-pill px-3 shadow-none" style="max-width: 150px;">
+            <span class="align-self-center text-muted">-</span>
+            <input type="date" name="end_date" value="<?php echo $data['endDate']; ?>" 
+                   class="form-control border-0 bg-transparent rounded-pill px-3 shadow-none" style="max-width: 150px;">
+            <button type="submit" class="btn btn-dark rounded-pill px-4 fw-semibold">
+                <i class="fas fa-filter me-1"></i> Lọc
             </button>
         </form>
-
-        <!-- Export Buttons -->
-        <div class="export-buttons">
-            <a href="<?php echo BASE_URL; ?>/admin/analytics/exportExcel?type=revenue&start_date=<?php echo $data['startDate']; ?>&end_date=<?php echo $data['endDate']; ?>"
-               class="btn-export">
-                <i class="fas fa-file-excel me-1"></i>Xuất Excel
-            </a>
-            <a href="<?php echo BASE_URL; ?>/admin/analytics/exportPdf?type=revenue&start_date=<?php echo $data['startDate']; ?>&end_date=<?php echo $data['endDate']; ?>"
-               class="btn-export">
-                <i class="fas fa-file-pdf me-1"></i>Xuất PDF
-            </a>
-        </div>
     </div>
 
-    <!-- Statistics Cards -->
-    <div class="stats-cards">
-        <div class="stat-card">
-            <div class="stat-value">
-                <?php echo number_format($data['revenueData'], 0, ',', '.'); ?> VND
-            </div>
-            <div class="stat-label">Tổng doanh thu</div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-value">
-                <?php echo count($data['dailyRevenue']); ?>
-            </div>
-            <div class="stat-label">Số ngày có doanh thu</div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-value">
-                <?php
-                $totalOrders = array_sum(array_column($data['dailyRevenue'], 'orders'));
-                echo number_format($totalOrders, 0, ',', '.');
-                ?>
-            </div>
-            <div class="stat-label">Tổng đơn hàng</div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-value">
-                <?php
-                $avgOrderValue = $totalOrders > 0 ? $data['revenueData'] / $totalOrders : 0;
-                echo number_format($avgOrderValue, 0, ',', '.');
-                ?> VND
-            </div>
-            <div class="stat-label">Giá trị TB/đơn</div>
-        </div>
-    </div>
-
-    <!-- Charts -->
-    <div class="chart-container">
-        <h4 class="mb-4">Biểu đồ doanh thu</h4>
-        <div class="chart-grid">
-            <div class="chart-item">
-                <h5>Doanh thu theo tháng</h5>
-                <canvas id="monthlyRevenueChart"></canvas>
-            </div>
-            <div class="chart-item">
-                <h5>Doanh thu theo ngày</h5>
-                <canvas id="dailyRevenueChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Data Table -->
-    <div class="data-table">
-        <div class="table-header">
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
-                <div>Ngày</div>
-                <div>Doanh thu</div>
-                <div>Số đơn hàng</div>
-            </div>
-        </div>
-        <div class="table-body">
-            <?php foreach ($data['dailyRevenue'] as $row): ?>
-                <div class="table-row">
-                    <div class="table-cell"><?php echo date('d/m/Y', strtotime($row['date'])); ?></div>
-                    <div class="table-cell revenue-amount">
-                        <?php echo number_format($row['revenue'], 0, ',', '.'); ?> VND
+    <!-- Summary Card -->
+    <div class="row mb-4 fade-in-up" style="animation-delay: 0.1s;">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm" style="background: linear-gradient(to right, #1e293b, #0f172a); color: white; border-radius: 15px;">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-white-50 text-uppercase text-xs fw-bold tracking-wider mb-1">Tổng doanh thu trong kỳ</div>
+                        <h2 class="display-5 fw-bold mb-0"><?php echo number_format($data['revenueData'], 0, ',', '.'); ?> ₫</h2>
                     </div>
-                    <div class="table-cell"><?php echo $row['orders']; ?></div>
+                    <div class="bg-white bg-opacity-10 rounded-circle p-4">
+                        <i class="fas fa-coins fa-2x text-warning"></i>
+                    </div>
                 </div>
-            <?php endforeach; ?>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Monthly Revenue Data
-        const monthlyData = <?php echo json_encode($data['monthlyRevenue']); ?>;
+    <!-- Chart Section -->
+    <div class="card border-0 shadow-sm mb-4 fade-in-up" style="border-radius: 20px; animation-delay: 0.2s;">
+        <div class="card-body p-4">
+            <h5 class="card-title fw-bold text-dark mb-4">Biểu đồ xu hướng</h5>
+            <div style="height: 400px;">
+                <canvas id="revenueDetailChart"></canvas>
+            </div>
+        </div>
+    </div>
 
-        const monthlyLabels = monthlyData.map(item => item.month);
-        const monthlyRevenue = monthlyData.map(item => item.revenue);
+    <!-- Detailed Table -->
+    <div class="card border-0 shadow-sm fade-in-up" style="border-radius: 20px; animation-delay: 0.3s;">
+        <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold text-dark mb-0">Chi tiết theo ngày</h5>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle rounded-pill" type="button" id="exportMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-download me-1"></i> Xuất dữ liệu
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end border-0 shadow" aria-labelledby="exportMenu">
+                    <li>
+                        <a class="dropdown-item" href="<?php echo BASE_URL; ?>/admin/analytics/exportExcel?type=revenue&start_date=<?php echo $data['startDate']; ?>&end_date=<?php echo $data['endDate']; ?>">
+                            <i class="fas fa-file-excel text-success me-2"></i> Xuất Excel
+                        </a>
+                    </li>
 
-        // Daily Revenue Data
-        const dailyData = <?php echo json_encode($data['dailyRevenue']); ?>;
+                </ul>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 py-3 text-secondary text-xs text-uppercase fw-bold border-0">Ngày</th>
+                        <th class="py-3 text-secondary text-xs text-uppercase fw-bold border-0 text-end">Số đơn hàng</th>
+                        <th class="pe-4 py-3 text-secondary text-xs text-uppercase fw-bold border-0 text-end">Doanh thu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($data['dailyRevenue'])): ?>
+                        <tr><td colspan="3" class="text-center py-4 text-muted">Không có dữ liệu trong khoảng thời gian này</td></tr>
+                    <?php else: ?>
+                        <?php foreach($data['dailyRevenue'] as $day): ?>
+                        <tr>
+                            <td class="ps-4 fw-medium text-dark"><?php echo date('d/m/Y', strtotime($day['date'])); ?></td>
+                            <td class="text-end">
+                                <span class="badge bg-light text-dark border"><?php echo $day['orders']; ?></span>
+                            </td>
+                            <td class="pe-4 text-end fw-bold text-primary">
+                                <?php echo number_format($day['revenue'], 0, ',', '.'); ?> ₫
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-        const dailyLabels = dailyData.map(item => {
-            const date = new Date(item.date);
-            return date.toLocaleDateString('vi-VN');
-        });
-        const dailyRevenue = dailyData.map(item => item.revenue);
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = '#64748b';
 
-        // Monthly Revenue Chart
-        const monthlyCtx = document.getElementById('monthlyRevenueChart').getContext('2d');
-        new Chart(monthlyCtx, {
-            type: 'bar',
-            data: {
-                labels: monthlyLabels,
-                datasets: [{
-                    label: 'Doanh thu (VND)',
-                    data: monthlyRevenue,
-                    backgroundColor: 'rgba(102, 126, 234, 0.6)',
-                    borderColor: 'rgb(102, 126, 234)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+    const ctx = document.getElementById('revenueDetailChart').getContext('2d');
+    
+    // Prepare Data
+    const rawData = <?php echo json_encode($data['dailyRevenue']); ?>;
+    const labels = rawData.map(item => {
+        const d = new Date(item.date);
+        return `${d.getDate()}/${d.getMonth()+1}`;
+    });
+    const revenues = rawData.map(item => item.revenue);
+    const orders = rawData.map(item => item.orders);
+
+    // Gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+    gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Doanh thu',
+                    data: revenues,
+                    borderColor: '#3b82f6',
+                    backgroundColor: gradient,
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true,
+                    yAxisID: 'y'
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return (value / 1000000).toFixed(0) + 'M';
+                {
+                    label: 'Đơn hàng',
+                    data: orders,
+                    borderColor: '#fbbf24',
+                    backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    tension: 0.3,
+                    type: 'line',
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                tooltip: {
+                    padding: 10,
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
                             }
+                            if (context.parsed.y !== null) {
+                                if (context.datasetIndex === 0) {
+                                     label += new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(context.parsed.y);
+                                } else {
+                                     label += context.parsed.y;
+                                }
+                            }
+                            return label;
                         }
                     }
                 }
-            }
-        });
-
-        // Daily Revenue Chart
-        const dailyCtx = document.getElementById('dailyRevenueChart').getContext('2d');
-        new Chart(dailyCtx, {
-            type: 'line',
-            data: {
-                labels: dailyLabels,
-                datasets: [{
-                    label: 'Doanh thu (VND)',
-                    data: dailyRevenue,
-                    borderColor: 'rgb(40, 167, 69)',
-                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return (value / 1000000).toFixed(0) + 'M';
-                            }
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    grid: { borderDash: [5, 5], color: '#f1f5f9' },
+                    ticks: {
+                        callback: function(value) {
+                            return (value / 1000000) + 'M';
                         }
                     }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    grid: { display: false },
+                    min: 0
+                },
+                x: {
+                    grid: { display: false }
                 }
             }
-        });
-    </script>
+        }
+    });
+</script>
 
-</body>
-</html>
+<style>
+    .text-xs { font-size: 0.75rem; }
+    .fade-in-up {
+        animation: fadeInUp 0.5s ease-out forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    @keyframes fadeInUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>

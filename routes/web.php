@@ -145,6 +145,10 @@ $router->post('/admin/vouchers/delete/{id}', [AdminVouchersController::class, 'd
 
 // Analytics
 $router->get('/admin/analytics', [AdminAnalyticsController::class, 'index']);
+$router->get('/admin/analytics/revenue', [AdminAnalyticsController::class, 'revenue']);
+$router->get('/admin/analytics/products', [AdminAnalyticsController::class, 'products']);
+$router->get('/admin/analytics/exportExcel', [AdminAnalyticsController::class, 'exportExcel']);
+
 
 
 return $router;

@@ -307,6 +307,12 @@
                 <i class="fas fa-star"></i> Đánh giá
             </a>
 
+            <div class="menu-header mt-3">Báo cáo</div>
+
+            <a href="<?php echo BASE_URL; ?>/admin/analytics" class="nav-link <?php echo strpos($_SERVER['REQUEST_URI'], '/admin/analytics') !== false ? 'active' : ''; ?>">
+                <i class="fas fa-chart-line"></i> Phân tích
+            </a>
+
             <div class="menu-header mt-3">Hệ thống</div>
 
             <a href="<?php echo BASE_URL; ?>/admin/users" class="nav-link <?php echo strpos($_SERVER['REQUEST_URI'], '/admin/users') !== false ? 'active' : ''; ?>">

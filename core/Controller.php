@@ -4,16 +4,12 @@ namespace Core;
 class Controller {
     // Hàm gọi Model (Dữ liệu)
     public function model($model) {
-        // Ví dụ: gọi model('ProductModel') -> sẽ new App\Models\ProductModel()
         $modelClass = "App\\Models\\" . $model;
         return new $modelClass();
     }
 
     // Hàm gọi View (Giao diện)
     public function view($view, $data = []) {
-        // $view là đường dẫn, vd: 'admin/dashboard'
-        // $data là mảng dữ liệu muốn truyền ra view
-
         // Truyền dữ liệu ra view
         if (!empty($data)) {
             extract($data);

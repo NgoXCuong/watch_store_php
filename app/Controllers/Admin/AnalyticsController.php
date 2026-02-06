@@ -23,6 +23,7 @@ class AnalyticsController extends Controller {
             'orders' => $this->getOrderAnalytics($period),
             'products' => $this->getProductAnalytics($period),
             'customers' => $this->getCustomerAnalytics($period),
+            'monthlyRevenue' => $this->getMonthlyRevenueData(),
             'period' => $period,
             'title' => 'Phân tích & Báo cáo',
             'layout' => 'admin'
@@ -229,24 +230,5 @@ class AnalyticsController extends Controller {
         return $output;
     }
 
-    private function generatePdfReport($type, $startDate, $endDate) {
-        // Simple HTML to PDF conversion (you can enhance this with proper PDF library)
-        $html = "<h1>Report: {$type}</h1>";
-        $html .= "<p>Period: {$startDate} to {$endDate}</p>";
-        $html .= "<table border='1' style='width: 100%; border-collapse: collapse;'>";
-        $html .= "<tr><th>Date</th><th>Revenue</th><th>Orders</th></tr>";
 
-        $data = $this->getDailyRevenueData($startDate, $endDate);
-
-        foreach ($data as $row) {
-            $html .= "<tr>";
-            $html .= "<td>{$row['date']}</td>";
-            $html .= "<td>" . number_format($row['revenue'], 0, ',', '.') . " VND</td>";
-            $html .= "<td>{$row['orders']}</td>";
-            $html .= "</tr>";
-        }
-
-        $html .= "</table>";
-        return $html;
-    }
 }
