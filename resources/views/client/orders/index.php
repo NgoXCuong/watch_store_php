@@ -41,6 +41,7 @@
                     <thead class="bg-light text-uppercase small text-muted letter-spacing-1">
                         <tr>
                             <th class="ps-4 py-3 border-0">Mã đơn hàng</th>
+                            <th class="py-3 border-0">Sản phẩm</th>
                             <th class="py-3 border-0">Ngày đặt</th>
                             <th class="py-3 border-0">Tổng tiền</th>
                             <th class="py-3 border-0">Trạng thái</th>
@@ -52,6 +53,34 @@
                             <tr>
                                 <td class="ps-4 py-4">
                                     <span class="fw-bold text-dark">#<?php echo $order['id']; ?></span>
+                                </td>
+                                <td>
+                                    <?php if (!empty($order['details'])): ?>
+                                        <div class="d-flex flex-column gap-2" style="max-width: 300px;">
+                                            <?php foreach ($order['details'] as $item): ?>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <?php if ($item['image_url']): ?>
+                                                        <img src="<?php echo htmlspecialchars($item['image_url']); ?>" alt="<?php echo htmlspecialchars($item['product_name']); ?>" style="width: 40px; height: 40px; object-fit: cover;" class="rounded border">
+                                                    <?php else: ?>
+                                                        <div class="bg-secondary rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                            <i class="fas fa-box text-white" style="font-size: 0.8rem;"></i>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                    
+                                                    <div class="flex-grow-1 min-w-0">
+                                                        <h6 class="mb-0 small fw-bold text-dark text-truncate" style="font-size: 0.85rem;" title="<?php echo htmlspecialchars($item['product_name']); ?>">
+                                                            <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $item['product_id']; ?>" class="text-decoration-none text-dark hover-secondary">
+                                                                <?php echo htmlspecialchars($item['product_name']); ?>
+                                                            </a>
+                                                        </h6>
+                                                        <span class="text-muted" style="font-size: 0.75rem;">x<?php echo $item['quantity']; ?></span>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <span class="text-muted small">Không có dữ liệu SP</span>
+                                    <?php endif; ?>
                                 </td>
                                 <td class="text-muted small">
                                     <?php echo date('H:i d/m/Y', strtotime($order['created_at'])); ?>

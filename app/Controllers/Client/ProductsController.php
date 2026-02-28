@@ -16,14 +16,50 @@ class ProductsController extends Controller {
 
     // Hiển thị danh sách sản phẩm
     public function index() {
+        // Lấy danh sách categories và brands trước để AI có data trích xuất
+        $categories = $this->categoryModel->getAll();
+        $brands = $this->brandModel->getAll();
+        
         // Lấy tham số từ URL
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-        $categoryId = isset($_GET['category']) ? (int)$_GET['category'] : null;
-        $brandId = isset($_GET['brand']) ? (int)$_GET['brand'] : null;
+        $categoryId = isset($_GET['category']) && $_GET['category'] !== '' ? (int)$_GET['category'] : null;
+        $brandId = isset($_GET['brand']) && $_GET['brand'] !== '' ? (int)$_GET['brand'] : null;
         $sort = isset($_GET['sort']) ? $_GET['sort'] : 'default';
-        $minPrice = isset($_GET['min_price']) ? (float)$_GET['min_price'] : null;
-        $maxPrice = isset($_GET['max_price']) ? (float)$_GET['max_price'] : null;
+        $minPrice = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? (float)$_GET['min_price'] : null;
+        $maxPrice = isset($_GET['max_price']) && $_GET['max_price'] !== '' ? (float)$_GET['max_price'] : null;
+        
+        $isAiSearch = isset($_GET['ai_search']) && $_GET['ai_search'] == 1;
+        $aiMessage = null;
+
+        // Xử lý AI Search
+        if ($isAiSearch && !empty($search)) {
+            $aiService = new \App\Services\AIService();
+            $aiData = $aiService->parseSearchQuery($search, $categories, $brands);
+            
+            if (isset($aiData['error']) && $aiData['error'] === 'API_QUOTA_EXCEEDED') {
+                $aiMessage = "Rất tiếc, hệ thống AI đang bị quá tải hoặc hết hạn mức (Quota Exceeded). Vui lòng trở lại tìm kiếm thông thường hoặc liên hệ Admin cung cấp API Key mới.";
+            } elseif (!empty($aiData)) {
+                $search = $aiData['search'] ?? '';
+                $categoryId = isset($aiData['category_id']) ? (int)$aiData['category_id'] : null;
+                // If the prompt returned something for category_id, ensure valid
+                if (isset($aiData['category_id']) && $aiData['category_id'] !== null) {
+                    $categoryId = (int)$aiData['category_id'];
+                }
+                if (isset($aiData['brand_id']) && $aiData['brand_id'] !== null) {
+                    $brandId = (int)$aiData['brand_id'];
+                }
+                if (isset($aiData['min_price']) && $aiData['min_price'] !== null) {
+                    $minPrice = (float)$aiData['min_price'];
+                }
+                if (isset($aiData['max_price']) && $aiData['max_price'] !== null) {
+                    $maxPrice = (float)$aiData['max_price'];
+                }
+                $aiMessage = "Đã áp dụng bộ lọc AI thông minh cho yêu cầu của bạn!";
+            } else {
+                $aiMessage = "AI không thể phân tích yêu cầu này, chuyển về tìm kiếm thông thường.";
+            }
+        }
 
         $perPage = 9; // Số sản phẩm mỗi trang
 
@@ -31,10 +67,6 @@ class ProductsController extends Controller {
         $products = $this->productModel->getAll($page, $perPage, $search, $categoryId, $brandId, $sort, $minPrice, $maxPrice);
         $total = $this->productModel->countAll($search, $categoryId, $brandId, $minPrice, $maxPrice);
         $totalPages = ceil($total / $perPage);
-
-        // Lấy danh sách categories và brands để filter
-        $categories = $this->categoryModel->getAll();
-        $brands = $this->brandModel->getAll();
 
         // Lấy thông tin category và brand hiện tại (nếu có)
         $currentCategory = null;
@@ -72,6 +104,7 @@ class ProductsController extends Controller {
             'maxPrice' => $maxPrice,
             'currentCategory' => $currentCategory,
             'currentBrand' => $currentBrand,
+            'aiMessage' => $aiMessage,
             'layout' => 'client'
         ]);
     }

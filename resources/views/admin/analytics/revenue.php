@@ -2,15 +2,10 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4 fade-in-up">
         <div>
-            <h2 class="text-uppercase fw-bold text-dark mb-1" style="font-family: 'Playfair Display', serif;">
+            <h2 class="text-uppercase fw-bold text-dark mb-1">
                 Báo cáo doanh thu
             </h2>
-             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>/admin/analytics" class="text-decoration-none text-muted">Analytics</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Doanh thu</li>
-                </ol>
-            </nav>
+             
         </div>
         
         <!-- Date Filter Form -->

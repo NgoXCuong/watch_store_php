@@ -9,6 +9,7 @@ use App\Controllers\Client\CheckoutController;
 use App\Controllers\Client\OrdersController;
 use App\Controllers\Client\ReviewsController;
 use App\Controllers\Client\AboutController;
+use App\Controllers\Client\WishlistController;
 
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\ProductsController as AdminProductsController;
@@ -50,6 +51,12 @@ $router->get('/cart/remove/{id}', [CartController::class, 'remove']);
 $router->get('/cart/clear', [CartController::class, 'clear']);
 $router->get('/cart/count', [CartController::class, 'count']);
 
+// Wishlist
+$router->get('/wishlist', [WishlistController::class, 'index']);
+$router->post('/wishlist/toggle', [WishlistController::class, 'toggle']); // Thêm/Xóa
+$router->get('/wishlist/remove/{id}', [WishlistController::class, 'remove']); // Xóa ở danh sách
+$router->get('/wishlist/count', [WishlistController::class, 'count']); // Đếm số lượng API
+
 // Checkout
 $router->get('/checkout', [CheckoutController::class, 'index']);
 $router->post('/checkout/process', [CheckoutController::class, 'process']);
@@ -80,6 +87,11 @@ $router->get('/about', [AboutController::class, 'index']);
 // Brands
 $router->get('/brands', [\App\Controllers\Client\BrandsController::class, 'index']);
 
+
+// ==============================================================================
+// API ROUTES
+// ==============================================================================
+$router->post('/api/chat', [\App\Controllers\Client\AIChatController::class, 'chat']);
 
 // ==============================================================================
 // ADMIN ROUTES

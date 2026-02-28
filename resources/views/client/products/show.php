@@ -281,6 +281,7 @@ $gallery = array_unique($gallery);
                         </div>
                         <span class="text-muted small border-start ps-3"><?php echo $totalReviews; ?> Đánh giá</span>
                         <span class="text-muted small border-start ps-3">Mã: #<?php echo $data['product']['id']; ?></span>
+                        <span class="text-muted small border-start ps-3">Tồn kho: <?php echo $data['product']['stock']; ?></span>
                     </div>
 
                     <div class="mb-4">
@@ -309,13 +310,18 @@ $gallery = array_unique($gallery);
                                         <button type="button" class="btn border-0 rounded-0 px-2" onclick="changeQuantity(1)">+</button>
                                     </div>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-outline-dark w-100 h-100 rounded-0 d-flex align-items-center justify-content-center" onclick="toggleWishlist(<?php echo $data['product']['id']; ?>, this)" title="Yêu thích">
+                                        <i class="far fa-heart fs-5"></i>
+                                    </button>
+                                </div>
+                                <div class="col-6">
                                     <?php if (isset($_SESSION['user'])): ?>
-                                        <button type="submit" class="btn btn-dark w-100 h-100 rounded-0 text-uppercase letter-spacing-2 fw-bold d-flex align-items-center justify-content-center gap-2">
+                                        <button type="submit" class="btn btn-dark w-100 h-100 rounded-0 text-uppercase letter-spacing-2 fw-bold d-flex align-items-center justify-content-center gap-2" style="font-size: 0.9rem;">
                                             <i class="fas fa-shopping-bag"></i> Thêm vào giỏ
                                         </button>
                                     <?php else: ?>
-                                        <a href="<?php echo BASE_URL; ?>/auth/login" class="btn btn-dark w-100 h-100 rounded-0 text-uppercase letter-spacing-2 fw-bold d-flex align-items-center justify-content-center">
+                                        <a href="<?php echo BASE_URL; ?>/auth/login" class="btn btn-dark w-100 h-100 rounded-0 text-uppercase letter-spacing-2 fw-bold d-flex align-items-center justify-content-center" style="font-size: 0.9rem;">
                                             Đăng nhập để mua
                                         </a>
                                     <?php endif; ?>

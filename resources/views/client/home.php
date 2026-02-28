@@ -137,6 +137,11 @@
                                     <i class="fas fa-eye"></i>
                                 </a>
 
+                                <!-- Add to Wishlist -->
+                                <button type="button" onclick="toggleWishlist(<?php echo $product['id']; ?>, this)" class="btn btn-light bg-white text-muted btn-action shadow-sm" title="Yêu thích">
+                                    <i class="far fa-heart"></i>
+                                </button>
+
                                 <!-- Add to Cart -->
                                 <?php if (isset($_SESSION['user'])): ?>
                                     <form action="<?php echo BASE_URL; ?>/cart/add" method="POST">
@@ -170,6 +175,9 @@
                                         <?php echo number_format($product['old_price'], 0, ',', '.'); ?>đ
                                     </span>
                                 <?php endif; ?>
+                            </div>
+                            <div class="text-muted small mt-1">
+                                Tồn kho: <?php echo $product['stock']; ?>
                             </div>
                         </div>
                     </div>
@@ -241,6 +249,25 @@
                                 <?php endif; ?>
                             </a>
                             <span class="position-absolute top-0 end-0 m-3 badge bg-warning text-dark rounded-0 px-3 fw-bold">NEW</span>
+                            
+                            <!-- Quick Actions Overlay -->
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0 product-actions-overlay" style="transition: all 0.3s; transform: translateY(20px);">
+                                <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>" class="btn btn-light bg-white text-dark btn-action shadow-sm" title="Xem chi tiết">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button type="button" onclick="toggleWishlist(<?php echo $product['id']; ?>, this)" class="btn btn-light bg-white text-muted btn-action shadow-sm" title="Yêu thích">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <?php if (isset($_SESSION['user'])): ?>
+                                    <form action="<?php echo BASE_URL; ?>/cart/add" method="POST">
+                                        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-dark btn-action shadow-sm" title="Thêm vào giỏ"><i class="fas fa-shopping-cart"></i></button>
+                                    </form>
+                                <?php else: ?>
+                                    <a href="<?php echo BASE_URL; ?>/auth/login" class="btn btn-dark btn-action shadow-sm" title="Thêm vào giỏ"><i class="fas fa-shopping-cart"></i></a>
+                                <?php endif; ?>
+                            </div>
                         </div>
                         <div class="px-2">
                             <h5 class="h6 mb-2">
@@ -249,6 +276,9 @@
                                 </a>
                             </h5>
                             <div class="fw-bold"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</div>
+                            <div class="text-muted small mt-1">
+                                Tồn kho: <?php echo $product['stock']; ?>
+                            </div>
                         </div>
                     </div>
                 </div>

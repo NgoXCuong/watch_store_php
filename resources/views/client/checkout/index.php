@@ -95,7 +95,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
+                                <!-- <div class="col-md-4 mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="payment_method" id="bank_transfer" value="bank_transfer"
                                                <?php echo ($data['old_input']['payment_method'] ?? '') === 'bank_transfer' ? 'checked' : ''; ?> required>
@@ -112,7 +112,7 @@
                                             <i class="fas fa-mobile-alt me-2"></i>Ví MoMo
                                         </label>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-md-4 mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="payment_method" id="vnpay" value="vnpay"

@@ -86,6 +86,16 @@
 
             <!-- Products Grid -->
             <div class="col-lg-9">
+                <?php if (!empty($data['aiMessage'])): ?>
+                    <div class="alert alert-info border-0 rounded-0 shadow-sm d-flex align-items-center gap-3 mb-4" role="alert" style="background-color: #f8f9fa; border-left: 4px solid var(--secondary-color) !important;">
+                        <i class="fas fa-magic fa-2x text-warning"></i>
+                        <div>
+                            <h5 class="alert-heading mb-1 fs-6 fw-bold">Trợ lý AI Tìm kiếm</h5>
+                            <p class="mb-0 small text-muted"><?php echo htmlspecialchars($data['aiMessage']); ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Toolbar -->
                 <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom">
                     <span class="text-muted small text-uppercase letter-spacing-1">
@@ -155,6 +165,11 @@
                                                 <i class="fas fa-eye"></i>
                                             </a>
 
+                                            <!-- Add to Wishlist -->
+                                            <button type="button" onclick="toggleWishlist(<?php echo $product['id']; ?>, this)" class="btn btn-light bg-white text-muted btn-action shadow-sm" title="Yêu thích">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+
                                             <!-- Add to Cart -->
                                             <?php if (isset($_SESSION['user'])): ?>
                                                 <form action="<?php echo BASE_URL; ?>/cart/add" method="POST">
@@ -191,6 +206,9 @@
                                                     <?php echo number_format($product['old_price'], 0, ',', '.'); ?>đ
                                                 </span>
                                             <?php endif; ?>
+                                        </div>
+                                        <div class="text-muted small mt-1">
+                                            Tồn kho: <?php echo $product['stock']; ?>
                                         </div>
                                     </div>
                                 </div>

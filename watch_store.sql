@@ -1,9 +1,9 @@
--- 1. TẠO CƠ SỞ DỮ LIỆU (NẾU CHƯA CÓ) VÀ SỬ DỤNG
+-- 1. KHỞI TẠO DATABASE
 CREATE DATABASE IF NOT EXISTS `watch_store_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `watch_store_db`;
 
 -- ========================================================
--- PHẦN 1: CÁC BẢNG ĐỘC LẬP (KHÔNG PHỤ THUỘC BẢNG KHÁC)
+-- PHẦN 1: CÁC BẢNG ĐỘC LẬP (MASTER DATA)
 -- ========================================================
 
 -- 2. Bảng Brands (Thương hiệu)
@@ -34,7 +34,7 @@ CREATE TABLE `categories` (
     CONSTRAINT `fk_category_parent` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 4. Bảng Users (Người dùng/Quản trị viên)
+-- 4. Bảng Users (Người dùng)
 CREATE TABLE `users` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(50) NOT NULL,
@@ -72,10 +72,50 @@ CREATE TABLE `vouchers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ========================================================
--- PHẦN 2: CÁC BẢNG PHỤ THUỘC (CÓ KHÓA NGOẠI)
+-- PHẦN 2: CÁC BẢNG SẢN PHẨM & LIÊN KẾT (CẤU TRÚC MỚI)
 -- ========================================================
 
--- 6. Bảng User Addresses (Địa chỉ giao hàng)
+-- 6. Bảng Products (Sản phẩm) - Đã bỏ category_id
+CREATE TABLE `products` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `slug` VARCHAR(255) NOT NULL,
+    `description` TEXT DEFAULT NULL,
+    `price` DECIMAL(10,2) NOT NULL,
+    `old_price` DECIMAL(10,2) DEFAULT NULL,
+    `stock` INT(11) DEFAULT 0,
+    `brand_id` INT(11) NOT NULL,
+    -- Đã xóa category_id ở đây để dùng bảng trung gian
+    `image_url` VARCHAR(255) DEFAULT NULL,
+    `gallery_urls` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`gallery_urls`)),
+    `specifications` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`specifications`)),
+    `views` INT(11) DEFAULT 0,
+    `is_featured` TINYINT(1) DEFAULT 0,
+    `status` ENUM('active', 'inactive') DEFAULT 'active',
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `unique_product_slug` (`slug`),
+    KEY `idx_product_brand` (`brand_id`),
+    KEY `idx_product_price` (`price`),
+    FULLTEXT KEY `idx_product_search` (`name`, `description`), -- Thêm index tìm kiếm
+    CONSTRAINT `fk_product_brand` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 7. [MỚI] Bảng Trung Gian: Product_Categories (Nhiều-Nhiều)
+CREATE TABLE `product_categories` (
+    `product_id` INT(11) NOT NULL,
+    `category_id` INT(11) NOT NULL,
+    PRIMARY KEY (`product_id`, `category_id`),
+    CONSTRAINT `fk_pc_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_pc_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ========================================================
+-- PHẦN 3: CÁC BẢNG GIAO DỊCH & NGƯỜI DÙNG
+-- ========================================================
+
+-- 8. Bảng User Addresses
 CREATE TABLE `user_addresses` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `user_id` INT(11) NOT NULL,
@@ -91,35 +131,7 @@ CREATE TABLE `user_addresses` (
     CONSTRAINT `fk_address_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 7. Bảng Products (Sản phẩm)
-CREATE TABLE `products` (
-    `id` INT(11) NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `slug` VARCHAR(255) NOT NULL,
-    `description` TEXT DEFAULT NULL,
-    `price` DECIMAL(10,2) NOT NULL,
-    `old_price` DECIMAL(10,2) DEFAULT NULL,
-    `stock` INT(11) DEFAULT 0,
-    `brand_id` INT(11) NOT NULL,
-    `category_id` INT(11) NOT NULL,
-    `image_url` VARCHAR(255) DEFAULT NULL,
-    `gallery_urls` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`gallery_urls`)),
-    `specifications` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`specifications`)),
-    `views` INT(11) DEFAULT 0,
-    `is_featured` TINYINT(1) DEFAULT 0,
-    `status` ENUM('active', 'inactive') DEFAULT 'active',
-    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `unique_product_slug` (`slug`),
-    KEY `idx_product_brand` (`brand_id`),
-    KEY `idx_product_category` (`category_id`),
-    KEY `idx_product_price` (`price`),
-    CONSTRAINT `fk_product_brand` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`) ON DELETE CASCADE,
-    CONSTRAINT `fk_product_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- 8. Bảng Carts (Giỏ hàng)
+-- 9. Bảng Carts (Giỏ hàng)
 CREATE TABLE `carts` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `user_id` INT(11) NOT NULL,
@@ -129,12 +141,11 @@ CREATE TABLE `carts` (
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
     PRIMARY KEY (`id`),
     UNIQUE KEY `unique_cart_item` (`user_id`, `product_id`),
-    KEY `idx_cart_product` (`product_id`),
     CONSTRAINT `fk_cart_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_cart_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 9. Bảng Reviews (Đánh giá)
+-- 10. Bảng Reviews (Đánh giá)
 CREATE TABLE `reviews` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `user_id` INT(11) NOT NULL,
@@ -145,12 +156,11 @@ CREATE TABLE `reviews` (
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     PRIMARY KEY (`id`),
     UNIQUE KEY `unique_review` (`user_id`, `product_id`),
-    KEY `idx_review_product` (`product_id`),
     CONSTRAINT `fk_review_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_review_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 10. Bảng Orders (Đơn hàng)
+-- 11. Bảng Orders (Đơn hàng)
 CREATE TABLE `orders` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `user_id` INT(11) DEFAULT NULL,
@@ -169,13 +179,12 @@ CREATE TABLE `orders` (
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
     PRIMARY KEY (`id`),
     KEY `idx_order_user` (`user_id`),
-    KEY `idx_order_date` (`created_at`),
-    KEY `idx_order_voucher` (`voucher_id`),
+    KEY `idx_order_status` (`status`),
     CONSTRAINT `fk_order_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
     CONSTRAINT `fk_order_voucher` FOREIGN KEY (`voucher_id`) REFERENCES `vouchers` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 11. Bảng Order Details (Chi tiết đơn hàng)
+-- 12. Bảng Order Details (Chi tiết đơn hàng)
 CREATE TABLE `order_details` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `order_id` INT(11) NOT NULL,
@@ -185,27 +194,53 @@ CREATE TABLE `order_details` (
     `subtotal` DECIMAL(10,2) GENERATED ALWAYS AS (`quantity` * `price`) STORED,
     PRIMARY KEY (`id`),
     KEY `idx_od_order` (`order_id`),
-    KEY `idx_od_product` (`product_id`),
     CONSTRAINT `fk_od_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_od_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+-- 13. [BỔ SUNG] Bảng Wishlists (Sản phẩm yêu thích)
+CREATE TABLE IF NOT EXISTS `wishlists` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `user_id` INT(11) NOT NULL,
+    `product_id` INT(11) NOT NULL,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    PRIMARY KEY (`id`),
+    -- Chặn việc một User thích một sản phẩm 2 lần (Tránh dữ liệu rác)
+    UNIQUE KEY `unique_wishlist` (`user_id`, `product_id`),
+    -- Ràng buộc khóa ngoại
+    CONSTRAINT `fk_wishlist_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_wishlist_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- ========================================================
--- PHẦN 3: CÁC TRIGGER (TỰ ĐỘNG HÓA LOGIC)
+-- PHẦN 4: TRIGGERS (TỰ ĐỘNG HÓA & LOGIC AN TOÀN)
 -- ========================================================
 
 DELIMITER $$
 
--- Trigger 1: Trừ tồn kho khi thêm chi tiết đơn hàng
+-- Trigger 1: Kiểm tra và Trừ tồn kho an toàn (Chặn nếu hết hàng)
 CREATE TRIGGER `after_order_details_insert` AFTER INSERT ON `order_details`
 FOR EACH ROW
 BEGIN
-    UPDATE `products`
-    SET `stock` = `stock` - NEW.quantity
-    WHERE `id` = NEW.product_id;
+    DECLARE current_stock INT;
+    
+    -- Lấy tồn kho hiện tại
+    SELECT stock INTO current_stock FROM products WHERE id = NEW.product_id;
+    
+    -- Nếu kho không đủ -> Báo lỗi
+    IF current_stock < NEW.quantity THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Lỗi: Sản phẩm không đủ số lượng tồn kho để thực hiện giao dịch này!';
+    ELSE
+        -- Nếu đủ -> Trừ kho
+        UPDATE `products`
+        SET `stock` = `stock` - NEW.quantity
+        WHERE `id` = NEW.product_id;
+    END IF;
 END$$
 
--- Trigger 2: Tăng lượt dùng Voucher khi tạo đơn
+-- Trigger 2: Tăng lượt dùng Voucher
 CREATE TRIGGER `update_voucher_usage` AFTER INSERT ON `orders`
 FOR EACH ROW
 BEGIN
@@ -216,20 +251,20 @@ BEGIN
     END IF;
 END$$
 
--- Trigger 3: Hoàn tồn kho & lượt dùng voucher khi HỦY đơn hàng
+-- Trigger 3: Hoàn tồn kho & lượt dùng voucher khi HỦY đơn
 CREATE TRIGGER `restore_stock_vouchers_on_cancel` AFTER UPDATE ON `orders`
 FOR EACH ROW
 BEGIN
-    -- Chỉ chạy khi trạng thái chuyển sang 'cancelled' (Hủy đơn)
+    -- Chỉ chạy khi đơn hàng chuyển sang 'cancelled'
     IF NEW.status = 'cancelled' AND OLD.status != 'cancelled' THEN
         
-        -- 1. Hoàn tồn kho (Cộng lại số lượng vào bảng products)
+        -- 1. Hoàn tồn kho
         UPDATE `products` p
         JOIN `order_details` od ON p.id = od.product_id
         SET p.stock = p.stock + od.quantity
         WHERE od.order_id = NEW.id;
         
-        -- 2. Hoàn lại lượt dùng Voucher (NẾU CÓ dùng voucher)
+        -- 2. Hoàn lượt dùng Voucher (nếu có)
         IF NEW.voucher_id IS NOT NULL THEN
             UPDATE `vouchers`
             SET `usage_count` = `usage_count` - 1

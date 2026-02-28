@@ -2,7 +2,7 @@
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4 fade-in-up">
         <div>
-            <h2 class="text-uppercase fw-bold text-dark mb-1" style="font-family: 'Playfair Display', serif; letter-spacing: 1px;">
+            <h2 class="text-uppercase fw-bold text-dark mb-1" style=" letter-spacing: 1px;">
                 Tổng Quan Hoạt Động
             </h2>
             <p class="text-muted mb-0">Theo dõi hiệu suất kinh doanh của bạn</p>

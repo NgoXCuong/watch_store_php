@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'project/watch-store',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '94bb5e59d5b4ec7fd80d84228c3d615fee58b663',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -83,9 +83,9 @@
             'dev_requirement' => false,
         ),
         'project/watch-store' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '94bb5e59d5b4ec7fd80d84228c3d615fee58b663',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

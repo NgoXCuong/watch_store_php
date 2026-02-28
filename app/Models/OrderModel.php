@@ -50,7 +50,7 @@ class OrderModel {
     }
 
     // Đếm tổng số đơn hàng
-    public function countAll($search = '', $status = null) {
+    public function countAll($search = '', $status = null, $userId = null) {
         $where = "1=1";
         $params = [];
 
@@ -63,6 +63,11 @@ class OrderModel {
         if ($status) {
             $where .= " AND status = :status";
             $params[':status'] = $status;
+        }
+
+        if ($userId) {
+            $where .= " AND user_id = :user_id";
+            $params[':user_id'] = $userId;
         }
 
         $query = "SELECT COUNT(*) as total FROM " . $this->table . " WHERE $where";
@@ -136,11 +141,23 @@ class OrderModel {
     }
 
     // Lấy đơn hàng theo user
-    public function getByUserId($userId, $page = 1, $limit = 10) {
+    public function getByUserId($userId, $page = 1, $limit = 10, $status = null) {
         $offset = ($page - 1) * $limit;
-        $query = "SELECT * FROM " . $this->table . " WHERE user_id = :user_id ORDER BY created_at DESC LIMIT :limit OFFSET :offset";
+        $where = "user_id = :user_id";
+        $params = [':user_id' => $userId];
+        
+        if ($status) {
+            $where .= " AND status = :status";
+            $params[':status'] = $status;
+        }
+
+        $query = "SELECT * FROM " . $this->table . " WHERE $where ORDER BY created_at DESC LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':user_id', $userId);
+        
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();

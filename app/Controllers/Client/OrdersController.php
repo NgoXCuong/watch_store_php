@@ -23,7 +23,13 @@ class OrdersController extends Controller {
         $status = isset($_GET['status']) ? $_GET['status'] : '';
         $limit = 10;
 
-        $orders = $this->orderModel->getByUserId($userId, $page, $limit);
+        $orders = $this->orderModel->getByUserId($userId, $page, $limit, $status);
+        
+        // Fetch details for each order to display products
+        foreach ($orders as &$order) {
+            $order['details'] = $this->orderModel->getOrderDetails($order['id']);
+        }
+
         $total = $this->orderModel->countAll('', $status ? $status : null, $userId);
         $totalPages = ceil($total / $limit);
 
