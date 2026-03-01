@@ -1,10 +1,10 @@
 <div class="container py-5" style="max-width: 1400px;">
     <div class="d-flex justify-content-between align-items-end mb-5">
         <div>
-            <h1 class="display-6 fw-bold mb-0 text-uppercase" style="font-family: var(--font-heading);">Lịch sử đơn hàng</h1>
+            <h1 class="display-6 fw-bold mb-0 " style="font-family: var(--font-heading);">Lịch sử đơn hàng</h1>
             <div class="mt-3" style="width: 50px; height: 3px; background-color: var(--secondary-color);"></div>
         </div>
-        <a href="<?php echo BASE_URL; ?>/profile" class="btn btn-outline-dark rounded-0 px-4 text-uppercase letter-spacing-1 small fw-bold">
+        <a href="<?php echo BASE_URL; ?>/profile" class="btn btn-outline-dark rounded-0 px-4 letter-spacing-1 small fw-bold">
             <i class="fas fa-arrow-left me-2"></i>Trở về hồ sơ
         </a>
     </div>
@@ -12,22 +12,22 @@
     <!-- Filter Tabs -->
     <div class="mb-5 overflow-auto">
         <div class="btn-group rounded-0 w-100 w-md-auto" role="group">
-            <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-outline-dark rounded-0 px-4 py-3 text-uppercase letter-spacing-1 small <?php echo $data['status'] === '' ? 'active bg-dark text-white' : ''; ?>">
+            <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-outline-dark rounded-0 px-4 py-3 letter-spacing-1 small <?php echo $data['status'] === '' ? 'active bg-dark text-white' : ''; ?>">
                 Tất cả
             </a>
-            <a href="<?php echo BASE_URL; ?>/orders?status=pending" class="btn btn-outline-dark rounded-0 px-4 py-3 text-uppercase letter-spacing-1 small <?php echo $data['status'] === 'pending' ? 'active bg-dark text-white' : ''; ?>">
+            <a href="<?php echo BASE_URL; ?>/orders?status=pending" class="btn btn-outline-dark rounded-0 px-4 py-3 letter-spacing-1 small <?php echo $data['status'] === 'pending' ? 'active bg-dark text-white' : ''; ?>">
                 Chờ xử lý
             </a>
-            <a href="<?php echo BASE_URL; ?>/orders?status=confirmed" class="btn btn-outline-dark rounded-0 px-4 py-3 text-uppercase letter-spacing-1 small <?php echo $data['status'] === 'confirmed' ? 'active bg-dark text-white' : ''; ?>">
+            <a href="<?php echo BASE_URL; ?>/orders?status=confirmed" class="btn btn-outline-dark rounded-0 px-4 py-3 letter-spacing-1 small <?php echo $data['status'] === 'confirmed' ? 'active bg-dark text-white' : ''; ?>">
                 Đã xác nhận
             </a>
-            <a href="<?php echo BASE_URL; ?>/orders?status=shipping" class="btn btn-outline-dark rounded-0 px-4 py-3 text-uppercase letter-spacing-1 small <?php echo $data['status'] === 'shipping' ? 'active bg-dark text-white' : ''; ?>">
+            <a href="<?php echo BASE_URL; ?>/orders?status=shipping" class="btn btn-outline-dark rounded-0 px-4 py-3 letter-spacing-1 small <?php echo $data['status'] === 'shipping' ? 'active bg-dark text-white' : ''; ?>">
                 Đang giao
             </a>
-            <a href="<?php echo BASE_URL; ?>/orders?status=delivered" class="btn btn-outline-dark rounded-0 px-4 py-3 text-uppercase letter-spacing-1 small <?php echo $data['status'] === 'delivered' ? 'active bg-dark text-white' : ''; ?>">
+            <a href="<?php echo BASE_URL; ?>/orders?status=delivered" class="btn btn-outline-dark rounded-0 px-4 py-3 letter-spacing-1 small <?php echo $data['status'] === 'delivered' ? 'active bg-dark text-white' : ''; ?>">
                 Đã giao
             </a>
-            <a href="<?php echo BASE_URL; ?>/orders?status=cancelled" class="btn btn-outline-dark rounded-0 px-4 py-3 text-uppercase letter-spacing-1 small <?php echo $data['status'] === 'cancelled' ? 'active bg-dark text-white' : ''; ?>">
+            <a href="<?php echo BASE_URL; ?>/orders?status=cancelled" class="btn btn-outline-dark rounded-0 px-4 py-3 letter-spacing-1 small <?php echo $data['status'] === 'cancelled' ? 'active bg-dark text-white' : ''; ?>">
                 Đã hủy
             </a>
         </div>
@@ -38,7 +38,7 @@
         <div class="card border-0 shadow-sm rounded-0">
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead class="bg-light text-uppercase small text-muted letter-spacing-1">
+                    <thead class="bg-light small text-muted letter-spacing-1">
                         <tr>
                             <th class="ps-4 py-3 border-0">Mã đơn hàng</th>
                             <th class="py-3 border-0">Sản phẩm</th>
@@ -107,13 +107,13 @@
                                         'returned' => 'Hoàn trả'
                                     ];
                                     ?>
-                                    <span class="badge rounded-0 px-3 py-2 fw-normal text-uppercase x-small letter-spacing-1 <?php echo $statusClasses[$order['status']] ?? 'bg-secondary'; ?>">
+                                    <span class="badge rounded-0 px-3 py-2 fw-normal x-small letter-spacing-1 <?php echo $statusClasses[$order['status']] ?? 'bg-secondary'; ?>">
                                         <?php echo $statusLabels[$order['status']] ?? $order['status']; ?>
                                     </span>
                                 </td>
                                 <td class="text-end pe-4">
                                     <a href="<?php echo BASE_URL; ?>/orders/show/<?php echo $order['id']; ?>" 
-                                       class="btn btn-outline-dark btn-sm rounded-0 text-uppercase letter-spacing-1 small">
+                                       class="btn btn-outline-dark btn-sm rounded-0 letter-spacing-1 small">
                                         Chi tiết
                                     </a>
                                 </td>
@@ -160,9 +160,9 @@
     <?php else: ?>
         <div class="text-center py-5 bg-light">
             <i class="fas fa-shopping-bag fa-3x text-muted mb-4 opacity-50"></i>
-            <h3 class="fw-light text-uppercase letter-spacing-2 mb-3">Chưa có đơn hàng nào</h3>
+            <h3 class="fw-light letter-spacing-2 mb-3">Chưa có đơn hàng nào</h3>
             <p class="text-muted mb-5">Bạn chưa mua sản phẩm nào từ bộ sưu tập của chúng tôi.</p>
-            <a href="<?php echo BASE_URL; ?>/products" class="btn btn-dark rounded-0 px-5 py-3 text-uppercase letter-spacing-2 fw-bold">
+            <a href="<?php echo BASE_URL; ?>/products" class="btn btn-dark rounded-0 px-5 py-3 letter-spacing-2 fw-bold">
                 Mua sắm ngay
             </a>
         </div>

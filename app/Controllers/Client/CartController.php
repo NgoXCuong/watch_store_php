@@ -144,6 +144,81 @@ class CartController extends Controller {
         exit;
     }
 
+    // Cập nhật số lượng bằng AJAX
+    public function updateAjax() {
+        header('Content-Type: application/json');
+        
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['success' => false, 'message' => 'Vui lòng đăng nhập']);
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['success' => false, 'message' => 'Yêu cầu không hợp lệ']);
+            exit;
+        }
+
+        // Get raw POST data for AJAX JSON requests or normal POST
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data) {
+            $data = $_POST;
+        }
+
+        $productId = (int)($data['product_id'] ?? 0);
+        $quantity = (int)($data['quantity'] ?? 0);
+        $userId = $_SESSION['user']['id'];
+
+        if ($productId <= 0) {
+            echo json_encode(['success' => false, 'message' => 'Sản phẩm không hợp lệ']);
+            exit;
+        }
+
+        if ($quantity <= 0) {
+            if ($this->cartModel->removeFromCart($userId, $productId)) {
+                $newTotal = $this->cartModel->getCartTotal($userId);
+                $newCount = $this->cartModel->getCartCount($userId);
+                echo json_encode([
+                    'success' => true, 
+                    'action' => 'removed',
+                    'message' => 'Đã xóa sản phẩm khỏi giỏ hàng',
+                    'newTotal' => $newTotal,
+                    'newCount' => $newCount
+                ]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Có lỗi xảy ra khi xóa sản phẩm']);
+            }
+        } else {
+            if ($this->cartModel->updateQuantity($userId, $productId, $quantity)) {
+                $newTotal = $this->cartModel->getCartTotal($userId);
+                $newCount = $this->cartModel->getCartCount($userId);
+                
+                // Get the item price to calculate line total
+                $cartItems = $this->cartModel->getCartByUserId($userId);
+                $itemPrice = 0;
+                foreach ($cartItems as $item) {
+                    if ($item['product_id'] == $productId) {
+                        $itemPrice = $item['price'];
+                        break;
+                    }
+                }
+                
+                $lineTotal = $itemPrice * $quantity;
+
+                echo json_encode([
+                    'success' => true, 
+                    'action' => 'updated',
+                    'message' => 'Cập nhật thành công',
+                    'newTotal' => $newTotal,
+                    'newCount' => $newCount,
+                    'lineTotal' => $lineTotal
+                ]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Không thể cập nhật số lượng, vui lòng kiểm tra kho']);
+            }
+        }
+        exit;
+    }
+
     // Xóa toàn bộ giỏ hàng
     public function clear() {
         // Kiểm tra đăng nhập

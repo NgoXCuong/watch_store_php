@@ -69,10 +69,10 @@
                         <?php endif; ?>
 
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-success" id="submit-btn">
-                                <i class="fas fa-paper-plane me-2"></i>Gửi đánh giá
+                            <button type="submit" class="btn btn-dark" id="submit-btn" disabled>
+                                Đăng đánh giá
                             </button>
-                            <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $data['product']['id']; ?>" class="btn btn-secondary">
+                            <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $data['product']['id']; ?>" class="btn btn-outline-dark">
                                 <i class="fas fa-arrow-left me-2"></i>Quay lại
                             </a>
                         </div>

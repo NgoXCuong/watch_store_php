@@ -2,7 +2,7 @@
 <section class="breadcrumb-section bg-light py-3 border-bottom mb-5">
     <div class="container" style="max-width: 1400px;">
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb m-0 small text-uppercase" style="letter-spacing: 1px;">
+            <ol class="breadcrumb m-0 small " style="letter-spacing: 1px;">
                 <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>/" class="text-decoration-none text-muted">Trang chủ</a></li>
                 <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>/products" class="text-decoration-none text-muted">Bộ sưu tập</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($data['product']['name']); ?></li>
@@ -222,7 +222,7 @@ $gallery = array_unique($gallery);
                     <?php endif; ?>
                     
                     <?php if ($data['product']['stock'] == 0): ?>
-                        <div class="position-absolute top-50 start-50 translate-middle badge bg-dark text-white fs-5 rounded-0 px-4 py-3 text-uppercase">
+                        <div class="position-absolute top-50 start-50 translate-middle badge bg-dark text-white fs-5 rounded-0 px-4 py-3 ">
                             Hết hàng
                         </div>
                     <?php endif; ?>
@@ -250,7 +250,7 @@ $gallery = array_unique($gallery);
             <!-- Product Info -->
             <div class="col-lg-5">
                 <div class="product-info ps-lg-4">
-                    <div class="text-uppercase text-muted letter-spacing-2 mb-2 small">
+                    <div class="text-muted letter-spacing-2 mb-2 small">
                         <?php echo htmlspecialchars($data['product']['brand_name'] ?? 'Thương hiệu'); ?>
                     </div>
                     
@@ -317,11 +317,11 @@ $gallery = array_unique($gallery);
                                 </div>
                                 <div class="col-6">
                                     <?php if (isset($_SESSION['user'])): ?>
-                                        <button type="submit" class="btn btn-dark w-100 h-100 rounded-0 text-uppercase letter-spacing-2 fw-bold d-flex align-items-center justify-content-center gap-2" style="font-size: 0.9rem;">
+                                        <button type="submit" class="btn btn-dark w-100 h-100 rounded-0  letter-spacing-2 fw-bold d-flex align-items-center justify-content-center gap-2" style="font-size: 0.9rem;">
                                             <i class="fas fa-shopping-bag"></i> Thêm vào giỏ
                                         </button>
                                     <?php else: ?>
-                                        <a href="<?php echo BASE_URL; ?>/auth/login" class="btn btn-dark w-100 h-100 rounded-0 text-uppercase letter-spacing-2 fw-bold d-flex align-items-center justify-content-center" style="font-size: 0.9rem;">
+                                        <a href="<?php echo BASE_URL; ?>/auth/login" class="btn btn-dark w-100 h-100 rounded-0 letter-spacing-2 fw-bold d-flex align-items-center justify-content-center" style="font-size: 0.9rem;">
                                             Đăng nhập để mua
                                         </a>
                                     <?php endif; ?>
@@ -334,7 +334,7 @@ $gallery = array_unique($gallery);
                         </div>
                     <?php endif; ?>
 
-                    <div class="d-flex gap-4 text-small text-uppercase letter-spacing-1 border-top pt-4">
+                    <div class="d-flex gap-4 text-small letter-spacing-1 border-top pt-4">
                         <div class="d-flex align-items-center gap-2">
                             <i class="fas fa-truck text-muted"></i> Miễn phí vận chuyển
                         </div>
@@ -356,19 +356,19 @@ $gallery = array_unique($gallery);
     <div class="container" style="max-width: 1300px;">
         <ul class="nav nav-tabs border-0 justify-content-center mb-5 gap-4 sticky-tabs" id="productTabs" role="tablist">
             <li class="nav-item border-0" role="presentation">
-                <button class="nav-link active bg-transparent border-0 text-uppercase letter-spacing-2 fw-bold rounded-0 pb-2 px-0" 
+                <button class="nav-link active bg-transparent border-0 letter-spacing-2 fw-bold rounded-0 pb-2 px-0" 
                         id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">
                     Mô tả chi tiết
                 </button>
             </li>
             <li class="nav-item border-0" role="presentation">
-                <button class="nav-link bg-transparent border-0 text-muted text-uppercase letter-spacing-2 fw-bold rounded-0 pb-2 px-0" 
+                <button class="nav-link bg-transparent border-0 text-muted letter-spacing-2 fw-bold rounded-0 pb-2 px-0" 
                         id="specifications-tab" data-bs-toggle="tab" data-bs-target="#specifications" type="button" role="tab">
                     Thông số
                 </button>
             </li>
             <li class="nav-item border-0" role="presentation">
-                <button class="nav-link bg-transparent border-0 text-muted text-uppercase letter-spacing-2 fw-bold rounded-0 pb-2 px-0" 
+                <button class="nav-link bg-transparent border-0 text-muted letter-spacing-2 fw-bold rounded-0 pb-2 px-0" 
                         id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">
                     Đánh giá (<?php echo count($data['reviews'] ?? []); ?>)
                 </button>
@@ -532,7 +532,7 @@ $gallery = array_unique($gallery);
                         
                         <div class="mt-4 text-center text-md-start px-md-4">
                             <?php if (isset($_SESSION['user']) && $data['canReview']): ?>
-                                <button class="btn btn-dark rounded-0 px-4 py-2 text-uppercase letter-spacing-1" onclick="showReviewForm()">Viết đánh giá</button>
+                                <button class="btn btn-dark rounded-0 px-4 py-2  letter-spacing-1" onclick="showReviewForm()">Viết đánh giá</button>
                             <?php elseif (!isset($_SESSION['user'])): ?>
                                 <a href="<?php echo BASE_URL; ?>/auth/login" class="btn btn-outline-dark rounded-0 px-4">Đăng nhập để đánh giá</a>
                             <?php endif; ?>
@@ -612,7 +612,7 @@ $gallery = array_unique($gallery);
 <?php if (!empty($data['relatedProducts'])): ?>
 <section class="py-5">
     <div class="container" style="max-width: 1400px;">
-        <h3 class="text-center text-uppercase letter-spacing-2 mb-5" style="font-family: var(--font-heading);">Có thể bạn quan tâm</h3>
+        <h3 class="text-center letter-spacing-2 mb-5" style="font-family: var(--font-heading);">Có thể bạn quan tâm</h3>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
             <?php foreach ($data['relatedProducts'] as $related): ?>
                 <div class="col">
@@ -623,6 +623,11 @@ $gallery = array_unique($gallery);
                                      alt="<?php echo htmlspecialchars($related['name']); ?>"
                                      class="product-image">
                             </a>
+                            
+                            <!-- Add to Wishlist (Moved to Top Right) -->
+                            <button type="button" onclick="toggleWishlist(<?php echo $related['id']; ?>, this)" class="btn bg-white text-muted shadow-sm position-absolute top-0 end-0 m-2 wishlist-badge-btn" title="Yêu thích" style="z-index: 10;">
+                                <i class="far fa-heart"></i>
+                            </button>
                         </div>
                         <div class="text-center">
                             <h5 class="h6 mb-2">

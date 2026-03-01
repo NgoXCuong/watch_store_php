@@ -5,6 +5,7 @@ use App\Controllers\Client\ProductsController;
 use App\Controllers\Client\CartController;
 use App\Controllers\Client\AuthController;
 use App\Controllers\Client\ProfileController;
+use App\Controllers\Client\UserAddressController;
 use App\Controllers\Client\CheckoutController;
 use App\Controllers\Client\OrdersController;
 use App\Controllers\Client\ReviewsController;
@@ -47,6 +48,7 @@ $router->get('/products/search', [ProductsController::class, 'search']);
 $router->get('/cart', [CartController::class, 'index']);
 $router->post('/cart/add', [CartController::class, 'add']);
 $router->post('/cart/update', [CartController::class, 'update']);
+$router->post('/cart/update-ajax', [CartController::class, 'updateAjax']);
 $router->get('/cart/remove/{id}', [CartController::class, 'remove']);
 $router->get('/cart/clear', [CartController::class, 'clear']);
 $router->get('/cart/count', [CartController::class, 'count']);
@@ -70,6 +72,15 @@ $router->get('/profile/edit', [ProfileController::class, 'edit']);
 $router->post('/profile/update', [ProfileController::class, 'update']);
 $router->get('/profile/change-password', [ProfileController::class, 'changePassword']);
 $router->post('/profile/update-password', [ProfileController::class, 'updatePassword']);
+
+// User Addresses (Profile)
+$router->get('/profile/addresses', [UserAddressController::class, 'index']);
+$router->get('/profile/addresses/create', [UserAddressController::class, 'create']);
+$router->post('/profile/addresses/store', [UserAddressController::class, 'store']);
+$router->get('/profile/addresses/edit/{id}', [UserAddressController::class, 'edit']);
+$router->post('/profile/addresses/update/{id}', [UserAddressController::class, 'update']);
+$router->post('/profile/addresses/delete/{id}', [UserAddressController::class, 'delete']);
+$router->post('/profile/addresses/set-default/{id}', [UserAddressController::class, 'setDefault']);
 
 // Orders (Client)
 $router->get('/orders', [OrdersController::class, 'index']);

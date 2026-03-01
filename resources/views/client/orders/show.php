@@ -218,7 +218,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">Phương thức:</span>
-                        <span class="fw-bold text-uppercase"><?php echo htmlspecialchars($data['order']['payment_method']); ?></span>
+                        <span class="fw-bold "><?php echo htmlspecialchars($data['order']['payment_method']); ?></span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="text-muted">Trạng thái:</span>

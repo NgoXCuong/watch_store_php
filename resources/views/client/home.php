@@ -27,10 +27,10 @@
     <!-- Content -->
     <div class="container text-center position-relative" style="z-index: 2;">
         <div class="animate-fade-up">
-            <span class="d-inline-block text-uppercase letter-spacing-4 text-warning mb-3 small fw-bold">
+            <span class="d-inline-block letter-spacing-4 text-warning mb-3 small fw-bold">
                 <i class="fas fa-crown me-2"></i>Vẻ đẹp vượt thời gian
             </span>
-            <h1 class="display-1 fw-bold text-white mb-4 text-uppercase" style="font-family: var(--font-heading); letter-spacing: 5px; text-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <h1 class="display-1 fw-bold text-white mb-4 " style="font-family: var(--font-heading); letter-spacing: 5px; text-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                 Luxury <br> <span style="color: var(--secondary-color);">Watches Store</span>
             </h1>
             <p class="lead text-light opacity-75 mb-5 mx-auto" style="max-width: 600px; font-weight: 300; letter-spacing: 1px;">
@@ -38,11 +38,11 @@
             </p>
             
             <div class="d-flex justify-content-center gap-3">
-                <a href="<?php echo BASE_URL; ?>/products" class="btn btn-luxury-primary px-5 py-3 text-uppercase letter-spacing-2 fw-bold">
+                <a href="<?php echo BASE_URL; ?>/products" class="btn btn-luxury-primary px-5 py-3 letter-spacing-2 fw-bold">
                     Khám phá ngay
                 </a>
                 <?php if (!isset($_SESSION['user'])): ?>
-                    <a href="<?php echo BASE_URL; ?>/auth/register" class="btn btn-outline-light px-5 py-3 text-uppercase letter-spacing-2 fw-bold">
+                    <a href="<?php echo BASE_URL; ?>/auth/register" class="btn btn-outline-light px-5 py-3 letter-spacing-2 fw-bold">
                         Đăng ký
                     </a>
                 <?php endif; ?>
@@ -52,7 +52,7 @@
 
     <!-- Scroll Indicator -->
     <div class="position-absolute bottom-0 start-50 translate-middle-x mb-5 animate-bounce" style="z-index: 2;">
-        <a href="#featured" class="text-white opacity-50 text-decoration-none d-flex flex-column align-items-center text-uppercase x-small letter-spacing-2">
+        <a href="#featured" class="text-white opacity-50 text-decoration-none d-flex flex-column align-items-center x-small letter-spacing-2">
             <span>Scroll</span>
             <i class="fas fa-chevron-down mt-2"></i>
         </a>
@@ -66,28 +66,28 @@
             <div class="col-md-3">
                 <div class="p-4 border border-success-subtle h-100 hover-shadow transition-all">
                     <i class="fas fa-shipping-fast fa-2x text-warning mb-3"></i>
-                    <h5 class="text-uppercase letter-spacing-1 fs-6 fw-bold">Miễn phí vận chuyển</h5>
+                    <h5 class="letter-spacing-1 fs-6 fw-bold">Miễn phí vận chuyển</h5>
                     <p class="text-muted small mb-0">Cho đơn hàng trên 5 triệu</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="p-4 border border-success-subtle h-100 hover-shadow transition-all">
                     <i class="fas fa-shield-alt fa-2x text-warning mb-3"></i>
-                    <h5 class="text-uppercase letter-spacing-1 fs-6 fw-bold">Bảo hành chính hãng</h5>
+                    <h5 class="letter-spacing-1 fs-6 fw-bold">Bảo hành chính hãng</h5>
                     <p class="text-muted small mb-0">Cam kết 100% Authentic</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="p-4 border border-success-subtle h-100 hover-shadow transition-all">
                     <i class="fas fa-undo fa-2x text-warning mb-3"></i>
-                    <h5 class="text-uppercase letter-spacing-1 fs-6 fw-bold">Đổi trả linh hoạt</h5>
+                    <h5 class="letter-spacing-1 fs-6 fw-bold">Đổi trả linh hoạt</h5>
                     <p class="text-muted small mb-0">Trong vòng 30 ngày</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="p-4 border border-success-subtle h-100 hover-shadow transition-all">
                     <i class="fas fa-gem fa-2x text-warning mb-3"></i>
-                    <h5 class="text-uppercase letter-spacing-1 fs-6 fw-bold">Chất lượng cao cấp</h5>
+                    <h5 class="letter-spacing-1 fs-6 fw-bold">Chất lượng cao cấp</h5>
                     <p class="text-muted small mb-0">Kiểm định nghiêm ngặt</p>
                 </div>
             </div>
@@ -100,8 +100,8 @@
 <section id="featured" class="section py-5 reveal">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <span class="text-warning text-uppercase letter-spacing-2 small fw-bold">Best Sellers</span>
-            <h2 class="display-5 text-uppercase fw-bold mt-2" style="font-family: var(--font-heading);">Sản phẩm nổi bật</h2>
+            <span class="text-warning letter-spacing-2 small fw-bold">Best Sellers</span>
+            <h2 class="display-5 fw-bold mt-2" style="font-family: var(--font-heading);">Sản phẩm nổi bật</h2>
             <div class="mx-auto mt-3" style="width: 50px; height: 3px; background-color: var(--secondary-color);"></div>
         </div>
 
@@ -129,6 +129,11 @@
                                 </div>
                             <?php endif; ?>
 
+                            <!-- Add to Wishlist (Moved to Top Right) -->
+                            <button type="button" onclick="toggleWishlist(<?php echo $product['id']; ?>, this)" class="btn bg-white text-muted shadow-sm position-absolute top-0 end-0 m-2 wishlist-badge-btn" title="Yêu thích" style="z-index: 10;">
+                                <i class="far fa-heart"></i>
+                            </button>
+
                             <!-- Hover Overlay -->
                             <!-- Quick Actions Overlay -->
                             <div class="position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0 product-actions-overlay" style="transition: all 0.3s; transform: translateY(20px);">
@@ -136,11 +141,6 @@
                                 <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>" class="btn btn-light bg-white text-dark btn-action shadow-sm" title="Xem chi tiết">
                                     <i class="fas fa-eye"></i>
                                 </a>
-
-                                <!-- Add to Wishlist -->
-                                <button type="button" onclick="toggleWishlist(<?php echo $product['id']; ?>, this)" class="btn btn-light bg-white text-muted btn-action shadow-sm" title="Yêu thích">
-                                    <i class="far fa-heart"></i>
-                                </button>
 
                                 <!-- Add to Cart -->
                                 <?php if (isset($_SESSION['user'])): ?>
@@ -160,7 +160,7 @@
                         </div>
 
                         <div class="text-center px-3 pb-4">
-                            <div class="text-uppercase text-muted x-small letter-spacing-1 mb-2">
+                            <div class="text-muted x-small letter-spacing-1 mb-2">
                                 <?php echo htmlspecialchars($product['category_name'] ?? ''); ?>
                             </div>
                             <h5 class="h6 mb-2">
@@ -186,7 +186,7 @@
         </div>
         
         <div class="text-center mt-5">
-            <a href="<?php echo BASE_URL; ?>/products" class="btn btn-outline-dark rounded-0 px-5 py-3 text-uppercase letter-spacing-2 fw-bold">
+            <a href="<?php echo BASE_URL; ?>/products" class="btn btn-outline-dark rounded-0 px-5 py-3 letter-spacing-2 fw-bold">
                 Xem tất cả
             </a>
         </div>
@@ -200,7 +200,7 @@
     <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('<?php echo BASE_URL; ?>/assets/img/banner.avif') fixed center center/cover; opacity: 0.2;"></div>
     <div class="container py-5 position-relative z-index-1">
         <div class="text-center mb-5">
-            <h2 class="display-5 text-uppercase fw-bold text-white" style="font-family: var(--font-heading);">Bộ sưu tập</h2>
+            <h2 class="display-5 fw-bold text-white" style="font-family: var(--font-heading);">Bộ sưu tập</h2>
             <p class="text-white-50">Phong cách định hình cá tính của bạn</p>
         </div>
 
@@ -209,8 +209,8 @@
                 <div class="col-md-4">
                     <a href="<?php echo BASE_URL; ?>/products?category=<?php echo $category['id']; ?>" class="card bg-transparent border border-secondary h-100 text-decoration-none group-hover-parent">
                         <div class="card-body py-5 text-center">
-                            <h3 class="text-white text-uppercase letter-spacing-2 mb-3"><?php echo htmlspecialchars($category['name']); ?></h3>
-                            <span class="text-white text-uppercase small letter-spacing-1 category-hover-text transition-all">
+                            <h3 class="text-white letter-spacing-2 mb-3"><?php echo htmlspecialchars($category['name']); ?></h3>
+                            <span class="text-white small letter-spacing-1 category-hover-text transition-all">
                                 Khám phá <i class="fas fa-arrow-right ms-2"></i>
                             </span>
                         </div>
@@ -228,10 +228,10 @@
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div>
-                <span class="text-warning text-uppercase letter-spacing-2 small fw-bold">New Arrivals</span>
-                <h2 class="h1 text-uppercase fw-bold mt-2" style="font-family: var(--font-heading);">Mới nhất</h2>
+                <span class="text-warning letter-spacing-2 small fw-bold">New Arrivals</span>
+                <h2 class="h1 fw-bold mt-2" style="font-family: var(--font-heading);">Mới nhất</h2>
             </div>
-            <a href="<?php echo BASE_URL; ?>/products?sort=latest" class="text-dark text-decoration-none text-uppercase letter-spacing-1 fw-bold">
+            <a href="<?php echo BASE_URL; ?>/products?sort=latest" class="text-dark text-decoration-none letter-spacing-1 fw-bold">
                 Xem thêm <i class="fas fa-arrow-right ms-1"></i>
             </a>
         </div>
@@ -248,16 +248,18 @@
                                     <div class="bg-light d-flex align-items-center justify-content-center" style="height: 350px;"><i class="fas fa-clock fa-3x text-muted"></i></div>
                                 <?php endif; ?>
                             </a>
-                            <span class="position-absolute top-0 end-0 m-3 badge bg-warning text-dark rounded-0 px-3 fw-bold">NEW</span>
+                            <span class="position-absolute top-0 start-0 m-3 badge bg-warning text-dark rounded-0 px-3 fw-bold">NEW</span>
                             
+                            <!-- Add to Wishlist (Moved to Top Right) -->
+                            <button type="button" onclick="toggleWishlist(<?php echo $product['id']; ?>, this)" class="btn bg-white text-muted shadow-sm position-absolute top-0 end-0 m-2 wishlist-badge-btn" title="Yêu thích" style="z-index: 10;">
+                                <i class="far fa-heart"></i>
+                            </button>
+
                             <!-- Quick Actions Overlay -->
                             <div class="position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0 product-actions-overlay" style="transition: all 0.3s; transform: translateY(20px);">
                                 <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>" class="btn btn-light bg-white text-dark btn-action shadow-sm" title="Xem chi tiết">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <button type="button" onclick="toggleWishlist(<?php echo $product['id']; ?>, this)" class="btn btn-light bg-white text-muted btn-action shadow-sm" title="Yêu thích">
-                                    <i class="far fa-heart"></i>
-                                </button>
                                 <?php if (isset($_SESSION['user'])): ?>
                                     <form action="<?php echo BASE_URL; ?>/cart/add" method="POST">
                                         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
@@ -308,7 +310,7 @@
                                 <?php if ($brand['logo_url']): ?>
                                     <img src="<?php echo htmlspecialchars($brand['logo_url']); ?>" alt="<?php echo htmlspecialchars($brand['name']); ?>" style="height: 60px; object-fit: contain; filter: none; opacity: 1;" class="transition-transform duration-300 hover-scale">
                                 <?php else: ?>
-                                    <h4 class="text-uppercase text-muted fw-bold mb-0 text-nowrap" style="letter-spacing: 2px;">
+                                    <h4 class="text-muted fw-bold mb-0 text-nowrap" style="letter-spacing: 2px;">
                                         <?php echo htmlspecialchars($brand['name']); ?>
                                     </h4>
                                 <?php endif; ?>
@@ -325,12 +327,12 @@
 <!-- Newsletter CTA -->
 <section class="py-5 bg-dark text-white text-center reveal">
     <div class="container py-4">
-        <h2 class="display-6 fw-bold  text-white  text-uppercase mb-3" style="font-family: var(--font-heading);">Đăng ký nhận tin</h2>
+        <h2 class="display-6 fw-bold  text-white  mb-3" style="font-family: var(--font-heading);">Đăng ký nhận tin</h2>
         <p class="text-white-50 mb-4">Nhận thông báo về các bộ sưu tập mới và ưu đãi độc quyền.</p>
         <form class="mx-auto" style="max-width: 500px;">
             <div class="input-group">
                 <input type="email" class="form-control rounded-0 border-0 p-3" placeholder="Email của bạn...">
-                <button class="btn btn-warning rounded-0 px-4 text-dark fw-bold text-uppercase" type="button">Đăng ký</button>
+                <button class="btn btn-warning rounded-0 px-4 text-dark fw-bold " type="button">Đăng ký</button>
             </div>
         </form>
     </div>

@@ -42,11 +42,16 @@ class CheckoutController extends Controller {
         $userModel = $this->model('UserModel');
         $user = $userModel->findById($userId);
 
+        // Lấy danh sách địa chỉ của user
+        $userAddressModel = $this->model('UserAddressModel');
+        $addresses = $userAddressModel->getByUserId($userId);
+
         $this->view('client/checkout/index', [
             'title' => 'Thanh toán - Watch Store',
             'cartItems' => $cartItems,
             'cartTotal' => $cartTotal,
             'user' => $user,
+            'addresses' => $addresses,
             'errors' => $_SESSION['errors'] ?? [],
             'old_input' => $_SESSION['old_input'] ?? [],
             'layout' => 'client'
@@ -130,18 +135,45 @@ class CheckoutController extends Controller {
         }
 
         // Validate dữ liệu
-        $data = [
-            'full_name' => trim($_POST['full_name'] ?? ''),
-            'email' => trim($_POST['email'] ?? ''),
-            'phone_number' => trim($_POST['phone_number'] ?? ''),
-            'address' => trim($_POST['address'] ?? ''),
-            'city' => trim($_POST['city'] ?? ''),
-            'district' => trim($_POST['district'] ?? ''),
-            'ward' => trim($_POST['ward'] ?? ''),
-            'payment_method' => $_POST['payment_method'] ?? 'cod',
-            'notes' => trim($_POST['notes'] ?? ''),
-            'voucher_code' => trim($_POST['voucher_code'] ?? '')
-        ];
+        $addressId = $_POST['address_id'] ?? 'new';
+        $userAddressModel = $this->model('UserAddressModel');
+
+        if ($addressId !== 'new') {
+            $selectedAddress = $userAddressModel->findByIdAndUserId($addressId, $userId);
+            if ($selectedAddress) {
+                $data = [
+                    'full_name' => $selectedAddress['recipient_name'],
+                    'email' => $user['email'] ?? trim($_POST['email'] ?? ''), // Use user's email if possible
+                    'phone_number' => $selectedAddress['recipient_phone'],
+                    'address' => $selectedAddress['address_line'],
+                    'city' => $selectedAddress['city'],
+                    'district' => $selectedAddress['district'],
+                    'ward' => '', // Assume ward is integrated in address_line or empty since we don't have it
+                    'payment_method' => $_POST['payment_method'] ?? 'cod',
+                    'notes' => trim($_POST['notes'] ?? ''),
+                    'voucher_code' => trim($_POST['voucher_code'] ?? ''),
+                    'address_id' => $addressId
+                ];
+            } else {
+                $_SESSION['errors'] = ['address_id' => 'Địa chỉ không hợp lệ'];
+                header('Location: ' . BASE_URL . '/checkout');
+                exit;
+            }
+        } else {
+            $data = [
+                'full_name' => trim($_POST['full_name'] ?? ''),
+                'email' => trim($_POST['email'] ?? ''),
+                'phone_number' => trim($_POST['phone_number'] ?? ''),
+                'address' => trim($_POST['address'] ?? ''),
+                'city' => trim($_POST['city'] ?? ''),
+                'district' => trim($_POST['district'] ?? ''),
+                'ward' => trim($_POST['ward'] ?? ''),
+                'payment_method' => $_POST['payment_method'] ?? 'cod',
+                'notes' => trim($_POST['notes'] ?? ''),
+                'voucher_code' => trim($_POST['voucher_code'] ?? ''),
+                'address_id' => 'new'
+            ];
+        }
 
         $errors = [];
 

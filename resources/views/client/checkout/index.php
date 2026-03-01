@@ -44,40 +44,97 @@
 
                         <!-- Shipping Address -->
                         <div class="mb-4">
-                            <h6 class="mb-3">Địa chỉ giao hàng</h6>
-                            <div class="mb-3">
-                                <label for="address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?php echo isset($data['errors']['address']) ? 'is-invalid' : ''; ?>"
-                                       id="address" name="address"
-                                       value="<?php echo htmlspecialchars($data['old_input']['address'] ?? ''); ?>"
-                                       placeholder="Số nhà, tên đường..." required>
-                                <?php if (isset($data['errors']['address'])): ?>
-                                    <div class="invalid-feedback"><?php echo $data['errors']['address']; ?></div>
-                                <?php endif; ?>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label for="city" class="form-label">Tỉnh/Thành phố <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control <?php echo isset($data['errors']['city']) ? 'is-invalid' : ''; ?>"
-                                           id="city" name="city"
-                                           value="<?php echo htmlspecialchars($data['old_input']['city'] ?? ''); ?>" required>
-                                    <?php if (isset($data['errors']['city'])): ?>
-                                        <div class="invalid-feedback"><?php echo $data['errors']['city']; ?></div>
-                                    <?php endif; ?>
+                            <h6 class="mb-3 border-bottom pb-2">Địa chỉ giao hàng</h6>
+
+                            <?php if (!empty($data['addresses'])): ?>
+                                <div class="mb-4">
+                                    <?php
+                                        // Kiểm tra xem old_input có giá trị address_id không
+                                        $selectedAddressId = $data['old_input']['address_id'] ?? null;
+                                    ?>
+                                    <?php foreach ($data['addresses'] as $address): ?>
+                                        <?php 
+                                            // Determine if checked
+                                            $isChecked = false;
+                                            if ($selectedAddressId === $address['id']) {
+                                                $isChecked = true;
+                                            } elseif (!$selectedAddressId && $address['is_default'] == 1) {
+                                                $isChecked = true;
+                                            }
+                                        ?>
+                                        <div class="form-check border p-3 mb-2 rounded <?php echo $isChecked ? 'border-dark bg-light' : ''; ?>">
+                                            <input class="form-check-input ms-0 me-3 mt-2" type="radio" name="address_id" 
+                                                   id="address_<?php echo $address['id']; ?>" value="<?php echo $address['id']; ?>"
+                                                   <?php echo $isChecked ? 'checked' : ''; ?>
+                                                   onchange="toggleNewAddressForm()">
+                                            <label class="form-check-label w-100" for="address_<?php echo $address['id']; ?>" style="cursor: pointer;">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="fw-bold"><?php echo htmlspecialchars($address['recipient_name']); ?> - <?php echo htmlspecialchars($address['recipient_phone']); ?></span>
+                                                    <?php if ($address['is_default']): ?>
+                                                        <span class="badge bg-dark rounded-0 small">Mặc định</span>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div class="text-muted small mt-1">
+                                                    <?php echo htmlspecialchars($address['address_line']); ?>, 
+                                                    <?php echo htmlspecialchars($address['district']); ?>, 
+                                                    <?php echo htmlspecialchars($address['city']); ?>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                    
+                                    <div class="form-check border p-3 mb-2 rounded <?php echo ($selectedAddressId === 'new') ? 'border-dark bg-light' : ''; ?>">
+                                        <input class="form-check-input ms-0 me-3 mt-1" type="radio" name="address_id" 
+                                               id="address_new" value="new"
+                                               <?php echo ($selectedAddressId === 'new') ? 'checked' : ''; ?>
+                                               onchange="toggleNewAddressForm()">
+                                        <label class="form-check-label fw-bold" for="address_new" style="cursor: pointer;">
+                                            <i class="fas fa-plus-circle me-1"></i> Giao đến địa chỉ khác
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="district" class="form-label">Quận/Huyện <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control <?php echo isset($data['errors']['district']) ? 'is-invalid' : ''; ?>"
-                                           id="district" name="district"
-                                           value="<?php echo htmlspecialchars($data['old_input']['district'] ?? ''); ?>" required>
-                                    <?php if (isset($data['errors']['district'])): ?>
-                                        <div class="invalid-feedback"><?php echo $data['errors']['district']; ?></div>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="ward" class="form-label">Phường/Xã</label>
-                                    <input type="text" class="form-control" id="ward" name="ward"
-                                           value="<?php echo htmlspecialchars($data['old_input']['ward'] ?? ''); ?>">
+                            <?php else: ?>
+                                <input type="hidden" name="address_id" value="new" id="address_new">
+                            <?php endif; ?>
+
+                            <div id="new_address_form" style="<?php echo !empty($data['addresses']) && ($selectedAddressId !== 'new') ? 'display: none;' : ''; ?>">
+                                <div class="p-4 bg-light border rounded-0 mb-3">
+                                    <h6 class="text-muted mb-3 small letter-spacing-1">Nhập địa chỉ mới</h6>
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label small text-muted">Địa chỉ <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control rounded-0 <?php echo isset($data['errors']['address']) ? 'is-invalid' : ''; ?>"
+                                               id="address" name="address"
+                                               value="<?php echo htmlspecialchars($data['old_input']['address'] ?? ''); ?>"
+                                               placeholder="Số nhà, tên đường...">
+                                        <?php if (isset($data['errors']['address'])): ?>
+                                            <div class="invalid-feedback"><?php echo $data['errors']['address']; ?></div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="city" class="form-label small text-muted">Tỉnh/Thành phố <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control rounded-0 <?php echo isset($data['errors']['city']) ? 'is-invalid' : ''; ?>"
+                                                   id="city" name="city"
+                                                   value="<?php echo htmlspecialchars($data['old_input']['city'] ?? ''); ?>">
+                                            <?php if (isset($data['errors']['city'])): ?>
+                                                <div class="invalid-feedback"><?php echo $data['errors']['city']; ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="district" class="form-label small text-muted">Quận/Huyện <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control rounded-0 <?php echo isset($data['errors']['district']) ? 'is-invalid' : ''; ?>"
+                                                   id="district" name="district"
+                                                   value="<?php echo htmlspecialchars($data['old_input']['district'] ?? ''); ?>">
+                                            <?php if (isset($data['errors']['district'])): ?>
+                                                <div class="invalid-feedback"><?php echo $data['errors']['district']; ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="ward" class="form-label small text-muted">Phường/Xã</label>
+                                            <input type="text" class="form-control rounded-0" id="ward" name="ward"
+                                                   value="<?php echo htmlspecialchars($data['old_input']['ward'] ?? ''); ?>">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -142,10 +199,10 @@
                         <?php endif; ?>
 
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-success btn-lg">
+                            <button type="submit" class="btn btn-dark btn-lg">
                                 <i class="fas fa-check me-2"></i>Đặt hàng
                             </button>
-                            <a href="<?php echo BASE_URL; ?>/cart" class="btn btn-secondary btn-lg">
+                            <a href="<?php echo BASE_URL; ?>/cart" class="btn btn-outline-dark btn-lg">
                                 <i class="fas fa-arrow-left me-2"></i>Quay lại giỏ hàng
                             </a>
                         </div>
@@ -304,10 +361,53 @@ function updateTotal() {
     }
 }
 
+function toggleNewAddressForm() {
+    const newAddressRadio = document.getElementById('address_new');
+    const newAddressForm = document.getElementById('new_address_form');
+    
+    // Update border styling for selected radio
+    const radioButtons = document.querySelectorAll('input[name="address_id"]');
+    radioButtons.forEach(radio => {
+        const parentDiv = radio.closest('.form-check');
+        if (radio.checked) {
+            parentDiv.classList.add('border-dark', 'bg-light');
+        } else {
+            parentDiv.classList.remove('border-dark', 'bg-light');
+        }
+    });
+
+    if (newAddressRadio && (newAddressRadio.checked || newAddressRadio.type === 'hidden')) {
+        if(newAddressForm) newAddressForm.style.display = 'block';
+    } else {
+        if(newAddressForm) newAddressForm.style.display = 'none';
+        
+        // Bỏ focus các input nếu đang ẩn
+        ['address', 'city', 'district'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) {
+                el.classList.remove('is-invalid');
+                el.value = '';
+            }
+        });
+    }
+}
+
+// Call on load
+document.addEventListener('DOMContentLoaded', function() {
+    toggleNewAddressForm();
+});
+
 // Form validation
 document.getElementById('checkoutForm').addEventListener('submit', function(e) {
     // Basic validation
-    const requiredFields = ['full_name', 'email', 'phone_number', 'address', 'city', 'district'];
+    const addressIdElem = document.querySelector('input[name="address_id"]:checked') || document.querySelector('input[name="address_id"][type="hidden"]');
+    const isNewAddress = addressIdElem && addressIdElem.value === 'new';
+
+    let requiredFields = ['full_name', 'email', 'phone_number'];
+    if (isNewAddress) {
+        requiredFields = requiredFields.concat(['address', 'city', 'district']);
+    }
+
     let isValid = true;
 
     requiredFields.forEach(field => {

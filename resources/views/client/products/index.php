@@ -2,7 +2,7 @@
 <section class="breadcrumb-section bg-light py-3 border-bottom mb-5">
     <div class="container" style="max-width: 1400px;">
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb m-0 small text-uppercase" style="letter-spacing: 1px;">
+            <ol class="breadcrumb m-0 small " style="letter-spacing: 1px;">
                 <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>/" class="text-decoration-none text-muted">Trang chủ</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Bộ sưu tập</li>
                 <?php if ($data['currentCategory']): ?>
@@ -24,7 +24,7 @@
                 <div class="sidebar mb-5 mb-lg-0 sticky-top" style="top: 100px; z-index: 900;">
                     <!-- Price Range -->
                     <div class="mb-5">
-                        <h5 class="text-uppercase letter-spacing-1 mb-4 fs-6 fw-bold text-dark border-bottom pb-2">Khoảng giá</h5>
+                        <h5 class="letter-spacing-1 mb-4 fs-6 fw-bold text-dark border-bottom pb-2">Khoảng giá</h5>
                         <div class="price-slider-wrapper">
                             <!-- Dual Range Custom Sliders -->
                             <div class="slider-container position-relative mb-4" style="height: 4px; background: #e9ecef; border-radius: 5px; margin-top: 15px;">
@@ -38,13 +38,13 @@
                                 <span class="fw-bold text-muted small" id="range2">100.000.000đ</span>
                             </div>
 
-                            <button type="button" class="btn btn-dark w-100 text-uppercase small letter-spacing-1" onclick="applyPriceFilter()">Lọc giá</button>
+                            <button type="button" class="btn btn-dark w-100  small letter-spacing-1" onclick="applyPriceFilter()">Lọc giá</button>
                         </div>
                     </div>
 
                     <!-- Categories -->
                     <div class="mb-5">
-                        <h5 class="text-uppercase letter-spacing-1 mb-3 fs-6 fw-bold text-dark border-bottom pb-2">Danh mục</h5>
+                        <h5 class="letter-spacing-1 mb-3 fs-6 fw-bold text-dark border-bottom pb-2">Danh mục</h5>
                         <div class="filter-scroll-container">
                             <div class="d-flex flex-column gap-2">
                                 <a href="<?php echo BASE_URL; ?>/products" class="text-decoration-none filter-item <?php echo !$data['selectedCategory'] ? 'active' : ''; ?>">
@@ -64,7 +64,7 @@
 
                     <!-- Brands -->
                     <div class="mb-5">
-                        <h5 class="text-uppercase letter-spacing-1 mb-3 fs-6 fw-bold text-dark border-bottom pb-2">Thương hiệu</h5>
+                        <h5 class="letter-spacing-1 mb-3 fs-6 fw-bold text-dark border-bottom pb-2">Thương hiệu</h5>
                         <div class="filter-scroll-container">
                             <div class="d-flex flex-column gap-2">
                                 <a href="?category=<?php echo $data['selectedCategory']; ?>&sort=<?php echo $data['selectedSort']; ?>" class="text-decoration-none filter-item <?php echo !$data['selectedBrand'] ? 'active' : ''; ?>">
@@ -98,7 +98,7 @@
 
                 <!-- Toolbar -->
                 <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom">
-                    <span class="text-muted small text-uppercase letter-spacing-1">
+                    <span class="text-muted small letter-spacing-1">
                         Hiển thị <?php echo count($data['products']); ?> kết quả
                     </span>
                     
@@ -130,7 +130,7 @@
                         <i class="far fa-sad-tear fa-3x text-muted mb-3"></i>
                         <h3 class="fw-light">Không tìm thấy sản phẩm</h3>
                         <p class="text-muted">Vui lòng thử lại với từ khóa hoặc bộ lọc khác.</p>
-                        <a href="<?php echo BASE_URL; ?>/products" class="btn btn-outline-dark rounded-0 px-4 mt-3 text-uppercase" style="letter-spacing: 1px;">
+                        <a href="<?php echo BASE_URL; ?>/products" class="btn btn-outline-dark rounded-0 px-4 mt-3 " style="letter-spacing: 1px;">
                             Xóa bộ lọc
                         </a>
                     </div>
@@ -158,17 +158,17 @@
                                             <?php endif; ?>
                                         </a>
 
+                                        <!-- Add to Wishlist (Moved to Top Right) -->
+                                        <button type="button" onclick="toggleWishlist(<?php echo $product['id']; ?>, this)" class="btn bg-white text-muted shadow-sm position-absolute top-0 end-0 m-2 wishlist-badge-btn" title="Yêu thích" style="z-index: 10;">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+
                                         <!-- Quick Actions Overlay -->
                                         <div class="position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0 product-actions-overlay" style="transition: all 0.3s; transform: translateY(20px);">
                                             <!-- View Details -->
                                             <a href="<?php echo BASE_URL; ?>/products/show/<?php echo $product['id']; ?>" class="btn btn-light bg-white text-dark btn-action shadow-sm" title="Xem chi tiết">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-
-                                            <!-- Add to Wishlist -->
-                                            <button type="button" onclick="toggleWishlist(<?php echo $product['id']; ?>, this)" class="btn btn-light bg-white text-muted btn-action shadow-sm" title="Yêu thích">
-                                                <i class="far fa-heart"></i>
-                                            </button>
 
                                             <!-- Add to Cart -->
                                             <?php if (isset($_SESSION['user'])): ?>
@@ -188,7 +188,7 @@
                                     </div>
                                     
                                     <div class="product-info mt-3 text-center">
-                                        <div class="product-category text-muted x-small text-uppercase letter-spacing-2 mb-2">
+                                        <div class="product-category text-muted x-small letter-spacing-2 mb-2">
                                             <?php echo htmlspecialchars($product['category_name'] ?? ''); ?>
                                         </div>
                                         <h3 class="h6 mb-2">
@@ -318,6 +318,7 @@
 .active .filter-checkbox i {
     opacity: 1;
 }
+
 /* Slider Styles */
 input[type="range"] {
     -webkit-appearance: none;

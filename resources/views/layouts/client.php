@@ -161,7 +161,60 @@
             font-weight: bold;
         }
 
-        /* Buttons */
+        /* Base Button Overrides for consistency with Theme */
+        .btn-dark {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: white !important;
+            transition: all 0.3s ease;
+        }
+
+        .btn-dark:hover, .btn-dark:focus, .btn-dark:active {
+            background-color: var(--secondary-color) !important;
+            border-color: var(--secondary-dark) !important;
+            color: white !important;
+        }
+
+        .btn-outline-dark {
+            color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            background-color: transparent !important;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-dark:hover, .btn-outline-dark:focus, .btn-outline-dark:active {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color) !important;
+            border-color: var(--secondary-dark) !important;
+            color: white !important;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+            background-color: var(--secondary-dark) !important;
+            border-color: var(--secondary-dark) !important;
+            color: white !important;
+        }
+
+        .btn-outline-primary {
+            color: var(--secondary-color) !important;
+            border-color: var(--secondary-color) !important;
+            background-color: transparent !important;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+            background-color: var(--secondary-color) !important;
+            color: white !important;
+            border-color: var(--secondary-color) !important;
+        }
+
+        /* Legacy Button custom classes (retain if used somewhere) */
         .btn-custom {
             padding: 0.8rem 2rem;
             border-radius: 0; /* Square elegant edges */
@@ -543,6 +596,23 @@
             border-color: transparent;
         }
 
+        /* Global Wishlist Badge Button */
+        .wishlist-badge-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-badge-btn:hover {
+            color: #dc3545 !important; /* Bootstrap Danger/Red hover */
+            transform: scale(1.1);
+        }
+
         .discount-badge {
             background-color: var(--danger-color);
             color: white;
@@ -749,7 +819,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-0 p-0 user-menu-dropdown m-0" style="min-width: 250px;">
                                 <li class="p-3 bg-light border-bottom">
-                                    <div class="small text-muted text-uppercase fw-bold letter-spacing-1 mb-1">Xin chào</div>
+                                    <div class="small text-muted fw-bold letter-spacing-1 mb-1">Xin chào</div>
                                     <div class="fw-bold fs-6 text-dark"><?php echo htmlspecialchars($_SESSION['user']['username']); ?></div>
                                 </li>
                                 <li class="p-2">
@@ -772,12 +842,12 @@
             <div class="container position-relative" style="max-width: 1400px;">
                 <ul class="d-flex list-unstyled gap-3 m-0 justify-content-center align-items-center">
                     <li class="nav-item">
-                        <a href="<?php echo BASE_URL; ?>/" class="nav-link text-white text-uppercase fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo ($_SERVER['REQUEST_URI'] === '/' || $_SERVER['REQUEST_URI'] === '/watch_store/public/') ? 'active-nav' : ''; ?>">
+                        <a href="<?php echo BASE_URL; ?>/" class="nav-link text-white fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo ($_SERVER['REQUEST_URI'] === '/' || $_SERVER['REQUEST_URI'] === '/watch_store/public/') ? 'active-nav' : ''; ?>">
                             Trang chủ
                         </a>
                     </li>
                     <li class="nav-item nav-dropdown position-static">
-                        <a href="<?php echo BASE_URL; ?>/products" class="nav-link text-white text-uppercase fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo strpos($_SERVER['REQUEST_URI'], '/products') !== false && !isset($_GET['category']) ? 'active-nav' : ''; ?>">
+                        <a href="<?php echo BASE_URL; ?>/products" class="nav-link text-white fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo strpos($_SERVER['REQUEST_URI'], '/products') !== false && !isset($_GET['category']) ? 'active-nav' : ''; ?>">
                             Đồng hồ <i class="fas fa-chevron-down ms-2 small d-none d-lg-block" style="font-size: 0.7rem;"></i>
                         </a>
                         <div class="dropdown-content position-absolute w-100 bg-white shadow-lg border-top border-warning mega-menu" style="border-top-width: 3px !important; z-index: 1000; opacity: 0; visibility: hidden; top: 100%; left: 0; transform: translateY(15px); transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;">
@@ -785,7 +855,7 @@
                                 <div class="row g-4 d-flex justify-content-center">
                                     <!-- Theo giới tính / đối tượng -->
                                     <div class="col-lg-2 col-md-4">
-                                        <h6 class="text-uppercase fw-bold text-dark mb-3 letter-spacing-1 border-bottom pb-2">Đối tượng</h6>
+                                        <h6 class="fw-bold text-dark mb-3 letter-spacing-1 border-bottom pb-2">Đối tượng</h6>
                                         <ul class="list-unstyled mega-menu-list">
                                             <li><a href="<?php echo BASE_URL; ?>/products?category=6" class="text-secondary text-decoration-none dropdown-item-custom"><i class="fas fa-male me-2 text-warning" style="width:15px"></i>Nam</a></li>
                                             <li><a href="<?php echo BASE_URL; ?>/products?category=7" class="text-secondary text-decoration-none dropdown-item-custom"><i class="fas fa-female me-2 text-warning" style="width:15px"></i>Nữ</a></li>
@@ -796,7 +866,7 @@
                                     
                                     <!-- Theo thương hiệu -->
                                     <div class="col-lg-4 col-md-4">
-                                        <h6 class="text-uppercase fw-bold text-dark mb-3 letter-spacing-1 border-bottom pb-2">Thương hiệu Nổi bật</h6>
+                                        <h6 class="fw-bold text-dark mb-3 letter-spacing-1 border-bottom pb-2">Thương hiệu Nổi bật</h6>
                                         <ul class="list-unstyled mega-menu-list columns-2">
                                             <li><a href="<?php echo BASE_URL; ?>/products?search=rolex" class="text-secondary text-decoration-none dropdown-item-custom">Rolex</a></li>
                                             <li><a href="<?php echo BASE_URL; ?>/products?search=hublot" class="text-secondary text-decoration-none dropdown-item-custom">Hublot</a></li>
@@ -811,7 +881,7 @@
 
                                     <!-- Theo mức giá -->
                                     <div class="col-lg-3 col-md-4">
-                                        <h6 class="text-uppercase fw-bold text-dark mb-3 letter-spacing-1 border-bottom pb-2">Mức giá</h6>
+                                        <h6 class="fw-bold text-dark mb-3 letter-spacing-1 border-bottom pb-2">Mức giá</h6>
                                         <ul class="list-unstyled mega-menu-list">
                                             <li><a href="<?php echo BASE_URL; ?>/products?max_price=2000000" class="text-secondary text-decoration-none dropdown-item-custom">Dưới 2 triệu</a></li>
                                             <li><a href="<?php echo BASE_URL; ?>/products?min_price=2000000&max_price=5000000" class="text-secondary text-decoration-none dropdown-item-custom">Từ 2 - 5 triệu</a></li>
@@ -826,8 +896,8 @@
                                         <div class="mega-menu-banner position-relative overflow-hidden group-hover-parent" style="border-radius: 8px; height: 100%; min-height: 200px; max-height: 250px;">
                                             <img src="<?php echo BASE_URL; ?>/assets/img/banner-1.jpg" alt="Collection" class="w-100 h-100 object-fit-cover hover-scale" style="position: absolute; top:0; left:0;">
                                             <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-3" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
-                                                <h5 class="text-white text-uppercase letter-spacing-1 mb-1 shadow-text fs-6">Bộ Sưu Tập Mới</h5>
-                                                <a href="<?php echo BASE_URL; ?>/products?sort=latest" class="text-warning text-decoration-none text-uppercase small fw-bold letter-spacing-1" style="font-size: 0.75rem;">Khám phá ngay <i class="fas fa-arrow-right ms-1"></i></a>
+                                                <h5 class="text-white letter-spacing-1 mb-1 shadow-text fs-6">Bộ Sưu Tập Mới</h5>
+                                                <a href="<?php echo BASE_URL; ?>/products?sort=latest" class="text-warning text-decoration-none small fw-bold letter-spacing-1" style="font-size: 0.75rem;">Khám phá ngay <i class="fas fa-arrow-right ms-1"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -837,22 +907,22 @@
                     </li>
                     
                     <li class="nav-item">
-                        <a href="<?php echo BASE_URL; ?>/products?category=6" class="nav-link text-white text-uppercase fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo isset($_GET['category']) && $_GET['category'] == '6' ? 'active-nav' : ''; ?>">
+                        <a href="<?php echo BASE_URL; ?>/products?category=6" class="nav-link text-white fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo isset($_GET['category']) && $_GET['category'] == '6' ? 'active-nav' : ''; ?>">
                             Đồng hồ Nam
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo BASE_URL; ?>/products?category=7" class="nav-link text-white text-uppercase fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo isset($_GET['category']) && $_GET['category'] == '7' ? 'active-nav' : ''; ?>">
+                        <a href="<?php echo BASE_URL; ?>/products?category=7" class="nav-link text-white fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo isset($_GET['category']) && $_GET['category'] == '7' ? 'active-nav' : ''; ?>">
                             Đồng hồ Nữ
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo BASE_URL; ?>/brands" class="nav-link text-white text-uppercase fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo strpos($_SERVER['REQUEST_URI'], '/brands') !== false ? 'active-nav' : ''; ?>">
+                        <a href="<?php echo BASE_URL; ?>/brands" class="nav-link text-white fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo strpos($_SERVER['REQUEST_URI'], '/brands') !== false ? 'active-nav' : ''; ?>">
                             Thương hiệu
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo BASE_URL; ?>/about" class="nav-link text-white text-uppercase fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo strpos($_SERVER['REQUEST_URI'], '/about') !== false ? 'active-nav' : ''; ?>">
+                        <a href="<?php echo BASE_URL; ?>/about" class="nav-link text-white fw-bold py-3 mx-2 mx-xl-3 px-0 position-relative d-flex align-items-center <?php echo strpos($_SERVER['REQUEST_URI'], '/about') !== false ? 'active-nav' : ''; ?>">
                             Về chúng tôi
                         </a>
                     </li>

@@ -2,7 +2,7 @@
 <section class="breadcrumb-section bg-light py-3 border-bottom mb-5">
     <div class="container" style="max-width: 1400px;">
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb m-0 small text-uppercase" style="letter-spacing: 1px;">
+            <ol class="breadcrumb m-0 small " style="letter-spacing: 1px;">
                 <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>/" class="text-decoration-none text-muted">Trang chủ</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Về chúng tôi</li>
             </ol>
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="col-lg-6 ps-lg-5">
-                <span class="text-warning text-uppercase letter-spacing-2 fw-bold small">Câu chuyện thương hiệu</span>
+                <span class="text-warning letter-spacing-2 fw-bold small">Câu chuyện thương hiệu</span>
                 <h2 class="display-5 fw-bold mb-4 mt-2" style="font-family: var(--font-heading);">Di sản và Đam mê</h2>
                 <div class="mb-4">
                     <p class="text-muted lead mb-3">Khởi nguồn từ năm 2010, Watch Store ra đời không chỉ là một cửa hàng đồng hồ, mà là nơi tôn vinh nghệ thuật chế tác thời gian.</p>
@@ -68,19 +68,19 @@
         <div class="row g-4 text-center">
             <div class="col-md-3 col-6 border-end border-secondary border-opacity-25">
                 <h2 class="display-4 fw-bold text-warning mb-0">12+</h2>
-                <p class="text-white-50 text-uppercase letter-spacing-1 mt-2">Năm kinh nghiệm</p>
+                <p class="text-white-50 letter-spacing-1 mt-2">Năm kinh nghiệm</p>
             </div>
             <div class="col-md-3 col-6 border-end border-secondary border-opacity-25 md-border-0">
                 <h2 class="display-4 fw-bold text-warning mb-0">15k+</h2>
-                <p class="text-white-50 text-uppercase letter-spacing-1 mt-2">Khách hàng hài lòng</p>
+                <p class="text-white-50 letter-spacing-1 mt-2">Khách hàng hài lòng</p>
             </div>
             <div class="col-md-3 col-6 border-end border-secondary border-opacity-25">
                 <h2 class="display-4 fw-bold text-warning mb-0">50+</h2>
-                <p class="text-white-50 text-uppercase letter-spacing-1 mt-2">Thương hiệu quốc tế</p>
+                <p class="text-white-50 letter-spacing-1 mt-2">Thương hiệu quốc tế</p>
             </div>
             <div class="col-md-3 col-6">
                 <h2 class="display-4 fw-bold text-warning mb-0">24/7</h2>
-                <p class="text-white-50 text-uppercase letter-spacing-1 mt-2">Hỗ trợ tận tâm</p>
+                <p class="text-white-50 letter-spacing-1 mt-2">Hỗ trợ tận tâm</p>
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@
     <div class="container" style="max-width: 1400px;">
         <div class="row justify-content-center text-center mb-5">
             <div class="col-lg-8">
-                <span class="text-warning text-uppercase letter-spacing-2 fw-bold small">Tầm nhìn & Sứ mệnh</span>
+                <span class="text-warning letter-spacing-2 fw-bold small">Tầm nhìn & Sứ mệnh</span>
                 <h2 class="display-6 fw-bold mt-2">Định hướng phát triển</h2>
             </div>
         </div>
@@ -183,7 +183,7 @@
                 <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-25"></div>
             </div>
             <div class="col-lg-5 bg-white p-5 d-flex flex-column justify-content-center">
-                <span class="text-warning text-uppercase letter-spacing-2 fw-bold small mb-2">Showroom</span>
+                <span class="text-warning letter-spacing-2 fw-bold small mb-2">Showroom</span>
                 <h2 class="display-6 fw-bold mb-4">Ghé thăm chúng tôi</h2>
                 
                 <div class="mb-4">

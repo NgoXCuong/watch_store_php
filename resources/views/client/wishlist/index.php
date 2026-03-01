@@ -86,7 +86,7 @@
 
                                         <div class="card-body p-0 d-flex flex-column">
                                             <!-- Category/Brand -->
-                                            <div class="text-secondary small fw-bold text-uppercase mb-1" style="letter-spacing: 1px; font-size: 0.7rem;">
+                                            <div class="text-secondary small fw-bold mb-1" style="letter-spacing: 1px; font-size: 0.7rem;">
                                                 <?php echo htmlspecialchars($item['brand_name'] ?? $item['category_name'] ?? 'Đồng hồ'); ?>
                                             </div>
 

@@ -16,15 +16,21 @@
                         <?php endif; ?>
                     </div>
 
-                    <h5 class="fw-bold mb-1 text-uppercase letter-spacing-1"><?php echo htmlspecialchars($data['user']['full_name']); ?></h5>
+                    <h5 class="fw-bold mb-1 letter-spacing-1"><?php echo htmlspecialchars($data['user']['full_name']); ?></h5>
                     <p class="text-muted mb-4 small">@<?php echo htmlspecialchars($data['user']['username']); ?></p>
 
-                    <div class="d-grid gap-3">
-                        <a href="<?php echo BASE_URL; ?>/profile/edit" class="btn btn-outline-dark rounded-0 text-uppercase letter-spacing-1 small fw-bold py-2">
-                            <i class="fas fa-edit me-2"></i>Chỉnh sửa hồ sơ
+                    <div class="d-flex flex-column gap-2 mb-4">
+                        <a href="<?php echo BASE_URL; ?>/profile" class="text-decoration-none text-dark py-2 px-3 rounded admin-sidebar-link hover-bg-light fw-bold bg-light">
+                            <i class="fas fa-user border-0 text-center" style="width: 25px;"></i> Thông tin tài khoản
                         </a>
-                        <a href="<?php echo BASE_URL; ?>/profile/change-password" class="btn btn-outline-secondary rounded-0 text-uppercase letter-spacing-1 small fw-bold py-2">
-                            <i class="fas fa-key me-2"></i>Đổi mật khẩu
+                        <a href="<?php echo BASE_URL; ?>/profile/addresses" class="text-decoration-none text-dark py-2 px-3 rounded admin-sidebar-link hover-bg-light">
+                            <i class="fas fa-map-marker-alt text-center" style="width: 25px;"></i> Sổ địa chỉ
+                        </a>
+                        <a href="<?php echo BASE_URL; ?>/profile/change-password" class="text-decoration-none text-dark py-2 px-3 rounded admin-sidebar-link hover-bg-light">
+                            <i class="fas fa-key text-center" style="width: 25px;"></i> Đổi mật khẩu
+                        </a>
+                        <a href="<?php echo BASE_URL; ?>/orders" class="text-decoration-none text-dark py-2 px-3 rounded admin-sidebar-link hover-bg-light">
+                            <i class="fas fa-shopping-bag text-center" style="width: 25px;"></i> Đơn mua
                         </a>
                     </div>
                 </div>
@@ -36,7 +42,7 @@
             <!-- Account Information -->
             <div class="card border-0 shadow-sm rounded-0 mb-5">
                 <div class="card-header bg-white border-bottom py-4">
-                    <h5 class="mb-0 fw-bold text-uppercase letter-spacing-2" style="font-family: var(--font-heading);">
+                    <h5 class="mb-0 fw-bold letter-spacing-2" style="font-family: var(--font-heading);">
                         <i class="fas fa-info-circle me-2 text-warning"></i>Thông tin tài khoản
                     </h5>
                 </div>
@@ -68,7 +74,7 @@
                             </div>
                             <div class="d-flex align-items-center">
                                 <label class="text-muted x-small letter-spacing-1 mb-0 me-3 flex-shrink-0" style="width: 130px;">Vai trò</label>
-                                <span class="badge bg-dark rounded-0 px-3 py-2 text-uppercase letter-spacing-1">
+                                <span class="badge bg-dark rounded-0 px-3 py-2 letter-spacing-1">
                                     <?php echo $data['user']['role'] === 'admin' ? 'Admin' : ($data['user']['role'] === 'staff' ? 'Nhân viên' : 'Khách hàng'); ?>
                                 </span>
                             </div>
@@ -86,7 +92,7 @@
                         </div>
                         <div class="card-body p-4 position-relative z-index-1">
                             <h2 class="display-5 fw-bold mb-0"><?php echo $data['orderStats']['total_orders']; ?></h2>
-                            <p class="text-white-50 text-uppercase letter-spacing-1 small mb-4">Đơn hàng</p>
+                            <p class="text-white-50 letter-spacing-1 small mb-4">Đơn hàng</p>
                             <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-light bg-opacity-20 text-white border-0 rounded-pill px-4 btn-hover-light stretched-link small fw-bold">
                                 Xem lịch sử <i class="fas fa-arrow-right ms-2"></i>
                             </a>
@@ -106,7 +112,7 @@
                                     echo count($reviews);
                                 ?>
                             </h2>
-                            <p class="text-white-50 text-uppercase letter-spacing-1 small mb-4">Đánh giá</p>
+                            <p class="text-white-50 letter-spacing-1 small mb-4">Đánh giá</p>
                             <a href="<?php echo BASE_URL; ?>/reviews/my-reviews" class="btn btn-light bg-opacity-20 text-white border-0 rounded-pill px-4 btn-hover-light stretched-link small fw-bold">
                                 Quản lý <i class="fas fa-arrow-right ms-2"></i>
                             </a>
@@ -122,7 +128,7 @@
                             <h3 class="display-6 fw-bold mb-0 text-truncate" title="<?php echo number_format($data['orderStats']['total_spent'], 0, ',', '.'); ?>đ">
                                 <?php echo number_format($data['orderStats']['total_spent'], 0, ',', '.'); ?>đ
                             </h3>
-                            <p class="text-white-50 text-uppercase letter-spacing-1 small mb-4">Tổng chi tiêu</p>
+                            <p class="text-white-50 letter-spacing-1 small mb-4">Tổng chi tiêu</p>
                         </div>
                     </div>
                 </div>
@@ -131,10 +137,10 @@
             <!-- Recent Orders -->
             <div class="card border-0 shadow-sm rounded-0">
                 <div class="card-header bg-white border-bottom py-4 d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0 fw-bold text-uppercase letter-spacing-2" style="font-family: var(--font-heading);">
+                    <h5 class="mb-0 fw-bold letter-spacing-2" style="font-family: var(--font-heading);">
                         <i class="fas fa-history me-2 text-warning"></i>Đơn hàng gần đây
                     </h5>
-                    <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-link text-dark text-decoration-none text-uppercase letter-spacing-1 small fw-bold">
+                    <a href="<?php echo BASE_URL; ?>/orders" class="btn btn-link text-dark text-decoration-none letter-spacing-1 small fw-bold">
                         Xem tất cả <i class="fas fa-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -142,7 +148,7 @@
                     <?php if (!empty($data['recentOrders'])): ?>
                         <div class="table-responsive">
                             <table class="table table-hover align-middle mb-0">
-                                <thead class="bg-light text-uppercase small text-muted letter-spacing-1">
+                                <thead class="bg-light small text-muted letter-spacing-1">
                                     <tr>
                                         <th class="ps-4 py-3 border-0">Mã đơn</th>
                                         <th class="py-3 border-0">Ngày đặt</th>
@@ -176,7 +182,7 @@
                                                         'returned' => 'Hoàn trả'
                                                     ];
                                                 ?>
-                                                <span class="badge rounded-0 px-2 py-1 fw-normal text-uppercase x-small letter-spacing-1 <?php echo $statusClasses[$order['status']] ?? 'bg-secondary'; ?>">
+                                                <span class="badge rounded-0 px-2 py-1 fw-normal x-small letter-spacing-1 <?php echo $statusClasses[$order['status']] ?? 'bg-secondary'; ?>">
                                                     <?php echo $statusLabels[$order['status']] ?? $order['status']; ?>
                                                 </span>
                                             </td>
@@ -194,7 +200,7 @@
                         <div class="text-center py-5">
                             <i class="fas fa-shopping-bag fa-3x text-muted mb-3 opacity-50"></i>
                             <p class="text-muted">Bạn chưa có đơn hàng nào</p>
-                            <a href="<?php echo BASE_URL; ?>/products" class="btn btn-dark rounded-0 px-4 text-uppercase letter-spacing-1 small">Mua sắm ngay</a>
+                            <a href="<?php echo BASE_URL; ?>/products" class="btn btn-dark rounded-0 px-4 letter-spacing-1 small">Mua sắm ngay</a>
                         </div>
                     <?php endif; ?>
                 </div>

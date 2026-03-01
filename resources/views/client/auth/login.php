@@ -172,7 +172,7 @@
 
             <div class="auth-content">
                 <div class="text-center mb-5">
-                    <h1 class="text-white fw-bold  text-uppercase mb-2">Đăng Nhập</h1>
+                    <h1 class="text-white fw-bold  mb-2">Đăng Nhập</h1>
                     <p class="text-white letter-spacing-2">Chào mừng bạn quay trở lại</p>
                 </div>
 
