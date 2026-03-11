@@ -143,7 +143,7 @@
                         <div class="mb-4">
                             <h6 class="mb-3">Phương thức thanh toán</h6>
                             <div class="row">
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod"
                                                <?php echo ($data['old_input']['payment_method'] ?? 'cod') === 'cod' ? 'checked' : ''; ?> required>
@@ -152,25 +152,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="bank_transfer" value="bank_transfer"
-                                               <?php echo ($data['old_input']['payment_method'] ?? '') === 'bank_transfer' ? 'checked' : ''; ?> required>
-                                        <label class="form-check-label" for="bank_transfer">
-                                            <i class="fas fa-university me-2"></i>Chuyển khoản ngân hàng
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="payment_method" id="momo" value="momo"
-                                               <?php echo ($data['old_input']['payment_method'] ?? '') === 'momo' ? 'checked' : ''; ?> required>
-                                        <label class="form-check-label" for="momo">
-                                            <i class="fas fa-mobile-alt me-2"></i>Ví MoMo
-                                        </label>
-                                    </div>
-                                </div> -->
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="payment_method" id="vnpay" value="vnpay"
                                                <?php echo ($data['old_input']['payment_method'] ?? '') === 'vnpay' ? 'checked' : ''; ?> required>
